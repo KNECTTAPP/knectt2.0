@@ -1,0 +1,43 @@
+diff --git a/node_modules/react-native-phone-number-input/lib/index.js b/node_modules/react-native-phone-number-input/lib/index.js
+index b89c388..a306652 100644
+--- a/node_modules/react-native-phone-number-input/lib/index.js
++++ b/node_modules/react-native-phone-number-input/lib/index.js
+@@ -26,7 +26,8 @@ export default class PhoneInput extends PureComponent {
+         : "",
+       modalVisible: false,
+       countryCode: props.defaultCode ? props.defaultCode : "IN",
+-      disabled: props.disabled || false,
++      // disabled: props.disabled || true,
++      disabled:  true,
+     };
+   }
+ 
+@@ -178,7 +179,7 @@ export default class PhoneInput extends PureComponent {
+               countryPickerButtonStyle ? countryPickerButtonStyle : {},
+             ]}
+             disabled={disabled}
+-            onPress={() => this.setState({ modalVisible: true })}
++            onPress={() => this.setState({ modalVisible: false })}
+           >
+             <CountryPicker
+               onSelect={this.onSelect}
+diff --git a/node_modules/react-native-phone-number-input/lib/styles.js b/node_modules/react-native-phone-number-input/lib/styles.js
+index 1789ce7..9ac9f85 100644
+--- a/node_modules/react-native-phone-number-input/lib/styles.js
++++ b/node_modules/react-native-phone-number-input/lib/styles.js
+@@ -15,12 +15,14 @@ const styles = StyleSheet.create({
+     flexDirection: 'row',
+   },
+   flagButtonView: {
+-    width: wp(20),
++    width: wp(16),
+     height: '100%',
+     minWidth: 32,
+     justifyContent: 'center',
+     flexDirection: 'row',
+     alignItems: 'center',
++    // borderWidth:1,
++    paddingHorizontal:15
+   },
+   flagButtonExtraWidth: {
+     width: wp(23),

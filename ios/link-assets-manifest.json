@@ -1,0 +1,41 @@
+{
+  "migIndex": 1,
+  "data": [
+    {
+      "path": "assets/fonts/WhitneySemiboldItalic.otf",
+      "sha1": "829391a59c4305fe4733009da64fec983091cde1"
+    },
+    {
+      "path": "assets/fonts/whitneybold.otf",
+      "sha1": "9953f50701c61d80b188c063269cbbae63ac0868"
+    },
+    {
+      "path": "assets/fonts/whitneybook.otf",
+      "sha1": "9b6e4749dcfa702e3fd6cc27d5c2bef1fdb966f9"
+    },
+    {
+      "path": "assets/fonts/whitneybookitalic.otf",
+      "sha1": "0123bfe396fc0c0b9ccbca86736a48571244f8de"
+    },
+    {
+      "path": "assets/fonts/whitneylight.otf",
+      "sha1": "bcd2ae755b34501fcbf533c6c9d47c4a7a2cb498"
+    },
+    {
+      "path": "assets/fonts/whitneylightitalic.otf",
+      "sha1": "cd26eaab402285573687391497723621d9096754"
+    },
+    {
+      "path": "assets/fonts/whitneymedium.otf",
+      "sha1": "279e32b36b3f2b2904b71cc6eeebcf20490d3f41"
+    },
+    {
+      "path": "assets/fonts/whitneymediumitalic.otf",
+      "sha1": "38a9378d60a4043c9c126eb01951516df287f489"
+    },
+    {
+      "path": "assets/fonts/whitneysemibold.otf",
+      "sha1": "fc560886d72adf37cccbad5bf8c58d7e0e546027"
+    }
+  ]
+}
