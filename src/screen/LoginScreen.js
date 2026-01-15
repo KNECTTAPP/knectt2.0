@@ -1,36 +1,27 @@
-import React, { useState, useEffect, useRef } from "react";
-import {
-  StyleSheet,
-  View,
-  
-  Text,
-  ToastAndroid,
-  StatusBar,
-  KeyboardAvoidingView,
-  ScrollView,
-  Platform,
-  AppState,
-  TextInput,
-} from "react-native";
-import Images from "../component/Images";
-import loginLogo from "../../assets/img/BrandLogo.png";
-import Inputtext from "../component/InputText";
-import ButtonComponent from "../component/ButtonComponent";
-import CountryCodePickerComponent from "../component/CountryCOdePickerComponent";
-import DeviceInfo from "react-native-device-info";
-import { ProgressLoader } from "../component/ProgressLoader";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import EndUrl from "../api/EndUrl";
+import { useIsFocused, useNavigation } from "@react-navigation/native";
+import React, { useEffect, useRef, useState } from "react";
+import {
+  AppState,
+  Platform,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TextInput,
+  View
+} from "react-native";
+import DeviceInfo from "react-native-device-info";
 import { SafeAreaView } from "react-native-safe-area-context";
+import Toast from "react-native-simple-toast";
+import loginLogo from "../../assets/img/BrandLogo.png";
+import EndUrl from "../api/EndUrl";
 import { ButtonCustom } from "../component/ButtonCustom";
+import Images from "../component/Images";
+import { ProgressLoader } from "../component/ProgressLoader";
+import { useStore } from "../state";
+import { getAsyncValue } from "../utils/commonFunctions";
 const STYLES = ["default", "dark-content", "light-content"];
 const TRANSITIONS = ["fade", "slide", "none"];
-import Icon from "react-native-vector-icons/MaterialIcons";
-import Toast from "react-native-simple-toast";
-import { setupNotificationListeners } from "../services/NotificationHandler";
-import { getAsyncValue } from "../utils/commonFunctions";
-import { useIsFocused, useNavigation } from "@react-navigation/native";
-import { useStore } from "../state";
 const LoginScreen = ({  }) => {
   const navigation = useNavigation();
 
@@ -478,8 +469,6 @@ const LoginScreen = ({  }) => {
                 Visibility purposes with limited access
               </Text>
               
-
-
             </View>
           </View>
         </ScrollView>

@@ -32,7 +32,7 @@ const TabNavigators = () => {
 
   return (
     <Tab.Navigator
-      initialRouteName="Offerings Page"
+      initialRouteName="ChatScreen"
       screenOptions={{
         headerShown: false,
         tabBarShowLabel: false,

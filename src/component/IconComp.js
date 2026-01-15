@@ -1,5 +1,5 @@
 import React from "react";
-import { Platform, Text } from "react-native";
+import { Platform } from "react-native";
 import {
   ArrowDown,
   ArrowLeft,
@@ -7,23 +7,21 @@ import {
   Bell,
   Check,
   CheckCircle,
+  DollarSign,
   Download,
   MapPin,
   Menu,
-  MessageCircle,
   Paperclip,
   PhoneCall,
+  Play,
   Search,
   Share,
   ShoppingCart,
   Trash,
-  XCircle,
-  PlayCircle,
-  Play,
-  DollarSign
+  XCircle
 } from "react-native-feather";
-import Ionicons from "react-native-vector-icons/Ionicons";
 import Feather from 'react-native-vector-icons/Feather';
+import Ionicons from "react-native-vector-icons/Ionicons";
 
 export const IconShare = () => {
   return <Share style={{ height: 16, width: 16 }} color={"#132742"} />;
@@ -294,7 +292,7 @@ export const IconClose = () => {
   if (Platform.OS === "ios1") {
     return <XCircle color={"red"} />;
   }
-  return <Feather name={"x"} size={30} color={"red"} />;
+  return <Feather name={"x-circle"} size={30} color={"red"} />;
 };
 
 export const IconPaperClip = () => {

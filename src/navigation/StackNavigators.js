@@ -68,6 +68,7 @@ const Stack = createNativeStackNavigator();
 
 // ------------- Root Stack -------------
 function RootStack({initialRoute}) {
+  console.log("asdasdasdasdasdasdasdasd",initialRoute)
   return (
     <Stack.Navigator screen screenOptions={{headerShown:false}}
      initialRouteName={initialRoute == "login" ? "Login" : "TabNavigators"}
@@ -348,49 +349,39 @@ function RootNavigator({ initialRoute }) {
     <NavigationContainer ref={navigationRef}>
       <DrawerProvider>
      
-      {initialRoute === "login" ? <RootStack initialRoute={initialRoute} /> : <DrawerNavigator />}
+      {initialRoute === "login" ? <RootStack initialRoute={initialRoute} /> : <RootStack initialRoute={initialRoute} />}
       </DrawerProvider>
     </NavigationContainer>
   );
 }
 
 // ------------- Main Export -------------
-export default function StackNavigators({linking}) {
+export default function StackNavigators({ linking }) {
   const [isReady, setIsReady] = useState(false);
-  const [initialRoute, setInitialRoute] = useState("login");
+  const [initialRoute, setInitialRoute] = useState(null);
 
   useEffect(() => {
-   
-  
-
-      const init = async () => {
-      // …do multiple sync or async tasks
-       
+    const init = async () => {
       try {
-        const token = await AsyncStorage.getItem("userToken");
+       
+        let token = await AsyncStorage.getItem("usertoken");
+      
         setInitialRoute(token ? "TabNavigators" : "login");
       } catch (error) {
         setInitialRoute("login");
       } finally {
-        setTimeout(() => BootSplash.hide(), 3000);
+        await BootSplash.hide({ fade: true });
         setIsReady(true);
-    };
-      try {
-        const token = await AsyncStorage.getItem("userToken");
-        setInitialRoute(token ? "TabNavigators" : "login");
-      } catch (error) {
-        setInitialRoute("login");
-      } 
+      }
     };
 
-    init().finally(async () => {
-      await BootSplash.hide({ fade: true });
-      console.log("BootSplash has been hidden successfully");
-    });
-      init();
+    init();
   }, []);
 
-  if (!isReady) return null;
+  
+  if (!isReady || !initialRoute) {
+    return null; // ya Loader component
+  }
 
-  return <RootNavigator initialRoute={initialRoute} />;
+  return <RootNavigator initialRoute={initialRoute} linking={linking} />;
 }

@@ -22,6 +22,7 @@ import thumsImg from "../../assets/img/thumbs.png";
 import AlertModal from "../component/AlertModal";
 import DeviceInfo from "react-native-device-info";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { TextInput } from "react-native-paper";
 
 const ContactUsScreen = ({ navigation }) => {
   const [loading, setLoading] = useState(false);
@@ -210,57 +211,93 @@ const ContactUsScreen = ({ navigation }) => {
                 onPress={() => setReason(item)}
               />
             ))}
-
-            <View
-              style={{
-                width: "100%",
-                flexDirection: "row",
-                justifyContent: "space-between",
-              }}
-            >
+            <View style={{ width: "100%", flexDirection: "row", justifyContent: "space-between" }}>
               <View style={{ width: "48%" }}>
-                <TextField
+                <TextInput
                   label="First Name*"
-                  labelTextStyle={{ paddingLeft: 80 }}
                   value={firstname}
                   onChangeText={(text) => handleInputChange("firstname", text)}
+                  mode="flat"
+                  underlineColor="#999"
+                  activeUnderlineColor="#6e5af4"
+                  style={{ backgroundColor: "#fff", paddingHorizontal: 0 }}
+                  contentStyle={{ paddingHorizontal: 0 }}
+                  theme={{
+                    colors: {
+                      background: "#fff",
+                      surface: "#fff",
+                      onSurfaceVariant: "#999",
+                      primary: "#6e5af4",
+                    },
+                  }}
                 />
-                {errors.firstname !== "" && (
-                  <Text style={styles.error}>{errors.firstname}</Text>
-                )}
+                {errors.firstname !== "" && <Text style={styles.error}>{errors.firstname}</Text>}
               </View>
+
               <View style={{ width: "48%" }}>
-                <TextField
+                <TextInput
                   label="Last Name*"
                   value={lastname}
-                  labelTextStyle={{ paddingLeft: 80 }}
                   onChangeText={(text) => handleInputChange("lastname", text)}
-                  style={{ width: "48%" }}
+                  mode="flat"
+                  underlineColor="#999"
+                  activeUnderlineColor="#6e5af4"
+                  style={{ backgroundColor: "#fff", paddingHorizontal: 0 }}
+                  contentStyle={{ paddingHorizontal: 0 }}
+                  theme={{
+                    colors: {
+                      background: "#fff",
+                      surface: "#fff",
+                      onSurfaceVariant: "#999",
+                      primary: "#6e5af4",
+                    },
+                  }}
                 />
-
-                {errors.lastname !== "" && (
-                  <Text style={styles.error}>{errors.lastname}</Text>
-                )}
+                {errors.lastname !== "" && <Text style={styles.error}>{errors.lastname}</Text>}
               </View>
             </View>
+
             <View>
-              <TextField
+              <TextInput
                 label="Email*"
                 value={email}
-                labelTextStyle={{ paddingLeft: 170}}
                 onChangeText={(text) => handleInputChange("email", text)}
+                autoCapitalize="none"
+                mode="flat"
+                underlineColor="#999"
+                activeUnderlineColor="#6e5af4"
+                style={{ backgroundColor: "#fff", paddingHorizontal: 0 }}
+                contentStyle={{ paddingHorizontal: 0 }}
+                theme={{
+                  colors: {
+                    background: "#fff",
+                    surface: "#fff",
+                    onSurfaceVariant: "#999",
+                    primary: "#6e5af4",
+                  },
+                }}
               />
-              {errors.email !== "" && (
-                <Text style={styles.error}>{errors.email}</Text>
-              )}
+              {errors.email !== "" && <Text style={styles.error}>{errors.email}</Text>}
             </View>
 
-            <TextField
+            <TextInput
               label="Write a comment"
               value={comment}
-              labelTextStyle={{ paddingLeft: 170 }}
               onChangeText={(text) => handleInputChange("comment", text)}
               multiline
+              mode="flat"
+              underlineColor="#999"
+              activeUnderlineColor="#6e5af4"
+              style={{ backgroundColor: "#fff", paddingHorizontal: 0 }}
+              contentStyle={{ paddingHorizontal: 0 }}
+              theme={{
+                colors: {
+                  background: "#fff",
+                  surface: "#fff",
+                  onSurfaceVariant: "#999",
+                  primary: "#6e5af4",
+                },
+              }}
             />
 
             <ButtonCustom

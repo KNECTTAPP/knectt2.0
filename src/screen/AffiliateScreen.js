@@ -1,46 +1,31 @@
-import React, { useState, Component, useEffect, useRef } from "react";
-import {
-  Platform,
-  View,
-  Button,
-  Text,
-  Image,
-  Linking,
-  Dimensions,
-  TouchableWithoutFeedback,
-  Alert,
-  StyleSheet,
-  Pressable,
-  
-  ScrollView,
-  TouchableOpacity,
-  FlatList,
-  StatusBar,
-  ActivityIndicator,
-} from "react-native";
-import HTMLView from "react-native-htmlview";
-import RenderHTML from "react-native-render-html";
-import { scale } from "react-native-size-matters";
-import { TabNavigators } from "../../TabNavigators.js";
-import ModalTester from "../component/ModalComponent";
-import { ProgressLoader } from "../component/ProgressLoader";
-import LinearGradient from "react-native-linear-gradient";
-import NumericInput from "react-native-numeric-input";
-import { SafeAreaView } from "react-native-safe-area-context";
-import Header from "../component/Header";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import bodyMatchbtn from "../../assets/img/bodyMatchbtn.png";
-import bodymatchslider from "../../assets/img/bodymatchslider.png";
+import React, { useEffect, useRef, useState } from "react";
+import {
+  ActivityIndicator,
+  Dimensions,
+  Image,
+  Platform,
+  ScrollView,
+  StyleSheet,
+  TouchableOpacity,
+  useWindowDimensions,
+  View
+} from "react-native";
+import DeviceInfo from "react-native-device-info";
+import RenderHTML from "react-native-render-html";
+import Video from "react-native-video";
 import EndUrl from "../api/EndUrl";
 import { ButtonCustom } from "../component/ButtonCustom.js";
-import Video from "react-native-video";
-import Icon from "react-native-vector-icons/Ionicons";
-import DeviceInfo from "react-native-device-info";
-import { IconPlayCircle } from "../component/IconComp.js";
+import Header from "../component/Header";
+import { SafeAreaView } from "react-native-safe-area-context";
+import { WebView } from "react-native-webview";
+
 
 const SLIDER_1_FIRST_ITEM = 1;
 var id = 0;
+
 const AffiliateScreen = ({ navigation, route }) => {
+  const { width } = useWindowDimensions();
   const [titleText, setTitleText] = useState(null);
   const [isModalVisible, setModalVisible] = useState(false);
   const [loading, setLoading] = useState(true);
@@ -60,6 +45,10 @@ const AffiliateScreen = ({ navigation, route }) => {
   const videoRef = useRef(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isPlaying, setIsPlaying] = useState(false);
+
+  console.log("asdasdasdasdasdsadsad", affiliateText)
+
+
 
   const getAffliate = async () => {
     try {
@@ -156,91 +145,78 @@ const AffiliateScreen = ({ navigation, route }) => {
   );
 
   return (
-    <SafeAreaView style={styles.screenContainer}>
-      {/* <StatusBar barStyle="light-content" backgroundColor="#FFF" /> */}
+
+    <SafeAreaView style={{ flex: 1, backgroundColor: "#fff" }}>
       <Header categoryTitle={categoryTitle} backButtonwithtext />
-      <ScrollView style={{ flex: 1 }}>
+
+      <ScrollView
+        style={{ flex: 1 }}
+        
+        contentContainerStyle={{ paddingBottom: 100 }} // 👈 button space
+        showsVerticalScrollIndicator={false}
+      >
+        {/* VIDEO */}
         <View style={styles.videoContainer}>
           <Video
             ref={videoRef}
             source={{ uri: "https://knectt.com/knecttraw4.mp4" }}
-            bufferConfig={{
-              minBufferMs: 2000,
-              maxBufferMs: 10000,
-              bufferForPlaybackMs: 500,
-              bufferForPlaybackAfterRebufferMs: 1000,
-            }}
             style={styles.video}
-            controls={false}
-            paused={isPaused}
             resizeMode="contain"
-            onError={(error) => console.log("Video Error:", error)}
-            repeat={true}
-            volume={1.0}
-            rate={1.0}
-            onLoadStart={() => setIsLoading(true)}
-            onLoad={() => {
-              setIsLoading(false);
-              setIsPlaying(false);
-            }}
-            onEnd={() => {
-              setIsPlaying(false);
-              setIsPaused(true);
-            }}
+            paused={isPaused}
+            repeat
           />
           <VideoControls />
         </View>
 
-        <View
-          style={{
-            width: "100%",
-            padding: 0,
-            marginTop: 0,
-            marginLeft: 0,
-            marginRight: 0,
-          }}
-        >
-          <View
-            style={{
-              width: "100%",
-              padding: 5,
-              marginTop: 0,
-              marginLeft: 0,
-              marginRight: 0,
+        {/* WEBVIEW */}
+        <View style={{ minHeight: 370 }}>
+          <WebView
+            originWhitelist={["*"]}
+            javaScriptEnabled
+            domStorageEnabled
+            textZoom={80}
+            nestedScrollEnabled={true}   // 👈 IMPORTANT
+            source={{
+              html: `
+            <html>
+              <head>
+                <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                <style>
+                  body {
+                    font-size: 12px;
+                    padding: 12px;
+                  }
+                </style>
+              </head>
+              <body>
+                ${affiliateText}
+              </body>
+            </html>
+          `,
             }}
-          >
-            <View
-              style={{
-                width: "100%",
-                padding: 5,
-                marginTop: 0,
-                marginLeft: 0,
-                marginRight: 0,
-                textAlign: "center",
-              }}
-            >
-              <RenderHTML source={{ html: affiliateText }} />
-            </View>
-          </View>
+            style={{ width: "90%", alignSelf: "center" }}
+          />
         </View>
       </ScrollView>
+
+      {/* FIXED BOTTOM BUTTON */}
       <View
         style={{
-          width: "100%",
-          padding: 5,
-          marginTop: 0,
-          marginLeft: 0,
-          marginRight: 0,
-          marginTop: "2%",
-          marginBottom: "2%",
+          position: "absolute",
+          bottom: 0,
+          left: 0,
+          right: 0,
+          padding: 10,
+          backgroundColor: "#fff",
+          borderTopWidth: 1,
+          borderColor: "#eee",
         }}
       >
-        {/* <Button
-            color="#F79489" mode="outlined"
-            uppercase={false} title="Create an Account" onPress={createAlliiate} /> */}
         <ButtonCustom title="Create an Account" onPress={createAlliiate} />
       </View>
     </SafeAreaView>
+
+
   );
 };
 
@@ -251,7 +227,7 @@ const styles = StyleSheet.create({
   },
   topBannercontainer: {
     width: "100%",
-    height: 92,
+
     justifyContent: "center",
     alignItems: "center",
   },

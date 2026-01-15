@@ -333,7 +333,7 @@ const ChatbotScreen = ({ navigation, route }) => {
                 }}
               >
                 <CheckBox
-                  tintColors={{ true: "#132742" }}
+                   tintColors={{ true: "#132742",false :"#999" }}
                   value={isSelected.indexOf(item.id) >= 0 ? true : false}
                   isChecked={isSelected.indexOf(item.id) >= 0 ? true : false}
                   style={Platform.OS === "ios" ? styles.checkbox : {}}
@@ -381,7 +381,7 @@ const ChatbotScreen = ({ navigation, route }) => {
                 }}
               >
                 <CheckBox
-                  tintColors={{ true: "#132742" }}
+                   tintColors={{ true: "#132742",false :"#999" }}
                   value={fastingSelect.indexOf(item.id) >= 0 ? true : false}
                   isChecked={fastingSelect.indexOf(item.id) >= 0 ? true : false}
                   style={Platform.OS === "ios" ? styles.checkbox : {}}

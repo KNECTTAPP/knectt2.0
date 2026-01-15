@@ -1,47 +1,31 @@
-import React, { useState, Component, useEffect, useCallback } from "react";
-import {
-  Platform,
-  View,
-  Button,
-  Animated,
-  Text,
-  Image,
-  TextInput,
-  Linking,
-  Dimensions,
-  TouchableHighlight,
-  TouchableWithoutFeedback,
-  Alert,
-  StyleSheet,
-  Pressable,
-  
-  ScrollView,
-  TouchableOpacity,
-  KeyboardAvoidingView,
-  FlatList,
-  StatusBar,
-} from "react-native";
-Animated.Text.propTypes = Animated.Text.propTypes || Text.propTypes;
-import CheckBox from "@react-native-community/checkbox";
-import HTMLView from "react-native-htmlview";
-import { SafeAreaView } from "react-native-safe-area-context";
-import { TabNavigators } from "../../TabNavigators.js";
-import ModalTester from "../component/ModalComponent";
-import Header from "../component/Header";
-import { TextField } from "rn-material-ui-textfield";
-import PlacesAutocomplete from "../component/GoogleAutoCompleteComponent.js";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import Toast from 'react-native-simple-toast';
-import AutoCompleteInput from "../component/AutoCompleteInput.js";
-import FlashMessage, {
-  showMessage,
-  hideMessage,
-} from "react-native-flash-message";
-import EndUrl from "../api/EndUrl";
-import fonts from "../utils/fonts.js";
+import CheckBox from "@react-native-community/checkbox";
+import React, { useEffect, useState } from "react";
+import {
+  Animated,
+  Dimensions,
+  KeyboardAvoidingView,
+  Platform,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableHighlight,
+  TouchableOpacity,
+  View
+} from "react-native";
 import DeviceInfo from "react-native-device-info";
+import FlashMessage, {
+  showMessage
+} from "react-native-flash-message";
+import { TextInput } from "react-native-paper";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
+import Toast from 'react-native-simple-toast';
+import EndUrl from "../api/EndUrl";
+import PlacesAutocomplete from "../component/GoogleAutoCompleteComponent.js";
+import Header from "../component/Header";
 import { configs } from "../utils/configs.js";
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import fonts from "../utils/fonts.js";
+Animated.Text.propTypes = Animated.Text.propTypes || Text.propTypes;
 
 const theme = "default";
 
@@ -59,7 +43,7 @@ const AddEditAddressScreen = ({ navigation, route }) => {
   const [firstname, setFirstname] = useState("");
   const [firstnameError, setFirstnameError] = useState();
 
-  const [latLongError,setLatlongError]=useState();
+  const [latLongError, setLatlongError] = useState();
 
   const [lastname, setLastname] = useState("");
   const [lastnameError, setLastnameError] = useState();
@@ -102,82 +86,82 @@ const AddEditAddressScreen = ({ navigation, route }) => {
   // ------------------------------------------------------------------
   //  UPDATED VALIDATION LOGIC
   // ------------------------------------------------------------------
- const checkValidate = () => {
-  let valid = true;
-  let emailReg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w\w+)+$/;
-  let phoneReg = /^[0-9]+$/;
+  const checkValidate = () => {
+    let valid = true;
+    let emailReg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w\w+)+$/;
+    let phoneReg = /^[0-9]+$/;
 
-  // Reset all errors first
-  setFirstnameError(null);
-  setLastnameError(null);
-  setEmailError(null);
-  setphoneError(null);
+    // Reset all errors first
+    setFirstnameError(null);
+    setLastnameError(null);
+    setEmailError(null);
+    setphoneError(null);
 
-  // FIRST NAME
-  if (!firstname.trim()) {
-    setFirstnameError("First name is required");
-    valid = false;
-  }
+    // FIRST NAME
+    if (!firstname.trim()) {
+      setFirstnameError("First name is required");
+      valid = false;
+    }
 
-  // LAST NAME
-  if (!lastname.trim()) {
-    setLastnameError("Last name is required");
-    valid = false;
-  }
+    // LAST NAME
+    if (!lastname.trim()) {
+      setLastnameError("Last name is required");
+      valid = false;
+    }
 
-  // EMAIL
-  if (!email.trim()) {
-    setEmailError("Email is required");
-    valid = false;
-  } else if (!emailReg.test(email)) {
-    setEmailError("Invalid email format");
-    valid = false;
-  }
+    // EMAIL
+    if (!email.trim()) {
+      setEmailError("Email is required");
+      valid = false;
+    } else if (!emailReg.test(email)) {
+      setEmailError("Invalid email format");
+      valid = false;
+    }
 
-  // PHONE
-  if (!phone.trim()) {
-    setphoneError("Phone number is required");
-    valid = false;
-  } else if (!phoneReg.test(phone)) {
-    setphoneError("Phone must be numeric");
-    valid = false;
-  } else if (phone.length < 10) {
-    setphoneError("Phone number should be at least 10 digits");
-    valid = false;
-  }
+    // PHONE
+    if (!phone.trim()) {
+      setphoneError("Phone number is required");
+      valid = false;
+    } else if (!phoneReg.test(phone)) {
+      setphoneError("Phone must be numeric");
+      valid = false;
+    } else if (phone.length < 10) {
+      setphoneError("Phone number should be at least 10 digits");
+      valid = false;
+    }
 
-  // STATE
-  if (!state.trim()) {
-    valid = false;
-  }
+    // STATE
+    if (!state.trim()) {
+      valid = false;
+    }
 
-  // PINCODE
-  if (!postalCode.trim()) {
-    valid = false;
-  }
+    // PINCODE
+    if (!postalCode.trim()) {
+      valid = false;
+    }
 
-  // ADDRESS LINE 1
-  if (!address_1.trim()) {
-    valid = false;
-  }
+    // ADDRESS LINE 1
+    if (!address_1.trim()) {
+      valid = false;
+    }
 
-  // LAT/LNG
-  if (!latLong || !latLong.lat || !latLong.lng) {
-    setLatlongError("Please select a valid location ");
-    valid = false;
-  }
+    // LAT/LNG
+    if (!latLong || !latLong.lat || !latLong.lng) {
+      setLatlongError("Please select a valid location ");
+      valid = false;
+    }
 
-  // Update button color and isvalidate
-  if (valid) {
-    setDisableColer("#F79489");
-    setIsvalidate(1);
-  } else {
-    setDisableColer("#F79489");
-    setIsvalidate(0);
-  }
+    // Update button color and isvalidate
+    if (valid) {
+      setDisableColer("#F79489");
+      setIsvalidate(1);
+    } else {
+      setDisableColer("#F79489");
+      setIsvalidate(0);
+    }
 
-  return valid;
-};
+    return valid;
+  };
 
 
 
@@ -382,271 +366,367 @@ const AddEditAddressScreen = ({ navigation, route }) => {
   }, []);
 
   return (
-    <SafeAreaView style={styles.screenContainer}>
+    <View style={styles.screenContainer}>
       <KeyboardAvoidingView
-              style={{ flex: 1 }}
-              behavior={Platform.OS === "ios" ? "padding" : undefined}
-              keyboardVerticalOffset={Platform.OS === "ios" ? insets.top : 0} 
-            >
-      <FlashMessage />
-      <Header categoryTitle={categoryTitle} backButtonwithtext />
-      <ScrollView style={{ flex: 1 }}>
-        <View
-          style={{
-            width: "100%",
-            padding: 1,
-            marginTop: 0,
-            marginLeft: 0,
-            marginRight: 0,
-          }}
-        >
-           <View style={styles.addressbox}>
-              <PlacesAutocomplete
-        apiKey={configs.GOOGLE_PLACES_KEY}
-        onPlaceSelected={(placeItem) => {
-  console.log(placeItem, "placeItem");
-  setLatlongError()
+        style={{ flex: 1 }}
+        behavior={Platform.OS === "ios" ? "padding" : undefined}
+        keyboardVerticalOffset={Platform.OS === "ios" ? insets.top : 0}
+      >
+        <FlashMessage />
+        <Header categoryTitle={categoryTitle} backButtonwithtext />
+        <ScrollView style={{ flex: 1 }}>
 
-  // --- DETAILS EXIST CHECK ---
-  const details = placeItem?.details ?? {};
+          <View style={styles.addressbox}>
+            <PlacesAutocomplete
+              apiKey={configs.GOOGLE_PLACES_KEY}
+              onPlaceSelected={(placeItem) => {
+                console.log(placeItem, "placeItem");
+                setLatlongError()
 
-  // LAT/LNG
-  if (details.location) {
-    setLatLong(details.location);
-  }
+                // --- DETAILS EXIST CHECK ---
+                const details = placeItem?.details ?? {};
 
-  // MAIN TEXT (Street)
-  // if (placeItem?.mainText) {
-  //   setAddress_1(placeItem.mainText);
-  // }
+                // LAT/LNG
+                if (details.location) {
+                  setLatLong(details.location);
+                }
 
-  // // SECONDARY TEXT (Area, locality)
-  // if (placeItem?.secondaryText) {
-  //   setAddress_2(placeItem.secondaryText);
-  // }
+                // MAIN TEXT (Street)
+                // if (placeItem?.mainText) {
+                //   setAddress_1(placeItem.mainText);
+                // }
 
-  // // POSTAL CODE
-  // if (details.postalCode) {
-  //   setPostalCode(details.postalCode);
-  // }
+                // // SECONDARY TEXT (Area, locality)
+                // if (placeItem?.secondaryText) {
+                //   setAddress_2(placeItem.secondaryText);
+                // }
 
-  // // STATE
-  // if (details.state) {
-  //   setState(details.state);
-  // }
+                // // POSTAL CODE
+                // if (details.postalCode) {
+                //   setPostalCode(details.postalCode);
+                // }
 
-  // // CITY
-  // if (details.city) {
-  //   setCity(details.city);
-  // }
-}}
+                // // STATE
+                // if (details.state) {
+                //   setState(details.state);
+                // }
 
-        placeholder="Search Location"
-      />
-      {latLongError ? (
-                <Text style={styles.error}>{latLongError}</Text>
-              ) : null}
-            </View>
+                // // CITY
+                // if (details.city) {
+                //   setCity(details.city);
+                // }
+              }}
+
+              placeholder="Search Location"
+            />
+            {latLongError ? (
+              <Text style={styles.error}>{latLongError}</Text>
+            ) : null}
+          </View>
+
           <View style={styles.halfholder}>
             <View style={{ width: "45%", marginRight: 5 }}>
-              <TextField
-                tintColor={"#999"}
-                required
+              <TextInput
                 label="First Name *"
                 value={firstname}
                 onChangeText={setFirstname}
+                onBlur={() => checkValidate("firstname")}
+                mode="flat"
+                underlineColor="#999"
+                activeUnderlineColor="#6e5af4"
+                style={{ backgroundColor: "#fff", paddingHorizontal: 0 }}
+                contentStyle={{ paddingHorizontal: 0 }}
+                theme={{
+                  colors: {
+                    background: "#fff",
+                    surface: "#fff",
+                    onSurfaceVariant: "#999",
+                    primary: "#6e5af4",
+                  },
+                }}
               />
-              {firstnameError ? (
-                <Text style={styles.error}>{firstnameError}</Text>
-              ) : null}
+              {firstnameError ? <Text style={styles.error}>{firstnameError}</Text> : null}
             </View>
+
             <View style={{ width: "50%" }}>
-              <TextField
-                required
-                tintColor={"#999"}
-                variant="filled"
+              <TextInput
                 label="Last Name *"
                 value={lastname}
                 onChangeText={setLastname}
-                style={{ width: "50%" }}
+                onBlur={() => checkValidate("lastname")}
+                mode="flat"
+                underlineColor="#999"
+                activeUnderlineColor="#6e5af4"
+                style={{ backgroundColor: "#fff", paddingHorizontal: 0 }}
+                contentStyle={{ paddingHorizontal: 0 }}
+                theme={{
+                  colors: {
+                    background: "#fff",
+                    surface: "#fff",
+                    onSurfaceVariant: "#999",
+                    primary: "#6e5af4",
+                  },
+                }}
               />
-              {lastnameError ? (
-                <Text style={styles.error}>{lastnameError}</Text>
-              ) : null}
+              {lastnameError ? <Text style={styles.error}>{lastnameError}</Text> : null}
             </View>
           </View>
+
           <View style={styles.addressHolder}>
             <View style={styles.addressbox}>
-              <TextField
-                variant="filled"
-                tintColor={"#999"}
+              <TextInput
                 label="Phone Number *"
                 value={phone}
                 onChangeText={setPhone}
+                onBlur={() => checkValidate("phone")}
+                keyboardType="numeric"
+                mode="flat"
+                underlineColor="#999"
+                activeUnderlineColor="#6e5af4"
+                style={{ backgroundColor: "#fff", paddingHorizontal: 0 }}
+                contentStyle={{ paddingHorizontal: 0 }}
+                theme={{
+                  colors: {
+                    background: "#fff",
+                    surface: "#fff",
+                    onSurfaceVariant: "#999",
+                    primary: "#6e5af4",
+                  },
+                }}
               />
-              {phoneError ? (
-                <Text style={styles.error}>{phoneError}</Text>
-              ) : null}
-              <TextField
-                tintColor={"#999"}
+              {phoneError ? <Text style={styles.error}>{phoneError}</Text> : null}
+
+              <TextInput
                 label="Email *"
                 value={email}
                 onChangeText={setEmail}
+                onBlur={() => checkValidate("email")}
+                autoCapitalize="none"
+                mode="flat"
+                underlineColor="#999"
+                activeUnderlineColor="#6e5af4"
+                style={{ backgroundColor: "#fff", paddingHorizontal: 0, }}
+                contentStyle={{ paddingHorizontal: 0 }}
+                theme={{
+                  colors: {
+                    background: "#fff",
+                    surface: "#fff",
+                    onSurfaceVariant: "#999",
+                    primary: "#6e5af4",
+                  },
+                }}
               />
-              {emailError ? (
-                <Text style={styles.error}>{emailError}</Text>
-              ) : null}
+              {emailError ? <Text style={styles.error}>{emailError}</Text> : null}
             </View>
-
-           
 
             <View style={styles.halfholder}>
               <View style={{ width: "45%", marginRight: 5 }}>
-                <TextField
-                  tintColor={"#999"}
-                  required
+                <TextInput
                   label="Pincode"
                   value={postalCode}
                   onChangeText={setPostalCode}
+                  mode="flat"
+                  underlineColor="#999"
+                  activeUnderlineColor="#6e5af4"
+                  style={{ backgroundColor: "#fff", paddingHorizontal: 0 }}
+                  contentStyle={{ paddingHorizontal: 0 }}
+                  theme={{
+                    colors: {
+                      background: "#fff",
+                      surface: "#fff",
+                      onSurfaceVariant: "#999",
+                      primary: "#6e5af4",
+                    },
+                  }}
                 />
               </View>
               <View style={{ width: "50%" }}>
-                <TextField
-                  tintColor={"#999"}
-                  required
-                  variant="filled"
+                <TextInput
                   label="State"
                   value={state}
                   onChangeText={setState}
-                  style={{ width: "50%" }}
+                  mode="flat"
+                  underlineColor="#999"
+                  activeUnderlineColor="#6e5af4"
+                  style={{ backgroundColor: "#fff", paddingHorizontal: 0 }}
+                  contentStyle={{ paddingHorizontal: 0 }}
+                  theme={{
+                    colors: {
+                      background: "#fff",
+                      surface: "#fff",
+                      onSurfaceVariant: "#999",
+                      primary: "#6e5af4",
+                    },
+                  }}
                 />
               </View>
             </View>
 
             <View style={styles.addressbox}>
-              <TextField
-                required
-                tintColor={"#999"}
-                variant="filled"
+              <TextInput
                 label="Address"
                 value={address_1}
                 onChangeText={setAddress_1}
+                mode="flat"
+                underlineColor="#999"
+                activeUnderlineColor="#6e5af4"
+                style={{ backgroundColor: "#fff", paddingHorizontal: 0 }}
+                contentStyle={{ paddingHorizontal: 0 }}
+                theme={{
+                  colors: {
+                    background: "#fff",
+                    surface: "#fff",
+                    onSurfaceVariant: "#999",
+                    primary: "#6e5af4",
+                  },
+                }}
               />
-              <TextField
-                required
-                tintColor={"#999"}
-                variant="filled"
-                label=""
+              <TextInput
+                label="Address Line 2"
                 value={address_2}
                 onChangeText={setAddress_2}
+                mode="flat"
+                underlineColor="#999"
+                activeUnderlineColor="#6e5af4"
+                style={{ backgroundColor: "#fff", paddingHorizontal: 0 }}
+                contentStyle={{ paddingHorizontal: 0 }}
+                theme={{
+                  colors: {
+                    background: "#fff",
+                    surface: "#fff",
+                    onSurfaceVariant: "#999",
+                    primary: "#6e5af4",
+                  },
+                }}
               />
-              <TextField
-                required
-                tintColor={"#999"}
-                variant="filled"
-                label="City/ District *"
+              <TextInput
+                label="City / District *"
                 value={city}
                 onChangeText={setCity}
+                mode="flat"
+                underlineColor="#999"
+                activeUnderlineColor="#6e5af4"
+                style={{ backgroundColor: "#fff", paddingHorizontal: 0 }}
+                contentStyle={{ paddingHorizontal: 0 }}
+                theme={{
+                  colors: {
+                    background: "#fff",
+                    surface: "#fff",
+                    onSurfaceVariant: "#999",
+                    primary: "#6e5af4",
+                  },
+                }}
               />
-              <TextField
-                required
-                tintColor={"#999"}
+              <TextInput
                 label="Landmark"
                 value={locality}
                 onChangeText={setLocality}
+                mode="flat"
+                underlineColor="#999"
+                activeUnderlineColor="#6e5af4"
+                style={{ backgroundColor: "#fff", paddingHorizontal: 0 }}
+                contentStyle={{ paddingHorizontal: 0 }}
+                theme={{
+                  colors: {
+                    background: "#fff",
+                    surface: "#fff",
+                    onSurfaceVariant: "#999",
+                    primary: "#6e5af4",
+                  },
+                }}
               />
             </View>
+          </View>
 
-            <View style={styles.addressTypeholder}>
-              <View style={{ paddingRight: 5, paddingLeft: 5 }}>
-                <Text style={{ marginBottom: 5, marginTop: 4 }}>
-                  Type of Address *
-                </Text>
-                <View style={styles.halfholder}>
-                  <RadioButton
-                    onPress={() => onRadioBtnClick(1)}
-                    selected={homeradiSelcted}
-                  >
-                    Home
-                  </RadioButton>
-                  <RadioButton
-                    onPress={() => onRadioBtnClick(2)}
-                    selected={officeradiSelcted}
-                  >
-                    Office
-                  </RadioButton>
-                </View>
-                {ismodesection ? (
-                  <View>
-                    <Text>Is your office open on weekends ? </Text>
-                    <View style={styles.checkboxContainer}>
-                      <CheckBox
-                        tintColors={{ true: "#132742" }}
-                        value={isSelected}
-                        onValueChange={setSelection}
-                        style={styles.checkbox}
-                      />
-                      <Text style={styles.label}>Open on Saturday</Text>
-                    </View>
-                    <View style={styles.checkboxContainer}>
-                      <CheckBox
-                        tintColors={{ true: "#132742" }}
-                        value={isSunSelected}
-                        onValueChange={setSundSelection}
-                        style={styles.checkbox}
-                      />
-                      <Text style={styles.label}>Open on Sunday</Text>
-                    </View>
-                  </View>
-                ) : null}
+          <View style={styles.addressTypeholder}>
+            <View style={{ paddingRight: 5, paddingLeft: 5 }}>
+              <Text style={{ marginBottom: 5, marginTop: 4 }}>
+                Type of Address *
+              </Text>
+              <View style={styles.halfholder}>
+                <RadioButton
+                  onPress={() => onRadioBtnClick(1)}
+                  selected={homeradiSelcted}
+                >
+                  Home
+                </RadioButton>
+                <RadioButton
+                  onPress={() => onRadioBtnClick(2)}
+                  selected={officeradiSelcted}
+                >
+                  Office
+                </RadioButton>
               </View>
+              {ismodesection ? (
+                <View>
+                  <Text>Is your office open on weekends ? </Text>
+                  <View style={styles.checkboxContainer}>
+                    <CheckBox
+                      tintColors={{ true: "#132742", false: "#999" }}
+                      value={isSelected}
+                      onValueChange={setSelection}
+                      style={styles.checkbox}
+                    />
+                    <Text style={styles.label}>Open on Saturday</Text>
+                  </View>
+                  <View style={styles.checkboxContainer}>
+                    <CheckBox
+                     tintColors={{ true: "#132742", false: "#999" }}
+                      value={isSunSelected}
+                      onValueChange={setSundSelection}
+                      style={styles.checkbox}
+                    />
+                    <Text style={styles.label}>Open on Sunday</Text>
+                  </View>
+                </View>
+              ) : null}
             </View>
           </View>
-        </View>
-      </ScrollView>
 
-      {/* FOOTER BUTTONS */}
-      <View style={styles.butnActionholder}>
-        <View style={{ width: "50%", padding: 5 }}>
-          <Text style={{ width: "100%", textAlign: "center" }}>
-            <TouchableHighlight
-              onPress={_onPresCancle}
-              style={{ width: "100%" }}
-            >
-              <Text style={{ fontFamily: fonts.whitneySemiBold, fontSize: 20 }}>
-                CANCEL
-              </Text>
-            </TouchableHighlight>
-          </Text>
-        </View>
+        </ScrollView>
 
-        <TouchableHighlight
-          onPress={() => {
-            if (checkValidate()) {
-              // All fields valid → proceed
-              route.params.action?.toLowerCase() === "edit" ? _updateAddress() : _onPressButton();
-            } else {
-              // At least one error → errors already set, shown below fields
-              Toast.show("Please fix all errors", Toast.SHORT);
-            }
-          }}
-          style={{ width: "50%", padding: 10, backgroundColor: disableColer }}
-        >
-          <Text
-            style={{
-              width: "100%",
-              textAlign: "center",
-              fontFamily: fonts.whitneySemiBold,
-              fontSize: 20,
-              color: "#FFF",
+        {/* FOOTER BUTTONS */}
+        <View style={styles.butnActionholder}>
+          <View style={{ width: "50%", padding: 5 }}>
+            <Text style={{ width: "100%", textAlign: "center" }}>
+              <TouchableHighlight
+                onPress={_onPresCancle}
+                style={{ width: "100%" }}
+              >
+                <Text style={{ fontFamily: fonts.whitneySemiBold, fontSize: 20 }}>
+                  CANCEL
+                </Text>
+              </TouchableHighlight>
+            </Text>
+          </View>
+
+          <TouchableHighlight
+            onPress={() => {
+              if (checkValidate()) {
+                // All fields valid → proceed
+                route.params.action?.toLowerCase() === "edit" ? _updateAddress() : _onPressButton();
+              } else {
+                // At least one error → errors already set, shown below fields
+                Toast.show("Please fix all errors", Toast.SHORT);
+              }
             }}
+            style={{ width: "50%", padding: 10, backgroundColor: disableColer }}
           >
-            SAVE
-          </Text>
-        </TouchableHighlight>
-      </View>
+            <Text
+              style={{
+                width: "100%",
+                textAlign: "center",
+                fontFamily: fonts.whitneySemiBold,
+                fontSize: 20,
+                color: "#FFF",
+              }}
+            >
+              SAVE
+            </Text>
+          </TouchableHighlight>
+        </View>
       </KeyboardAvoidingView>
-    </SafeAreaView>
+    </View>
   );
 };
 
@@ -658,11 +738,13 @@ const styles = StyleSheet.create({
     marginTop: 3,
     flex: 1,
     backgroundColor: "#FFF",
+    marginBottom: 10,
   },
   addressbox: {
     backgroundColor: "#fff",
     marginBottom: 10,
     paddingLeft: 5,
+    paddingBottom: 10,
   },
   addressHolder: {
     marginTop: 10,
@@ -683,6 +765,7 @@ const styles = StyleSheet.create({
     paddingRight: 5,
     paddingLeft: 5,
     backgroundColor: "#FFF",
+    paddingBottom: 10,
   },
   radioButtonContainer: {
     flexDirection: "row",

@@ -215,12 +215,12 @@ const CustomSidebarMenu = (props) => {
           </Text>
           <Text
             onPress={() => {
-              Linking.openURL("https://www.knectt.com/sellerportal/");
+              Linking.openURL("https://knectt.in/");
                closeDrawer()
             }}
             style={styles.menupadding}
           >
-            Become a Seller
+            Become a Partner
           </Text>
           {affliateCreated == 1 ? (
             <Text
@@ -489,7 +489,7 @@ const styles = StyleSheet.create({
   },
   menupadding: {
     padding: 4,
-    fontSize: 12,
+    fontSize: 14,
   },
   menuheading: {
     margin: 2,

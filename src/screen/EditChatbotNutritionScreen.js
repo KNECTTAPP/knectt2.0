@@ -231,7 +231,7 @@ const EditChatbotNutritionScreen = ({ navigation, route }) => {
                 }}
               >
                 <CheckBox
-                  tintColors={{ true: "#132742" }}
+                   tintColors={{ true: "#132742",false :"#999" }}
                   value={disorderarr.indexOf(item.label) >= 0 ? true : false}
                   isChecked={
                     disorderarr.indexOf(item.label) >= 0 ? true : false
@@ -341,7 +341,7 @@ const EditChatbotNutritionScreen = ({ navigation, route }) => {
                 }}
               >
                 <CheckBox
-                  tintColors={{ true: "#132742" }}
+                   tintColors={{ true: "#132742",false :"#999" }}
                   value={minserCheck.indexOf(item.label) >= 0 ? true : false}
                   isChecked={
                     minserCheck.indexOf(item.label) >= 0 ? true : false
@@ -390,7 +390,7 @@ const EditChatbotNutritionScreen = ({ navigation, route }) => {
         <View style={{ width: 30 }}>
           <CheckBox
             style={styles.checkbox}
-            tintColors={{ true: "#132742" }}
+             tintColors={{ true: "#132742",false :"#999" }}
             onCheckColor={"#6F763F"}
             value={termandcontion}
             isChecked={termandcontion}
@@ -446,7 +446,7 @@ const EditChatbotNutritionScreen = ({ navigation, route }) => {
                 }}
               >
                 <CheckBox
-                  tintColors={{ true: "#132742" }}
+                   tintColors={{ true: "#132742",false :"#999" }}
                   value={isSelected.indexOf(item.label) >= 0 ? true : false}
                   isChecked={isSelected.indexOf(item.label) >= 0 ? true : false}
                   style={Platform.OS === "ios" ? styles.checkbox : {}}
@@ -499,7 +499,7 @@ const EditChatbotNutritionScreen = ({ navigation, route }) => {
                 }}
               >
                 <CheckBox
-                  tintColors={{ true: "#132742" }}
+                   tintColors={{ true: "#132742",false :"#999" }}
                   value={fastingSelect.indexOf(item.label) >= 0 ? true : false}
                   isChecked={
                     fastingSelect.indexOf(item.label) >= 0 ? true : false

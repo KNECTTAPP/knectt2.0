@@ -1,30 +1,28 @@
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import React, { useState } from "react";
 import {
-  Platform,
-  View,
-  Text,
   Image,
-  Dimensions,
-  TouchableOpacity,
-  StyleSheet,
-  
-  ScrollView,
   KeyboardAvoidingView,
+  Platform,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View
 } from "react-native";
-import StarRating from "react-native-star-rating-widget";
-import { TextField } from "rn-material-ui-textfield";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import DeviceInfo from "react-native-device-info";
 import FlashMessage, { showMessage } from "react-native-flash-message";
-import Header from "../component/Header";
-import { ButtonCustom } from "../component/ButtonCustom.js";
-import EndUrl from "../api/EndUrl";
+import { TextInput } from "react-native-paper";
+import { SafeAreaView } from "react-native-safe-area-context";
+import { scale } from "react-native-size-matters";
+import StarRating from "react-native-star-rating-widget";
 import reviews from "../../assets/icons/reviews.jpg";
 import thumsImg from "../../assets/img/thumbs.png";
-import { scale } from "react-native-size-matters";
-import fonts from "../utils/fonts";
+import EndUrl from "../api/EndUrl";
 import AlertModal from "../component/AlertModal.js";
-import DeviceInfo from "react-native-device-info";
-import { SafeAreaView } from "react-native-safe-area-context";
+import { ButtonCustom } from "../component/ButtonCustom.js";
+import Header from "../component/Header";
+import fonts from "../utils/fonts";
 const ReviewsScreen = ({ navigation }) => {
   const [rating, setRating] = useState(0);
   const [comment, setComment] = useState("");
@@ -246,12 +244,26 @@ const ReviewsScreen = ({ navigation }) => {
               </TouchableOpacity>
             </View>
             {error !== "" && <Text style={styles.errorText}>{error}</Text>}
-            <TextField
+            <TextInput
               label="Write a comment"
               value={comment}
               onChangeText={setComment}
               multiline
+              mode="flat"                   // 👈 underline / filled style
+              underlineColor="#999"         // inactive underline
+              activeUnderlineColor="#6e5af4" // active underline
+              style={{ backgroundColor: "#fff", paddingHorizontal: 0 }}
+              contentStyle={{ paddingHorizontal: 0 }}
+              theme={{
+                colors: {
+                  background: "#fff",
+                  surface: "#fff",
+                  onSurfaceVariant: "#999",  // label inactive color
+                  primary: "#6e5af4",        // label + underline active
+                },
+              }}
             />
+
             <ButtonCustom title="Submit" onPress={saveReview} />
           </View>
         </ScrollView>

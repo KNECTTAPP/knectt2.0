@@ -228,50 +228,27 @@
 // });
 // export default RefeEarnScreen;
 
-import React, { useState, Component, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import {
-  Platform,
-  View,
-  Button,
-  Text,
-  Share,
-  Image,
-  Linking,
-  Dimensions,
-  TouchableWithoutFeedback,
   Alert,
-  StyleSheet,
-  Pressable,
-  
+  Dimensions,
   ScrollView,
-  TouchableOpacity,
-  FlatList,
-  StatusBar,
+  Share,
+  StyleSheet,
+  Text,
+  View
 } from "react-native";
-import HTMLView from "react-native-htmlview";
-import Ionicons from "react-native-vector-icons/Ionicons";
 import { scale } from "react-native-size-matters";
-import { TabNavigators } from "../../TabNavigators.js";
-import ModalTester from "../component/ModalComponent";
-import { ProgressLoader } from "../component/ProgressLoader";
-import LinearGradient from "react-native-linear-gradient";
-import NumericInput from "react-native-numeric-input";
-import { TextField } from "rn-material-ui-textfield";
 import Header from "../component/Header";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import { ProgressLoader } from "../component/ProgressLoader";
 // import referandearn from "../../assets/icons/refer_earn.png";
 import { SafeAreaView } from "react-native-safe-area-context";
 
-import FlashMessage, {
-  showMessage,
-  hideMessage,
-} from "react-native-flash-message";
-import EndUrl from "../api/EndUrl";
-import fonts from "../utils/fonts.js";
-import { IconIosCheckMark } from "../component/IconComp.js";
+import FastImage from "react-native-fast-image";
+import FlashMessage from "react-native-flash-message";
 import { ButtonCustom } from "../component/ButtonCustom.js";
 import { getAsyncValue } from "../utils/commonFunctions.js";
-import FastImage from "react-native-fast-image";
+import fonts from "../utils/fonts.js";
 const RefeEarnScreen = ({ navigation, route }) => {
   const [titleText, setTitleText] = useState(null);
   const [categoryTitle, setCategoryTitle] = useState("Refer & Earn");

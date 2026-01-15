@@ -1,52 +1,39 @@
-import {
-  LayoutAnimation,
-  Platform,
-  UIManager,
-  View,
-  Button,
-  Text,
-  Image,
-  Linking,
-  Dimensions,
-  TouchableWithoutFeedback,
-  Alert,
-  StyleSheet,
-  Pressable,
-  
-  ScrollView,
-  TouchableOpacity,
-  FlatList,
-  StatusBar,
-  TextInput,
-  Modal,
-} from "react-native";
-import React, { useCallback, useEffect, useState } from "react";
-import cartIcon from "../../assets/icons/cart_beg_active.png";
-import CartProductList from "../component/CartProductList";
-import CustomButton from "../component/ButtonComponent";
-import HomePlanComponent from "../component/HomePlanComponent";
-import { scale } from "react-native-size-matters";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import thumsImg from "../../assets/img/thumbs.png";
-import FlashMessage, {
-  showMessage,
-  hideMessage,
-} from "react-native-flash-message";
 import CheckBox from "@react-native-community/checkbox";
-import ModalTester from "../component/ModalComponent";
-import Header from "../component/Header";
-import { ProgressLoader } from "../component/ProgressLoader";
-import EndUrl from "../api/EndUrl";
-import fonts from "../utils/fonts";
-import { handleDecimal } from "../utils/commonFunctions";
-import { IconArrowDown, IconClose } from "../component/IconComp";
-import { ButtonCustom } from "../component/ButtonCustom";
 import { useFocusEffect } from "@react-navigation/native";
-import { FontAwesome } from "react-native-vector-icons/FontAwesome";
-import Ionicons from "react-native-vector-icons/Ionicons";
+import React, { useCallback, useEffect, useState } from "react";
+import {
+  Alert,
+  Dimensions,
+  Image,
+  LayoutAnimation,
+  Linking,
+  Modal,
+  Platform,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  UIManager,
+  View
+} from "react-native";
 import DeviceInfo from "react-native-device-info";
-import whatsappIcon from "../../assets/icons/whatsapp.png";
+import FlashMessage, {
+  showMessage
+} from "react-native-flash-message";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { scale } from "react-native-size-matters";
+import thumsImg from "../../assets/img/thumbs.png";
+import EndUrl from "../api/EndUrl";
+import { ButtonCustom } from "../component/ButtonCustom";
+import CartProductList from "../component/CartProductList";
+import Header from "../component/Header";
+import { IconArrowDown, IconClose } from "../component/IconComp";
+import ModalTester from "../component/ModalComponent";
+import { ProgressLoader } from "../component/ProgressLoader";
+import { handleDecimal } from "../utils/commonFunctions";
+import fonts from "../utils/fonts";
 const CartScreen = ({ navigation, route }) => {
   const [totalPrice, setTotalPrice] = useState(0);
   const [loading, setLoading] = useState(true);

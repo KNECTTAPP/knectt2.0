@@ -6,7 +6,7 @@ import {
   TextInput,
   KeyboardAvoidingView,
   ScrollView,
-  
+  SafeAreaView,
   Image,
   Keyboard,
   Alert,
@@ -18,7 +18,7 @@ import InputComp from "../component/InputComp";
 import { convertIntoDateFormat } from "../utils/commonFunctions";
 import AutoCompleteInput from "../component/AutoCompleteInput";
 import { ButtonCustom } from "../component/ButtonCustom";
-import { SafeAreaView } from "react-native-safe-area-context";
+import DatePicker from "react-native-date-picker";
 import ChipsContainer from "../component/ChipsContainer";
 import { addBloodTestToCart, fetchAvailableSlots } from "../services";
 import Header from "../component/Header";
@@ -277,7 +277,14 @@ const BloodTestScreen = ({ navigation, route }) => {
                 }}
                 value={dateData}
               />
-             
+              <DatePicker
+                mode="date"
+                date={new Date()}
+                modal
+                open={isDateModalVisible}
+                onCancel={() => setIsDateModalVisible(false)}
+                onConfirm={_confirmDate}
+              />
               {!!availableSlots && (
                 <ChipsContainer
                   data={availableSlots}

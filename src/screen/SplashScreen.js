@@ -1,18 +1,8 @@
-import React, { useState, useEffect, useRef } from "react";
-import {
-  StyleSheet,
-  View,
-  Text,
-  
-  ImageBackground,
-} from "react-native";
-import {
-  NavigationContainer,
-  useNavigation,
-  DrawerActions,
-} from "@react-navigation/native";
-import logo from "../../assets/img/BrandLogo.png";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import React, { useEffect } from "react";
+import {
+  View
+} from "react-native";
 import SplashScreen from "react-native-bootsplash";
 const SpashScreen = ({ navigation }) => {
   const navigateToNextScreen = async () => {

@@ -11,26 +11,26 @@ export default function OptionsModal({ visible, onClose, data, loading }) {
   const navigation = useNavigation();
 
   const handleNavigate = (type) => {
-  onClose();
+    onClose();
 
-  // switch (type) {
-  //   case 0:
-  //     navigation.navigate("Category",{"cateId": "12", "cateName": "Blood Test"});
-  //     break;
-  //   case 1:
-  //     // Do nothing or add logic for type 2 if needed
-  //     navigation.navigate('UploadReport')
-  //     break;
-  //   case 2:
-  //     // Add navigation or action for type 3 as needed, for example:
-  //     navigation.navigate("TabNavigators", { screen: "Home" });
-  //     break;
-  //   default:
-  //     // Default action if none of the above cases match
-  //     navigation.navigate("TabNavigators", { screen: "Home" });
-  //     break;
-  // }
-};
+    // switch (type) {
+    //   case 0:
+    //     navigation.navigate("Category",{"cateId": "12", "cateName": "Blood Test"});
+    //     break;
+    //   case 1:
+    //     // Do nothing or add logic for type 2 if needed
+    //     navigation.navigate('UploadReport')
+    //     break;
+    //   case 2:
+    //     // Add navigation or action for type 3 as needed, for example:
+    //     navigation.navigate("TabNavigators", { screen: "Home" });
+    //     break;
+    //   default:
+    //     // Default action if none of the above cases match
+    //     navigation.navigate("TabNavigators", { screen: "Home" });
+    //     break;
+    // }
+  };
 
 
   // const cards = [
@@ -52,15 +52,15 @@ export default function OptionsModal({ visible, onClose, data, loading }) {
     <Modal visible={visible} transparent animationType="fade">
       <View style={styles.overlay}>
         <View style={styles.container}>
-      <Image
-                                            source={require('../../assets/brandwithouttext.png')}
-                                            resizeMode="contain"
-                                            style={{width:150,height:150}}
-                                          />
-                                          <Text style={{marginTop:10,marginBottom:20,fontSize:20}}><Text style={{color:"#3696dd"}}>intelligent</Text> 360° Metabolic Health Suite</Text>
-                                           <ButtonCustom title="Upgrade Your Urban Health" titleStyle={{textTransform: "none",fontSize:18}} containerStyle={{width:'90%',paddingVertical:20, borderRadius:30,backgroundColor:'#3696dd'}} onPress={()=>{onClose()}} />
-                                            </View>
-</View>
+          <Image
+            source={require('../../assets/brandwithouttext.png')}
+            resizeMode="contain"
+            style={{ width: 150, height: 150 }}
+          />
+          <Text style={{ marginTop: 10, marginBottom: 20, fontSize: 20 }}><Text style={{ color: "#3696dd" }}>intelligent</Text> 360° Metabolic Health Suite</Text>
+          <ButtonCustom title="Upgrade Your Urban Health" titleStyle={{ textTransform: "none", fontSize: 18 }} containerStyle={{ width: '90%', paddingVertical: 20, borderRadius: 30, backgroundColor: '#3696dd' }} onPress={() => { onClose() }} />
+        </View>
+      </View>
       {/* {!loading?<View style={styles.overlay}>
         <View style={styles.container}>
           <Text numberOfLines={2} style={styles.headerText}>{data.pre_home_page_top_text}</Text>
@@ -133,17 +133,17 @@ const styles = StyleSheet.create({
   },
   image: {
     width: "100%",
-    aspectRatio:16 / 14, // keep images 16:9
+    aspectRatio: 16 / 14, // keep images 16:9
     // height: 230,
     borderRadius: 15,
   },
   headerText: {
-      fontSize: 18,
-      color: colors.themeColor,
-      textAlign: "center",
-      marginHorizontal:10,
-      marginTop: 30,
-      marginBottom:10,
-      fontFamily: fonts.whitneyMedium,
-    },
+    fontSize: 18,
+    color: colors.themeColor,
+    textAlign: "center",
+    marginHorizontal: 10,
+    marginTop: 30,
+    marginBottom: 10,
+    fontFamily: fonts.whitneyMedium,
+  },
 });

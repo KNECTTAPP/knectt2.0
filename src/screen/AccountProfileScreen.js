@@ -1,45 +1,29 @@
-import React, { useState, Component, useEffect, useCallback } from "react";
-import {
-  Platform,
-  View,
-  Button,
-  Animated,
-  Text,
-  Image,
-  TextInput,
-  Linking,
-  Dimensions,
-  TouchableHighlight,
-  TouchableWithoutFeedback,
-  Alert,
-  StyleSheet,
-  Pressable,
-  
-  ScrollView,
-  TouchableOpacity,
-  FlatList,
-  StatusBar,
-} from "react-native";
-Animated.Text.propTypes = Animated.Text.propTypes || Text.propTypes;
-import CheckBox from "@react-native-community/checkbox";
-import HTMLView from "react-native-htmlview";
-import { scale } from "react-native-size-matters";
-import { TabNavigators } from "../../TabNavigators.js";
-import ModalTester from "../component/ModalComponent";
-import Header from "../component/Header";
-import Feather from "react-native-feather";
-import { TextField } from "rn-material-ui-textfield";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import React, { useEffect, useState } from "react";
+import {
+  Animated,
+  Dimensions,
+  Image,
+  Platform,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableHighlight,
+  View
+} from "react-native";
+import DeviceInfo from "react-native-device-info";
+import Feather from "react-native-feather";
 import FlashMessage, {
-  showMessage,
-  hideMessage,
+  showMessage
 } from "react-native-flash-message";
-import { launchCamera, launchImageLibrary } from "react-native-image-picker";
+import { launchImageLibrary } from "react-native-image-picker";
+import { TextInput } from "react-native-paper";
+import { SafeAreaView } from "react-native-safe-area-context";
 import noProfile from "../../assets/icons/noimageprofile.png";
 import EndUrl from "../api/EndUrl";
+import Header from "../component/Header";
 import fonts from "../utils/fonts.js";
-import DeviceInfo from "react-native-device-info";
-import { SafeAreaView } from "react-native-safe-area-context";
+Animated.Text.propTypes = Animated.Text.propTypes || Text.propTypes;
 const theme = "default";
 const AccountProfileScreen = ({ navigation, route }) => {
   const active = true;
@@ -318,27 +302,70 @@ const AccountProfileScreen = ({ navigation, route }) => {
           </View>
           <View style={styles.halfholder}>
             <View style={{ width: "45%", marginRight: 5 }}>
-              <TextField
-                required
+              <TextInput
                 label="First Name *"
                 value={firstname}
                 onChangeText={setFirstname}
-                onBlur={(e) => checkValidate("firstname")}
+                onBlur={() => checkValidate("firstname")}
+
+                mode="flat"                  // 👈 underline / filled style
+                underlineColor="#999"        // inactive underline
+                activeUnderlineColor="#6e5af4"  // focused / active underline
+
+                style={{
+                  backgroundColor: "#fff",   // white background
+                  paddingHorizontal: 0,      // text start aligned
+                }}
+
+                contentStyle={{
+                  paddingHorizontal: 0,      // inner text padding
+                }}
+
+                theme={{
+                  colors: {
+                    background: "#fff",
+                    surface: "#fff",
+                    onSurfaceVariant: "#999", // label inactive color
+                    primary: "#6e5af4",       // label + underline active color
+                  },
+                }}
               />
+
               {firstnameError ? (
                 <Text style={styles.error}>{firstnameError}</Text>
               ) : null}
             </View>
             <View style={{ width: "50%" }}>
-              <TextField
-                required
-                variant="filled"
-                label="Last Name *"
-                value={lastname}
-                onChangeText={setLastname}
-                style={{ width: "50%" }}
-                onBlur={(e) => checkValidate("state")}
-              />
+             <TextInput
+  label="Last Name *"
+  value={lastname}
+  onChangeText={setLastname}
+  onBlur={() => checkValidate("lastname")}  // validation call
+
+  mode="flat"                  // 👈 underline / filled style
+  underlineColor="#999"        // inactive underline
+  activeUnderlineColor="#6e5af4"  // focused / active underline
+
+  style={{
+    width: "50%",              // width 50% as per original
+    backgroundColor: "#fff",   // white background
+    paddingHorizontal: 0,      // input text start aligned
+  }}
+
+  contentStyle={{
+    paddingHorizontal: 0,      // inner text padding
+  }}
+
+  theme={{
+    colors: {
+      background: "#fff",
+      surface: "#fff",
+      onSurfaceVariant: "#999", // label inactive color
+      primary: "#6e5af4",       // label + underline active color
+    },
+  }}
+/>
+
               {lastnameError ? (
                 <Text style={styles.error}>{lastnameError}</Text>
               ) : null}
@@ -347,12 +374,35 @@ const AccountProfileScreen = ({ navigation, route }) => {
           <View style={styles.addressHolder}>
             <View style={styles.addressbox}>
               <View>
-                <TextField
-                  label="Email *"
-                  value={email}
-                  onChangeText={setEmail}
-                  onBlur={(e) => checkValidate("email")}
-                />
+               <TextInput
+  label="Email *"
+  value={email}
+  onChangeText={setEmail}
+  onBlur={() => checkValidate("email")} // validation call
+
+  mode="flat"                    // 👈 underline / filled style
+  underlineColor="#999"          // inactive underline
+  activeUnderlineColor="#6e5af4" // focused / active underline
+
+  style={{
+    backgroundColor: "#fff",     // white background
+    paddingHorizontal: 0,        // text start aligned
+  }}
+
+  contentStyle={{
+    paddingHorizontal: 0,        // inner text padding
+  }}
+
+  theme={{
+    colors: {
+      background: "#fff",
+      surface: "#fff",
+      onSurfaceVariant: "#999",  // label inactive color
+      primary: "#6e5af4",        // label + underline active color
+    },
+  }}
+/>
+
                 {emailError ? (
                   <Text style={styles.error}>{emailError}</Text>
                 ) : null}

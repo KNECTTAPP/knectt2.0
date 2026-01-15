@@ -653,13 +653,11 @@ const CustomeHeader = () => {
       ) : (/*null*/
         <View style={{alignItems:'center',justifyContent:'center',flex:1}}>
           <Image
-            source={require('../../assets/icons/dietIcon.png')}
-            resizeMode="contain"
-            style={{width:160,height:160, marginBottom:20}}
+            source={require('../../assets/icons/ditePlanBg.png')}
+            resizeMode="stretch"
+            style={{width:300,height:400, marginBottom:20}}
           />
-          <Text style={{fontSize: 22,
-              fontFamily: fonts.whitneyMedium,
-              color: colors.themeColor,}}>Enroll for an improvement plan</Text>
+          
         </View>
         // <ScrollView style={{ flex: 1 }}>
         //   {loading == false && (

@@ -1,21 +1,12 @@
-import React, { useState, useEffect } from "react";
-import { FlatList, Image, ScrollView, TextInput } from "react-native";
-import {
-  StyleSheet,
-  View,
-  Text,
-  Keyboard,
-  TouchableOpacity,
-} from "react-native";
-import Inputtext from "./InputText";
-import iconFont from "react-native-vector-icons/Fonts/FontAwesome.ttf";
-import Icon from "react-native-vector-icons/FontAwesome";
+import { useState } from "react";
+import { FlatList, Image, Keyboard, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import backarrow from "../../assets/img/back.jpeg";
-import ButtonComponent from "./ButtonComponent";
-import forwardArrow from "../../assets/img/forwardpinkarrow.png";
 import checked from "../../assets/img/checked_checkbox.png";
+import forwardArrow from "../../assets/img/forwardpinkarrow.png";
 import unChecked from "../../assets/img/unCheck_checkbox.png";
-import { Kilograms, Centimeter, feet } from "../Array/ArrayList";
+import { Centimeter, feet, Kilograms } from "../Array/ArrayList";
+import ButtonComponent from "./ButtonComponent";
+import Inputtext from "./InputText";
 
 const ChatBotComponent = ({
   countQuestion,

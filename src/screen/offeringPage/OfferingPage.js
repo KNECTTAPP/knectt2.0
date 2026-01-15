@@ -1,39 +1,38 @@
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useFocusEffect } from "@react-navigation/native";
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import {
-  View,
-  Text,
-  StyleSheet,
-  SectionList,
-  ScrollView,
-  Image,
-  TouchableOpacity,
-  Platform,
-  Switch,
-  FlatList,
-  Alert,
   BackHandler,
+  FlatList,
+  Image,
+  Platform,
   Pressable,
+  ScrollView,
+  SectionList,
+  StyleSheet,
+  Switch,
+  Text,
+  TouchableOpacity,
+  View
 } from "react-native";
-import colors from "../../utils/colors";
-import fonts from "../../utils/fonts";
-import { hitSlop } from "../../static/constant";
-import { Plus } from "react-native-feather";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import DeviceInfo from "react-native-device-info";
-import endUrls from "../../api/EndUrl";
-import { apiRequest } from "../../services/apiService";
-import ShowImageComp from "../../component/ShowImageComp";
-import { ImagePath } from "../../assets";
-import { ProgressLoader } from "../../component/ProgressLoader";
-import { ButtonCustom } from "../../component/ButtonCustom";
-import AlertModal from "../../component/AlertModal";
-import { useFocusEffect } from "@react-navigation/native";
-import Header from "../../component/Header";
-import { scale } from "react-native-size-matters";
 import { Badge } from "react-native-elements";
-import { showMessage } from "react-native-flash-message";
-import { handleDecimalOfferings } from "../../utils/commonFunctions";
 import FastImage from "react-native-fast-image";
+import { Plus } from "react-native-feather";
+import { showMessage } from "react-native-flash-message";
+import { SafeAreaView } from "react-native-safe-area-context";
+import { scale } from "react-native-size-matters";
+import endUrls from "../../api/EndUrl";
+import { ImagePath } from "../../assets";
+import AlertModal from "../../component/AlertModal";
+import Header from "../../component/Header";
+import { ProgressLoader } from "../../component/ProgressLoader";
+import ShowImageComp from "../../component/ShowImageComp";
+import { apiRequest } from "../../services/apiService";
+import { hitSlop } from "../../static/constant";
+import colors from "../../utils/colors";
+import { handleDecimalOfferings } from "../../utils/commonFunctions";
+import fonts from "../../utils/fonts";
 
 const productCategory = {
   tea_page: "tea_page",
@@ -98,6 +97,7 @@ const OfferingsScreen = ({ navigation }) => {
   const [value, setValue] = useState("all");
   const [isFocus, setIsFocus] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
+  const [is_body_profile, setIs_body_profile] = useState(false)
 
   const flatListRef = useRef(null);
 
@@ -117,13 +117,13 @@ const OfferingsScreen = ({ navigation }) => {
 
   useFocusEffect(
     useCallback(() => {
-        getProfile();
-        getSpecialcategory("all", " ");
-        getCartcountAj();
+      getProfile();
+      getSpecialcategory("all", " ");
+      getCartcountAj();
     }, []) // Add any dependencies here if necessary
   );
 
-  useEffect(()=>{getOfferingData()},[showPremium])
+  useEffect(() => { getOfferingData() }, [showPremium])
 
   //Helpers *********************************************
   const getProfile = async () => {
@@ -162,12 +162,12 @@ const OfferingsScreen = ({ navigation }) => {
         return true; // returning true prevents default behavior
       };
 
-  const subscription = BackHandler.addEventListener(
-    "hardwareBackPress",
-    onBackPress
-  );
+      const subscription = BackHandler.addEventListener(
+        "hardwareBackPress",
+        onBackPress
+      );
 
-  return () => subscription.remove();
+      return () => subscription.remove();
     }, [])
   );
 
@@ -185,14 +185,13 @@ const OfferingsScreen = ({ navigation }) => {
           Platform: Platform.OS,
         },
       };
-      console.log(`${endUrls.getAiCategory}?special_cat_id=${special_cat_id}&pro_cat_id=${pro_cat_id}`,'special category url')
       const url = `${endUrls.getAiCategory}?special_cat_id=${special_cat_id}`;
       const { data, status } = await apiRequest(url, settingsGet);
       console.log(status, "special response");
-      console.log(`${endUrls.getAiCategory}?special_cat_id=${special_cat_id}`,settingsGet,'curl')
+      console.log(`${endUrls.getAiCategory}?special_cat_id=${special_cat_id}`, settingsGet, 'curl')
 
       if (status === 200 /*&& data?.data !== ""*/) {
-        console.log(data,'my response')
+        console.log(data, 'my response')
         setProduuctData(data?.product_data);
         // console.log(data,'my topbanner data')
         setTopbanner(data?.data);
@@ -253,18 +252,20 @@ const OfferingsScreen = ({ navigation }) => {
           Platform: Platform.OS,
         },
       };
-      console.log(`${endUrls.OFFERING_DATA}?${paramList}`,'my url bill')
+      console.log(`${endUrls.OFFERING_DATA}?${paramList}`, 'my url bill')
       const { data, status } = await apiRequest(
         `${endUrls.OFFERING_DATA}?${paramList}`,
         settingsGet
       );
 
-      console.log(`${endUrls.OFFERING_DATA}?${paramList}`,status,'data status kill',data)
+      console.log(`${endUrls.OFFERING_DATA}?${paramList}`, status, 'data status kill', data)
 
       if (status === 200) {
         console.log('success of offering')
         let allData = data?.data;
-        console.log(allData,'my all data')
+        let profileCheck = data?.is_body_profile;
+        setIs_body_profile(profileCheck);
+        console.log(allData, 'my all data')
         if (allData?.nutritions) {
           const nutritionListData = [
             {
@@ -273,15 +274,15 @@ const OfferingsScreen = ({ navigation }) => {
               description: allData?.nutritions?.desc,
               data: allData?.nutritions?.SmartPlan?.items ?? [],
               pagination: allData?.nutritions?.SmartPlan?.pagination ?? {
-              current_page: 1,
-              last_page: 1,
-              next_page: null,
-              next_page_url: null,
-              page_key: "smart_page",
-              previous_page: null,
-              previous_page_url: null,
-              total: 0,
-            }
+                current_page: 1,
+                last_page: 1,
+                next_page: null,
+                next_page_url: null,
+                page_key: "smart_page",
+                previous_page: null,
+                previous_page_url: null,
+                total: 0,
+              }
             },
             {
               key: "premium",
@@ -289,26 +290,26 @@ const OfferingsScreen = ({ navigation }) => {
               description: allData?.nutritions?.desc,
               data: allData?.nutritions?.PremiumPlan?.items ?? [],
               pagination: allData?.nutritions?.PremiumPlan?.pagination ?? {
-              current_page: 1,
-              last_page: 1,
-              next_page: null,
-              next_page_url: null,
-              page_key: "premium_page",
-              previous_page: null,
-              previous_page_url: null,
-              total: 0,
-            }
+                current_page: 1,
+                last_page: 1,
+                next_page: null,
+                next_page_url: null,
+                page_key: "premium_page",
+                previous_page: null,
+                previous_page_url: null,
+                total: 0,
+              }
             },
           ];
           setNutritionList(nutritionListData);
-          console.log('my nutrition',nutritionListData)
+          console.log('my nutrition', nutritionListData)
         }
         if (allData?.products) {
           const productData = { ...productList, ...allData?.products };
           setProductList(productData);
         }
         if (allData?.bloodTests) {
-          console.log(allData?.bloodTests,'blootest')
+          console.log(allData?.bloodTests, 'blootest')
           setBloodTestList(allData?.bloodTests);
         }
       }
@@ -338,16 +339,16 @@ const OfferingsScreen = ({ navigation }) => {
     : nutritionList.filter((sec) => sec.key === "smart");
 
   const handleShowNext = (acceptParamList) => {
-  console.log(acceptParamList, "accepted param list");
+    console.log(acceptParamList, "accepted param list");
 
-  // Append specialCatIdForSelect if available
-  if (specialCatIdForSelect && specialCatIdForSelect !== "") {
-    acceptParamList.special_cat_id = specialCatIdForSelect;
-  }
+    // Append specialCatIdForSelect if available
+    if (specialCatIdForSelect && specialCatIdForSelect !== "") {
+      acceptParamList.special_cat_id = specialCatIdForSelect;
+    }
 
-  const queryString = new URLSearchParams(acceptParamList).toString();
-  getOfferingData(queryString);
-};
+    const queryString = new URLSearchParams(acceptParamList).toString();
+    getOfferingData(queryString);
+  };
   const getOpacity = (category) => {
     if (specialCatIdForSelect == "" && category.category == "All") {
       return 1;
@@ -430,38 +431,38 @@ const OfferingsScreen = ({ navigation }) => {
   };
 
   // components********************************************
-  const OfferCard = ({ item, footer, book=false }) => (
-    <TouchableOpacity onPress={()=>{goToProductDetail(item?.id,item?.title)}} style={[styles.card,{alignItems:'flex-end'}]}>
+  const OfferCard = ({ item, footer, book = false }) => (
+    <TouchableOpacity onPress={() => { goToProductDetail(item?.id, item?.title) }} style={[styles.card, { alignItems: 'flex-end' }]}>
       <ShowImageComp
         source={{ uri: item?.images }}
         style={styles.cardImage}
         resizeMode="cover"
       />
-      <View style={{ flex: 1,minHeight:120 }}>
-        <Text style={[styles.cardTitle,{marginRight:20}]} numberOfLines={2}>
+      <View style={{ flex: 1, minHeight: 120 }}>
+        <Text style={[styles.cardTitle, { marginRight: 20 }]} numberOfLines={2}>
           {item?.title}
         </Text>
-        <Text style={[styles.cardSubtitle,{marginRight:20}]} numberOfLines={2}>
+        <Text style={[styles.cardSubtitle, { marginRight: 20 }]} numberOfLines={2}>
           {item?.description}
         </Text>
-      <Text style={styles.cardPrice}>
-        {" "}
-        {"\u20B9"} {handleDecimalOfferings(item?.price)}
-      </Text>
+        <Text style={styles.cardPrice}>
+          {" "}
+          {"\u20B9"} {handleDecimalOfferings(item?.price)}
+        </Text>
         <View style={{ marginTop: 'auto' }}>
-    {footer}
-  </View>
+          {footer}
+        </View>
       </View>
-      {book?<TouchableOpacity onPress={(event) => {event.stopPropagation(); goToProductDetail(item?.id,item?.title)}} style={[styles.addButton,{height:30,width:60}]}>
-        <Text style={[styles.cardTitle,{color:'#ffffff'}]}>{'Book'}</Text>
-      </TouchableOpacity>:
-      <TouchableOpacity
-        style={styles.addButton}
-        hitSlop={hitSlop}
-        onPress={(event) => {event.stopPropagation();addProductInCart(item)}}
-      >
-        <Plus color={"#ffffff"} strokeWidth={2} width={20} height={20} />
-      </TouchableOpacity>}
+      {book ? <TouchableOpacity onPress={(event) => { event.stopPropagation(); goToProductDetail(item?.id, item?.title) }} style={[styles.addButton, { height: 30, width: 60 }]}>
+        <Text style={[styles.cardTitle, { color: '#ffffff' }]}>{'Book'}</Text>
+      </TouchableOpacity> :
+        <TouchableOpacity
+          style={styles.addButton}
+          hitSlop={hitSlop}
+          onPress={(event) => { event.stopPropagation(); addProductInCart(item) }}
+        >
+          <Plus color={"#ffffff"} strokeWidth={2} width={20} height={20} />
+        </TouchableOpacity>}
     </TouchableOpacity>
   );
 
@@ -488,7 +489,7 @@ const OfferingsScreen = ({ navigation }) => {
           }
 
           return (
-            <View style={[styles.categorySection,index === categories.length - 1&&{borderBottomWidth:3,borderBottomColor:"#CCCCCC"}]}>
+            <View style={[styles.categorySection, index === categories.length - 1 && { borderBottomWidth: 3, borderBottomColor: "#CCCCCC" }]}>
               <Text style={styles.categoryTitle}>{categoryName}</Text>
               <FlatList
                 data={categoryData.items}
@@ -496,38 +497,37 @@ const OfferingsScreen = ({ navigation }) => {
                   item?.id?.toString() ?? index.toString()
                 }
                 renderItem={({ item }) => <OfferCard item={item} footer={
-  (categoryData.pagination?.next_page||categoryData.pagination?.previous_page) && (
-    <View style={{flexDirection:'row',width:'100%',justifyContent:'space-between'}}>
-      {categoryData.pagination?.current_page!==1?<TouchableOpacity
-      style={styles.footer}
-      hitSlop={hitSlop}
-      onPress={() =>
-       { 
-        if (categoryData.pagination?.current_page - 1 > 0) {
-  handleShowNext({
-    [categoryData.pagination?.page_key]: categoryData.pagination?.current_page - 1,
-  });
-}
-        console.log({[categoryData.pagination?.page_key]: categoryData.pagination?.next_page},'abc')
-      }}
-    >
-      <Text style={styles.footerText}>{'< Show previous'}</Text>
-    </TouchableOpacity>:<View/>}
-    {categoryData.pagination?.next_page_url!==null&&<TouchableOpacity
-      style={styles.footer}
-      hitSlop={hitSlop}
-      onPress={() =>
-       { handleShowNext({
-          [categoryData.pagination?.page_key]: categoryData.pagination?.next_page,
-        })
-        console.log(categoryData,'abc')
-      }}
-    >
-      <Text style={styles.footerText}>{'Show next >'}</Text>
-    </TouchableOpacity>}
-    </View>
-  )
-} />}
+                  (categoryData.pagination?.next_page || categoryData.pagination?.previous_page) && (
+                    <View style={{ flexDirection: 'row', width: '100%', justifyContent: 'space-between' }}>
+                      {categoryData.pagination?.current_page !== 1 ? <TouchableOpacity
+                        style={styles.footer}
+                        hitSlop={hitSlop}
+                        onPress={() => {
+                          if (categoryData.pagination?.current_page - 1 > 0) {
+                            handleShowNext({
+                              [categoryData.pagination?.page_key]: categoryData.pagination?.current_page - 1,
+                            });
+                          }
+                          console.log({ [categoryData.pagination?.page_key]: categoryData.pagination?.next_page }, 'abc')
+                        }}
+                      >
+                        <Text style={styles.footerText}>{'< Show previous'}</Text>
+                      </TouchableOpacity> : <View />}
+                      {categoryData.pagination?.next_page_url !== null && <TouchableOpacity
+                        style={styles.footer}
+                        hitSlop={hitSlop}
+                        onPress={() => {
+                          handleShowNext({
+                            [categoryData.pagination?.page_key]: categoryData.pagination?.next_page,
+                          })
+                          console.log(categoryData, 'abc')
+                        }}
+                      >
+                        <Text style={styles.footerText}>{'Show next >'}</Text>
+                      </TouchableOpacity>}
+                    </View>
+                  )
+                } />}
                 ListEmptyComponent={() =>
                   !loader && (
                     <Text style={styles.empty}>No products available</Text>
@@ -556,16 +556,18 @@ const OfferingsScreen = ({ navigation }) => {
   };
 
   return (
-    <View style={{ flex: 1, backgroundColor: "white" }}>
-      {/* <ProfileHeader /> */}
-      <Header
-        categoryTitle={"Body Matched Product"}
-        backButtonwithtext
-        headerBackButton={false}
-        cart
-        cartCountshow={cartCount}
-      />
-      {/* {!isBodyProfile ? (
+    <>
+      <SafeAreaView style={{ flex: 1, backgroundColor: 'white' }} edges={['top']}>
+        <View style={{ flex: 1, backgroundColor: "white" }}>
+          {/* <ProfileHeader /> */}
+          <Header
+            categoryTitle={"Body Matched Product"}
+            backButtonwithtext
+            headerBackButton={false}
+            cart
+            cartCountshow={cartCount}
+          />
+          {/* {!isBodyProfile ? (
         <View>
           <View
             style={{
@@ -621,262 +623,262 @@ const OfferingsScreen = ({ navigation }) => {
           </View>
         </View>
       ) : ( */}
-      <View style={{ flex: 1}}>
-        {topbanner ? (
-          <View style={styles.topBannercontainer}>
-            <FlatList
-              // initialNumToRender={6}
-              horizontal={true}
+          <View style={{ flex: 1 }}>
+            {topbanner && topbanner.length > 0 ? (
+              <View style={styles.topBannercontainer}>
+                <FlatList
+                  // initialNumToRender={6}
+                  horizontal={true}
+                  style={{
+                    paddingTop: 1,
+                    marginTop: 1,
+                  }}
+                  contentContainerStyle={{
+                    justifyContent: "center",
+                    alignItems: "center",
+                  }}
+                  showsHorizontalScrollIndicator={false}
+                  data={topbanner}
+                  keyExtractor={(item) => item.id}
+                  renderItem={({ item }) => {
+                    return (
+                      <View style={styles.square}>
+                        <Pressable
+                          onPress={() => {
+                            const queryString = new URLSearchParams({ special_cat_id: item.id }).toString();
+                            setSpecialCatId(
+                              item.category === "All" ? "all" : item.id
+                            );
+                            setSpecialCatIdForSelect(item.id);
+                            getOfferingData(queryString)
+                          }}
+                        >
+                          <Badge
+                            value={item.count}
+                            containerStyle={{
+                              width: "100%",
+                              top: 3,
+                              textAlign: "center",
+                              zIndex: 1000,
+                              position: "absolute",
+                            }}
+                            badgeStyle={{
+                              backgroundColor: "#132742",
+                            }}
+                          />
+                          <FastImage
+                            source={{ uri: item.image }}
+                            style={[styles.imagetop, { opacity: getOpacity(item) }]}
+                            resizeMode={"cover"}
+                          />
+                        </Pressable>
+                      </View>
+                    );
+                  }}
+                ></FlatList>
+              </View>
+            ) : null}
+            {homrBabber && isBodyProfile ? (
+              <Pressable>
+                <FastImage
+                  source={{ uri: homrBabber.image }}
+                  style={{
+                    height: 65,
+                    width: "100%",
+                  }}
+                />
+              </Pressable>
+            ) : (
+              ""
+            )}
+            <View
               style={{
-                paddingTop: 1,
-                marginTop: 1,
-              }}
-              contentContainerStyle={{
+                flexDirection: "row",
                 justifyContent: "center",
+                marginBottom: 15,
+                marginTop: 25,
                 alignItems: "center",
               }}
-              showsHorizontalScrollIndicator={false}
-              data={topbanner}
-              keyExtractor={(item) => item.id}
-              renderItem={({ item }) => {
-                return (
-                  <View style={styles.square}>
-                    <Pressable
-                      onPress={() => {
-                        const queryString = new URLSearchParams({special_cat_id:item.id}).toString();
-                        setSpecialCatId(
-                          item.category === "All" ? "all" : item.id
-                        );
-                        setSpecialCatIdForSelect(item.id);
-                        getOfferingData(queryString)
-                      }}
-                    >
-                      {console.log("item.image", item.image)}
-                      <Badge
-                        value={item.count}
-                        containerStyle={{
-                          width: "100%",
-                          top: 3,
-                          textAlign: "center",
-                          zIndex: 1000,
-                          position: "absolute",
-                        }}
-                        badgeStyle={{
-                          backgroundColor: "#132742",
-                        }}
-                      />
-                      <FastImage
-                        source={{ uri: item.image }}
-                        style={[styles.imagetop, { opacity: getOpacity(item) }]}
-                        resizeMode={"cover"}
-                      />
-                    </Pressable>
-                  </View>
-                );
-              }}
-            ></FlatList>
-          </View>
-        ) : null}
-        {homrBabber ? (
-          <Pressable>
-            <FastImage
-              source={{ uri: homrBabber.image }}
-              style={{
-                height: 65,
-                width: "100%",
-              }}
-            />
-          </Pressable>
-        ) : (
-          ""
-        )}
-        <View
-          style={{
-            flexDirection: "row",
-            justifyContent: "center",
-            marginBottom: 15,
-            marginTop: 25,
-            alignItems: "center",
-          }}
-        >
-          <Text
-            style={[styles.playTypeText, !showPremium && styles.highLighted]}
-          >
-            Smart
-          </Text>
-          <Switch
-            value={showPremium}
-            onValueChange={setShowPremium}
-            trackColor={{ false: "#d1c4e9", true: "#b39ddb" }}
-            thumbColor={showPremium ? colors.white : "#f4f3f4"}
-            style={{
-              transform: Platform.OS === "ios"
-              ? [{ scaleX: 1.2 }, { scaleY: 1.2 }]  // smaller on iOS
-              : [{ scaleX: 1.7 }, { scaleY: 1.7 }],
-              marginHorizontal: 20,
-            }}
-          />
-          <Text
-            style={[styles.playTypeText, showPremium && styles.highLighted]}
-          >
-            Premium
-          </Text>
-        </View>
-        <ScrollView style={styles.container}>
-          <SectionList
-            sections={sectionsToRender}
-            keyExtractor={(item, index) => item?.id ?? index.toString()}
-            renderItem={({ item }) => (
-              <OfferCard item={item} footer={
-  (sectionsToRender[0]?.pagination?.next_page ||
-   sectionsToRender[0]?.pagination?.previous_page) ? (
+            >
+              <Text
+                style={[styles.playTypeText, !showPremium && styles.highLighted]}
+              >
+                Smart
+              </Text>
+              <Switch
+                value={showPremium}
+                onValueChange={setShowPremium}
+                trackColor={{ false: "#d1c4e9", true: "#b39ddb" }}
+                thumbColor={showPremium ? colors.white : "#f4f3f4"}
+                style={{
+                  transform: Platform.OS === "ios"
+                    ? [{ scaleX: 1.2 }, { scaleY: 1.2 }]  // smaller on iOS
+                    : [{ scaleX: 1.7 }, { scaleY: 1.7 }],
+                  marginHorizontal: 20,
+                }}
+              />
+              <Text
+                style={[styles.playTypeText, showPremium && styles.highLighted]}
+              >
+                Premium
+              </Text>
+            </View>
+           {isBodyProfile ? <ScrollView style={styles.container}>
+              <SectionList
+                sections={sectionsToRender}
+                keyExtractor={(item, index) => item?.id ?? index.toString()}
+                renderItem={({ item }) => (
+                  <OfferCard item={item} footer={
+                    (sectionsToRender[0]?.pagination?.next_page ||
+                      sectionsToRender[0]?.pagination?.previous_page) ? (
 
-    <View style={{flexDirection:'row', width:'100%', justifyContent:'space-between'}}>
+                      <View style={{ flexDirection: 'row', width: '100%', justifyContent: 'space-between' }}>
 
-      {/* Previous */}
-      {/* {sectionsToRender[0]?.pagination?.previous_page ? ( */}
-        {sectionsToRender[0]?.pagination?.current_page!==1?<TouchableOpacity
-          style={styles.footer}
-          hitSlop={hitSlop}
-          onPress={() =>{
-            if (sectionsToRender[0]?.pagination?.current_page-1>0){
-            handleShowNext({
-              [sectionsToRender[0]?.pagination?.page_key]:
-                sectionsToRender[0]?.pagination?.previous_page,
-            })
-          }
-          }
-          }
-        >
-          <Text style={styles.footerText}>{'< Show previous'}</Text>
-        </TouchableOpacity>:<View/>}
-      {/* ) : (
+                        {/* Previous */}
+                        {/* {sectionsToRender[0]?.pagination?.previous_page ? ( */}
+                        {sectionsToRender[0]?.pagination?.current_page !== 1 ? <TouchableOpacity
+                          style={styles.footer}
+                          hitSlop={hitSlop}
+                          onPress={() => {
+                            if (sectionsToRender[0]?.pagination?.current_page - 1 > 0) {
+                              handleShowNext({
+                                [sectionsToRender[0]?.pagination?.page_key]:
+                                  sectionsToRender[0]?.pagination?.previous_page,
+                              })
+                            }
+                          }
+                          }
+                        >
+                          <Text style={styles.footerText}>{'< Show previous'}</Text>
+                        </TouchableOpacity> : <View />}
+                        {/* ) : (
         <View />
       )} */}
 
-      {/* Next */}
-      {/* {sectionsToRender[0]?.pagination?.next_page ? ( */}
-        {sectionsToRender[0]?.pagination?.next_page_url!==null&&<TouchableOpacity
-          style={styles.footer}
-          hitSlop={hitSlop}
-          onPress={() =>
-            handleShowNext({
-              [sectionsToRender[0]?.pagination?.page_key]:
-                sectionsToRender[0]?.pagination?.next_page,
-            })
-          }
-        >
-          <Text style={styles.footerText}>{'Show next >'}</Text>
-        </TouchableOpacity>}
-      {/* ) : (
+                        {/* Next */}
+                        {/* {sectionsToRender[0]?.pagination?.next_page ? ( */}
+                        {sectionsToRender[0]?.pagination?.next_page_url !== null && <TouchableOpacity
+                          style={styles.footer}
+                          hitSlop={hitSlop}
+                          onPress={() =>
+                            handleShowNext({
+                              [sectionsToRender[0]?.pagination?.page_key]:
+                                sectionsToRender[0]?.pagination?.next_page,
+                            })
+                          }
+                        >
+                          <Text style={styles.footerText}>{'Show next >'}</Text>
+                        </TouchableOpacity>}
+                        {/* ) : (
         <View />
       )} */}
 
-    </View>
+                      </View>
 
-  ) : null
-}
-
- addProductInCart={addProductInCart} />
-            )}
-            renderSectionHeader={({ section: { title, description, key } }) => (
-              <View style={styles.sectionHeader}>
-                <Text style={styles.sectionTitle}>{title + " " + key}</Text>
-                <Text style={styles.sectionDescription}>{description}</Text>
-              </View>
-            )}
-            renderSectionFooter={({ section }) =>
-              section.data.length === 0 ? (
-                <View style={{ padding: 20, alignItems: "center" }}>
-                  <Text
-                    style={{
-                      fontSize: 14,
-                      color: "gray",
-                    }}
-                  >
-                    No data available
-                  </Text>
-                </View>
-              ) : null
-            }
-            scrollEnabled={false}
-          />
-          <View style={{  paddingBottom:0, marginVertical:10,
-    borderWidth: 1,
-    borderColor: '#CCCCCC',}}></View>
-          <ProductList
-            products={productList}
-            handleShowNext={handleShowNext}
-            addProductInCart={addProductInCart}
-          />
-
-          <FlatList
-            data={Array.isArray(bloodTestList?.data) ? bloodTestList.data : []}
-            keyExtractor={(item, index) =>
-              item?.id?.toString() ?? index.toString()
-            }
-            renderItem={({ item }) => (
-              <OfferCard item={item} book={true} footer={(bloodTestList?.pagination?.next_page||bloodTestList?.pagination?.next_page) ? (
-                <View style={{flexDirection:'row',width:'100%',justifyContent:'space-between'}}>
-                  {bloodTestList?.pagination?.current_page!==1?<TouchableOpacity
-                  style={styles.footer}
-                  hitSlop={hitSlop}
-                  onPress={() =>
-                  { 
-                    if (bloodTestList?.pagination?.current_page-1 > 0) {
-              handleShowNext({
-                      blood_page: bloodTestList?.pagination?.current_page-1,
-                    });
-            }
-                  }}
-                >
-                  <Text style={styles.footerText}>{'< Show previous'}</Text>
-                </TouchableOpacity>:<View/>}
-                {bloodTestList?.pagination?.next_page_url!==null&&<TouchableOpacity
-                  style={styles.footer}
-                  hitSlop={hitSlop}
-                  onPress={() =>
-                    handleShowNext({
-                      blood_page: bloodTestList?.pagination?.next_page,
-                    })
+                    ) : null
                   }
-                >
-                  <Text style={styles.footerText}>{'Show next >'}</Text>
-                </TouchableOpacity>}</View>
-              ) : null} addProductInCart={addProductInCart} />
-            )}
-            ListHeaderComponent={() => (
-              <View style={[styles.sectionHeader,{marginTop:10}]}>
-                <Text style={styles.sectionTitle}>{bloodTestList?.title}</Text>
-                <Text style={styles.sectionDescription}>
-                  {bloodTestList?.desc}
-                </Text>
-              </View>
-            )}
-            ListEmptyComponent={() => (
-              <View style={{alignItems:'center'}}>
-                <Text style={{fontSize:18}}>No data available</Text>
-              </View>
-            )}
-            // ListFooterComponent={() =>
-            //   bloodTestList?.pagination?.next_page ? (
-            //     <TouchableOpacity
-            //       style={styles.footer}
-            //       hitSlop={hitSlop}
-            //       onPress={() =>
-            //         handleShowNext({
-            //           blood_page: bloodTestList?.pagination?.next_page,
-            //         })
-            //       }
-            //     >
-            //       <Text style={styles.footerText}>Show next</Text>
-            //     </TouchableOpacity>
-            //   ) : null
-            // }
-            style={{ marginBottom: 150 }}
-          />
-        </ScrollView>
-        {/* <TouchableOpacity
+
+                    addProductInCart={addProductInCart} />
+                 )}
+                 renderSectionHeader={({ section: { title, description, key } }) => (
+                  <View style={styles.sectionHeader}>
+                    <Text style={styles.sectionTitle}>{title + " " + key}</Text>
+                    <Text style={styles.sectionDescription}>{description}</Text>
+                  </View>
+                )}
+                renderSectionFooter={({ section }) =>
+                  section.data.length === 0 ? (
+                    <View style={{ padding: 20, alignItems: "center" }}>
+                      <Text
+                        style={{
+                          fontSize: 14,
+                          color: "gray",
+                        }}
+                      >
+                        No data available
+                      </Text>
+                    </View>
+                  ) : null
+                }
+                scrollEnabled={false}
+              />
+              <View style={{
+                paddingBottom: 0, marginVertical: 10,
+                borderWidth: 1,
+                borderColor: '#CCCCCC',
+              }}></View>
+              <ProductList
+                products={productList}
+                handleShowNext={handleShowNext}
+                addProductInCart={addProductInCart}
+              />
+
+              <FlatList
+                data={Array.isArray(bloodTestList?.data) ? bloodTestList.data : []}
+                keyExtractor={(item, index) =>
+                  item?.id?.toString() ?? index.toString()
+                }
+                renderItem={({ item }) => (
+                  <OfferCard item={item} book={true} footer={(bloodTestList?.pagination?.next_page || bloodTestList?.pagination?.next_page) ? (
+                    <View style={{ flexDirection: 'row', width: '100%', justifyContent: 'space-between' }}>
+                      {bloodTestList?.pagination?.current_page !== 1 ? <TouchableOpacity
+                        style={styles.footer}
+                        hitSlop={hitSlop}
+                        onPress={() => {
+                          if (bloodTestList?.pagination?.current_page - 1 > 0) {
+                            handleShowNext({
+                              blood_page: bloodTestList?.pagination?.current_page - 1,
+                            });
+                          }
+                        }}
+                      >
+                        <Text style={styles.footerText}>{'< Show previous'}</Text>
+                      </TouchableOpacity> : <View />}
+                      {bloodTestList?.pagination?.next_page_url !== null && <TouchableOpacity
+                        style={styles.footer}
+                        hitSlop={hitSlop}
+                        onPress={() =>
+                          handleShowNext({
+                            blood_page: bloodTestList?.pagination?.next_page,
+                          })
+                        }
+                      >
+                        <Text style={styles.footerText}>{'Show next >'}</Text>
+                      </TouchableOpacity>}</View>
+                  ) : null} addProductInCart={addProductInCart} />
+                )}
+                ListHeaderComponent={() => (
+                  <View style={[styles.sectionHeader, { marginTop: 10 }]}>
+                    <Text style={styles.sectionTitle}>{bloodTestList?.title}</Text>
+                    <Text style={styles.sectionDescription}>
+                      {bloodTestList?.desc}
+                    </Text>
+                  </View>
+                )}
+                ListEmptyComponent={() => (
+                  <View style={{ alignItems: 'center' }}>
+                    <Text style={{ fontSize: 18 }}>No data available</Text>
+                  </View>
+                )}
+                // ListFooterComponent={() =>
+                //   bloodTestList?.pagination?.next_page ? (
+                //     <TouchableOpacity
+                //       style={styles.footer}
+                //       hitSlop={hitSlop}
+                //       onPress={() =>
+                //         handleShowNext({
+                //           blood_page: bloodTestList?.pagination?.next_page,
+                //         })
+                //       }
+                //     >
+                //       <Text style={styles.footerText}>Show next</Text>
+                //     </TouchableOpacity>
+                //   ) : null
+                // }
+                style={{ marginBottom: 40 }}
+              />
+            </ScrollView>:null}
+            {/* <TouchableOpacity
           style={styles.chatContainer}
           onPress={() => alert("comming soon")}
         >
@@ -898,17 +900,19 @@ const OfferingsScreen = ({ navigation }) => {
             <Text style={styles.chatText}>GUIDE</Text>
           </View>
         </TouchableOpacity> */}
-      </View>
-       {/* )}  */}
-      <ProgressLoader isVisible={loader || loading} />
-      {showBodyLogin && (
-        <AlertModal
-          isVisible={showBodyLogin}
-          onClose={onCloseModal}
-          navigation={navigation}
-        />
-      )}
-    </View>
+          </View>
+          {/* )}  */}
+          <ProgressLoader isVisible={loader || loading} />
+          {showBodyLogin && (
+            <AlertModal
+              isVisible={showBodyLogin}
+              onClose={onCloseModal}
+              navigation={navigation}
+            />
+          )}
+        </View>
+      </SafeAreaView>
+    </>
   );
 };
 
@@ -1187,7 +1191,7 @@ const styles = StyleSheet.create({
     // resizeMode:'cover',
     marginRight: 12,
     borderRadius: 8,
-    overflow:'hidden'
+    overflow: 'hidden'
   },
   cardTitle: {
     fontSize: 16,
@@ -1262,7 +1266,7 @@ const styles = StyleSheet.create({
     alignItems: "flex-end",
     paddingRight: 5,
     marginVertical: 5,
-    marginBottom:10,
+    marginBottom: 10,
     // alignSelf: "flex-end",
   },
   footerText: {

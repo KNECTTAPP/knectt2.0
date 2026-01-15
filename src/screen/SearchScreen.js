@@ -1,43 +1,40 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useFocusEffect } from "@react-navigation/native";
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import {
-  Alert,
   Dimensions,
   FlatList,
   Image,
   Keyboard,
   Platform,
-  
-  ScrollView,
   StyleSheet,
   Text,
   TouchableOpacity,
-  View,
+  View
 } from "react-native";
+import DeviceInfo from "react-native-device-info";
 import { SearchBar } from "react-native-elements";
+import { Plus } from "react-native-feather";
+import Feather from 'react-native-vector-icons/Feather';
 import FlashMessage, { showMessage } from "react-native-flash-message";
+import {
+  Menu,
+  MenuOption,
+  MenuOptions,
+  MenuTrigger,
+} from "react-native-popup-menu";
+import { SafeAreaView } from "react-native-safe-area-context";
+import Toast from "react-native-simple-toast";
 import { scale } from "react-native-size-matters";
 import thumsImg from "../../assets/img/thumbs.png";
 import EndUrl from "../api/EndUrl";
+import BodyMatchModal from "../component/CreateProfileModal";
 import Header from "../component/Header";
 import { ProgressLoader } from "../component/ProgressLoader";
-import { fetchSearchList } from "../services";
-import fonts from "../utils/fonts";
-import { SafeAreaView } from "react-native-safe-area-context";
-import { Plus } from "react-native-feather";
 import SearchTextComp from "../component/SearchTextComp";
-import { useFocusEffect } from "@react-navigation/native";
-import Toast from "react-native-simple-toast";
-import DeviceInfo from "react-native-device-info";
-import BodyMatchModal from "../component/CreateProfileModal";
-import {
-  Menu,
-  MenuOptions,
-  MenuOption,
-  MenuTrigger,
-} from "react-native-popup-menu";
+import { fetchSearchList } from "../services";
 import colors from "../utils/colors";
-import { set } from "date-fns";
+import fonts from "../utils/fonts";
 
 const SearchScreen = ({ navigation, route }) => {
   const [categoryTitle, setCategoryTitle] = useState("Search");
@@ -594,6 +591,17 @@ const SearchScreen = ({ navigation, route }) => {
               lightTheme
               round
               barStyle="black"
+              searchIcon={<Feather
+                name={"search"}
+                style={{
+                  color: "#424553",
+                  fontSize: 18,
+                }}
+              />}
+              clearIcon={{ name: "x-circle", type: "feather", color: "#424553" }}
+
+               platform="default"
+               onClear={() => setSearchValue("")}
               inputStyle={{ backgroundColor: "white" }}
               containerStyle={{
                 backgroundColor: "white",
@@ -669,11 +677,13 @@ const SearchScreen = ({ navigation, route }) => {
                           style={styles.addButton}
                           onPress={() => addProductInCart(item)}
                         >
-                          <Plus
-                            color={"#ffffff"}
-                            strokeWidth={2}
-                            width={20}
-                            height={20}
+
+                          <Feather
+                            name={"plus"}
+                            style={{
+                              fontSize: 24,
+                              color: "#fff",
+                            }}
                           />
                         </TouchableOpacity>
                       )}
@@ -701,7 +711,7 @@ const SearchScreen = ({ navigation, route }) => {
                     ) : null}
                     {item?.product_character == "products" &&
                       (item?.bodyMatchDetail &&
-                      item?.bodyMatchDetail?.response_image_text ? (
+                        item?.bodyMatchDetail?.response_image_text ? (
                         <View style={[styles.bodymtch]}>
                           <View
                             style={{

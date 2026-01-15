@@ -22,10 +22,11 @@ import fonts from "./src/utils/fonts";
 // import NotificationService from "./src/services/NotificationService";
 // navigator.geolocation = require("@react-native-community/geolocation");
 import DrawerProvider from "./src/navigation/DrawerProvider";
- 
+ import { Provider } from "react-redux";
 import DeviceInfo from "react-native-device-info";
 import checkVersion from "react-native-store-version";
 import { useIsFocused } from "@react-navigation/native";
+import { store } from "./src/redux/store";
 import {
   navigationRef,
   NavigationService,
@@ -43,11 +44,34 @@ import { SafeAreaProvider } from "react-native-safe-area-context";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { appFlayerInitialize1 } from "./src/utils/appsFlyerDeeplink1";
 import BootSplash from "react-native-bootsplash";
-
+  import { Text, TextInput } from "react-native";
 
 global.userdata = [];
 const APPSFLYER_ONE_LINK_ID = "APPSFLYER_ONE_LINK_ID";
 const App = () => {
+
+//   import { useSelector } from "react-redux";
+
+// const user = useSelector((state) => state.user.userData);
+
+// import { useDispatch } from "react-redux";
+// import { loginSuccess, logout } from "../redux/slices/userSlice";
+
+// const dispatch = useDispatch();
+
+// dispatch(loginSuccess({ name: "Manpreet", email: "test@gmail.com" }));
+
+
+if (Text.defaultProps == null) {
+  Text.defaultProps = {};
+}
+Text.defaultProps.allowFontScaling = false;
+
+if (TextInput.defaultProps == null) {
+  TextInput.defaultProps = {};
+}
+TextInput.defaultProps.allowFontScaling = false;
+
   // const [navigationRef, setNavigationRef] = useState(null);
   BootSplash.isVisible().then((value) => console.log("sadfasfadfasdasdasdds"+value));
   const [deepLinkUrl, setDeepLinkUrl] = useState(null);
@@ -310,6 +334,7 @@ const App = () => {
     };
 
   return (
+     <Provider store={store}>
     <MenuProvider>
       <SafeAreaProvider>
         <SafeAreaView style={styles.container}>
@@ -327,6 +352,7 @@ const App = () => {
         </SafeAreaView>
       </SafeAreaProvider>
     </MenuProvider>
+    </Provider>
   );
 };
 

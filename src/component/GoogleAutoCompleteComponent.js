@@ -1,14 +1,13 @@
-import React, { useState, useEffect, useRef } from "react";
+import axios from "axios";
+import React, { useEffect, useRef, useState } from "react";
 import {
-  View,
-  TextInput,
   ScrollView,
+  StyleSheet,
   Text,
   TouchableOpacity,
-  StyleSheet,
+  View
 } from "react-native";
-import axios from "axios";
-import { TextField } from "rn-material-ui-textfield";
+import { TextInput } from "react-native-paper";
 
 function useDebounce(value, delay) {
   const [debounced, setDebounced] = useState(value);
@@ -157,18 +156,39 @@ export default function PlacesAutocompleteInput({
           focused && { borderColor: "#5D20D3", borderWidth: 2 },
         ]}
       > */}
-        <TextField
-          tintColor={"#999"}
-          ref={inputRef}
-          // placeholder={placeholder}
-          label={placeholder}
-          // placeholderTextColor="#999"
-          // style={styles.input}
-          value={input}
-          onFocus={() => setFocused(true)}
-          onBlur={() => setFocused(false)}
-          onChangeText={setInput}
-        />
+      <TextInput
+        label={placeholder}
+        value={input}
+        multiline
+        onChangeText={setInput}
+        onFocus={() => setFocused(true)}
+        onBlur={() => setFocused(false)}
+        // placeholderTextColor="#999"  // paper me label handle karta hai
+        // style={styles.input}         // custom style add kar sakte ho
+
+        mode="flat"                  // 👈 filled / underline style
+        underlineColor="#999"        // inactive underline
+        activeUnderlineColor="#6e5af4"  // focused / active underline
+
+        style={{
+          backgroundColor: "#fff",   // white background
+          paddingHorizontal: 0,      // input start aligned
+        }}
+
+        contentStyle={{
+          paddingHorizontal: 0,      // inner text padding
+        }}
+
+        theme={{
+          colors: {
+            background: "#fff",
+            surface: "#fff",
+            onSurfaceVariant: "#999", // label inactive color
+            primary: "#6e5af4",       // label + underline active color
+          },
+        }}
+      />
+
       {/* </View> */}
 
       {predictions.length > 0 && (
