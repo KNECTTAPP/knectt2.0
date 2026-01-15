@@ -8,6 +8,11 @@ require Pod::Executable.execute_command('node', ['-p',
 platform :ios, min_ios_version_supported
 prepare_react_native_project!
 
+use_modular_headers!
+
+require_relative '../node_modules/react-native/scripts/react_native_pods'
+
+
 linkage = ENV['USE_FRAMEWORKS']
 if linkage != nil
   Pod::UI.puts "Configuring Pod with #{linkage}ally linked Frameworks".green
@@ -20,6 +25,7 @@ target 'KnecttApp' do
   use_react_native!(
     :path => config[:reactNativePath],
     # An absolute path to your application root.
+     :hermes_enabled => false,
     :app_path => "#{Pod::Config.instance.installation_root}/.."
   )
 

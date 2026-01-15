@@ -1,11 +1,14 @@
-package com.knecttapp
+package com.knectt
 
 import android.app.Application
+import com.facebook.FacebookSdk
+import com.facebook.appevents.AppEventsLogger
 import com.facebook.react.PackageList
 import com.facebook.react.ReactApplication
 import com.facebook.react.ReactHost
 import com.facebook.react.ReactNativeApplicationEntryPoint.loadReactNative
 import com.facebook.react.defaults.DefaultReactHost.getDefaultReactHost
+import com.zoontek.rnbootsplash.RNBootSplash
 
 class MainApplication : Application(), ReactApplication {
 
@@ -22,6 +25,8 @@ class MainApplication : Application(), ReactApplication {
 
   override fun onCreate() {
     super.onCreate()
+    FacebookSdk.sdkInitialize(applicationContext)
+    AppEventsLogger.activateApp(this)
     loadReactNative(this)
   }
 }

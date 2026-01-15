@@ -2,6 +2,10 @@ apply plugin: "com.android.application"
 apply plugin: "org.jetbrains.kotlin.android"
 apply plugin: "com.facebook.react"
 
+
+
+
+
 /**
  * This is the configuration block to customize your React Native Android app.
  * By default you don't need to apply any configuration, just uncomment the lines you need.
@@ -77,9 +81,9 @@ android {
     buildToolsVersion rootProject.ext.buildToolsVersion
     compileSdk rootProject.ext.compileSdkVersion
 
-    namespace "com.knecttapp"
+    namespace "com.knectt"
     defaultConfig {
-        applicationId "com.knecttapp"
+        applicationId "com.knectt"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
@@ -91,6 +95,16 @@ android {
             storePassword 'android'
             keyAlias 'androiddebugkey'
             keyPassword 'android'
+        }
+    }
+    signingConfigs {
+        release {
+            if (project.hasProperty('MYAPP_UPLOAD_STORE_FILE')) {
+                storeFile file(MYAPP_UPLOAD_STORE_FILE)
+                storePassword MYAPP_UPLOAD_STORE_PASSWORD
+                keyAlias MYAPP_UPLOAD_KEY_ALIAS
+                keyPassword MYAPP_UPLOAD_KEY_PASSWORD
+            }
         }
     }
     buildTypes {
@@ -105,6 +119,20 @@ android {
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
         }
     }
+        project.ext.vectoricons = [
+                iconFontNames: [ 'MaterialIcons.ttf',
+                                 'FontAwesome5.ttf',
+                                 'FontAwesome5_Brands.ttf',
+                                 'FontAwesome5_Regular.ttf',
+                                 'Ionicons.ttf', 'Entypo.ttf',
+                                 'EvilIcons.ttf', 'Feather.ttf',
+                                 'FontAwesome.ttf', 'Foundation.ttf',
+                                 'MaterialCommunityIcons.ttf',
+                                 'material-icons.ttf',
+                                 'SimpleLineIcons.ttf',
+                                 'Zocial.ttf','AntDesign.ttf']
+        ]
+
 }
 
 dependencies {
@@ -116,4 +144,14 @@ dependencies {
     } else {
         implementation jscFlavor
     }
+     implementation platform('com.google.firebase:firebase-bom:34.7.0')
+    implementation 'com.google.firebase:firebase-analytics'
+    implementation 'com.google.firebase:firebase-crashlytics'
+    implementation 'com.google.firebase:firebase-messaging'
+    implementation 'com.facebook.android:facebook-android-sdk:latest.release'
+
+
+
 }
+apply plugin: 'com.google.gms.google-services'
+apply plugin: 'com.google.firebase.crashlytics'

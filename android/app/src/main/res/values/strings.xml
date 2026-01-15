@@ -1,3 +1,6 @@
 <resources>
-    <string name="app_name">KnecttApp</string>
+    <string name="app_name">KNECTT</string>
+    <string name="facebook_app_id">1062788579129134</string>
+    <string name="fb_login_protocol_scheme">fb1062788579129134</string>
+    <string name="facebook_client_token">6c2734aed0620c4b6cb77a2f7267d579</string>
 </resources>

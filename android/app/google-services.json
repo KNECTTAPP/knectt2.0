@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "775347111649",
+    "firebase_url": "https://knectt-77244-default-rtdb.firebaseio.com",
+    "project_id": "knectt-77244",
+    "storage_bucket": "knectt-77244.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:775347111649:android:34d576f0771fcd11cad9a0",
+        "android_client_info": {
+          "package_name": "com.knectt"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBJTtWdEysyCtX_cNXcEirVd-_6aAN5UK8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
