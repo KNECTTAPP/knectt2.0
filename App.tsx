@@ -1,79 +1,64 @@
 import React, { useEffect, useRef, useState } from "react";
 
 import {
-  Alert,
   AppState,
   Linking,
   Platform,
   // SafeAreaView,
   StatusBar,
-  StyleSheet,
+  StyleSheet
 } from "react-native";
 import FlashMessage from "react-native-flash-message";
 import "react-native-gesture-handler";
 import { setCustomText } from "react-native-global-props";
 import StackNavigators from "./src/navigation/StackNavigators";
+import { StorageProvider } from "../KnecttApp/src/storage/StorageContext";
 import UpdateApp from "./src/screen/UpdateApp";
 import {
-  appFlayerInitialize,
-  deeplinkListerFlyer,
+  appFlayerInitialize
 } from "./src/utils/appflayerDeepLink";
 import fonts from "./src/utils/fonts";
 // import NotificationService from "./src/services/NotificationService";
 // navigator.geolocation = require("@react-native-community/geolocation");
-import DrawerProvider from "./src/navigation/DrawerProvider";
- import { Provider } from "react-redux";
+import notifee, {
+  AndroidImportance,
+  AuthorizationStatus,
+} from "@notifee/react-native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import appsFlyer from "react-native-appsflyer";
+import BootSplash from "react-native-bootsplash";
 import DeviceInfo from "react-native-device-info";
+import { Settings } from "react-native-fbsdk-next";
+import { MenuProvider } from "react-native-popup-menu";
+import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import checkVersion from "react-native-store-version";
-import { useIsFocused } from "@react-navigation/native";
+import { Provider } from "react-redux";
 import { store } from "./src/redux/store";
 import {
   navigationRef,
   NavigationService,
 } from "./src/services/NavigationService";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import notifee, {
-  AndroidImportance,
-  AuthorizationStatus,
-} from "@notifee/react-native";
-import { Settings } from "react-native-fbsdk-next";
-import { setupNotificationListeners } from "./src/services/NotificationHandler";
-import appsFlyer from "react-native-appsflyer";
-import { MenuProvider } from "react-native-popup-menu";
-import { SafeAreaProvider } from "react-native-safe-area-context";
-import { SafeAreaView } from "react-native-safe-area-context";
-import { appFlayerInitialize1 } from "./src/utils/appsFlyerDeeplink1";
-import BootSplash from "react-native-bootsplash";
-  import { Text, TextInput } from "react-native";
 
 global.userdata = [];
 const APPSFLYER_ONE_LINK_ID = "APPSFLYER_ONE_LINK_ID";
 const App = () => {
 
-//   import { useSelector } from "react-redux";
 
-// const user = useSelector((state) => state.user.userData);
+  //   import { useSelector } from "react-redux";
 
-// import { useDispatch } from "react-redux";
-// import { loginSuccess, logout } from "../redux/slices/userSlice";
+  // const user = useSelector((state) => state.user.userData);
 
-// const dispatch = useDispatch();
+  // import { useDispatch } from "react-redux";
+  // import { loginSuccess, logout } from "../redux/slices/userSlice";
 
-// dispatch(loginSuccess({ name: "Manpreet", email: "test@gmail.com" }));
+  // const dispatch = useDispatch();
+
+  // dispatch(loginSuccess({ name: "Manpreet", email: "test@gmail.com" }));
 
 
-if (Text.defaultProps == null) {
-  Text.defaultProps = {};
-}
-Text.defaultProps.allowFontScaling = false;
-
-if (TextInput.defaultProps == null) {
-  TextInput.defaultProps = {};
-}
-TextInput.defaultProps.allowFontScaling = false;
 
   // const [navigationRef, setNavigationRef] = useState(null);
-  BootSplash.isVisible().then((value) => console.log("sadfasfadfasdasdasdds"+value));
+  BootSplash.isVisible().then((value) => console.log("sadfasfadfasdasdasdds" + value));
   const [deepLinkUrl, setDeepLinkUrl] = useState(null);
   const appState = useRef(AppState.currentState);
   const [hasSkippedUpdate, setHasSkippedUpdate] = useState(false);
@@ -171,7 +156,7 @@ TextInput.defaultProps.allowFontScaling = false;
   const initializeApp = async () => {
     try {
       // ✅ Initialize Facebook SDK
-     Settings.initializeSDK();
+      Settings.initializeSDK();
       // Initialize notification service first
       // await NotificationService.init();
       const isOldFordeUpdatePopup = await AsyncStorage.getItem(
@@ -227,7 +212,7 @@ TextInput.defaultProps.allowFontScaling = false;
   const requestUserPermission = async () => {
     const settings = await notifee.requestPermission();
     if (settings.authorizationStatus >= AuthorizationStatus.AUTHORIZED) {
-     // getFCMToken(); // Only get the FCM token if the permission is granted
+      // getFCMToken(); // Only get the FCM token if the permission is granted
     } else {
     }
   };
@@ -325,33 +310,33 @@ TextInput.defaultProps.allowFontScaling = false;
     },
   };
 
-   const onPressUpdate = () => {
-      if (Platform.OS === "ios") {
-        Linking.openURL(iosStoreURL); // Open iOS App Store
-      } else if (Platform.OS === "android") {
-        Linking.openURL(androidStoreURL); // Open Google Play Store
-      }
-    };
+  const onPressUpdate = () => {
+    if (Platform.OS === "ios") {
+      Linking.openURL(iosStoreURL); // Open iOS App Store
+    } else if (Platform.OS === "android") {
+      Linking.openURL(androidStoreURL); // Open Google Play Store
+    }
+  };
 
   return (
-     <Provider store={store}>
-    <MenuProvider>
-      <SafeAreaProvider>
-        <SafeAreaView style={styles.container}>
-          <StatusBar barStyle="dark-content" backgroundColor="#FFF" />
-          
+    <Provider store={store}>
+      <MenuProvider>
+        <SafeAreaProvider>
+          <SafeAreaView style={styles.container}>
+            <StatusBar barStyle="dark-content" backgroundColor="#FFF" />
 
-         
-          <StackNavigators linking={linking} />
-          
-          <FlashMessage position={"top"} />
-           <UpdateApp
-            isUpdateAvailable={isUpdateAvailable}
-            _onPressUpdate={onPressUpdate}
-          /> 
-        </SafeAreaView>
-      </SafeAreaProvider>
-    </MenuProvider>
+
+           <StorageProvider>
+            <StackNavigators linking={linking} />
+           </StorageProvider>
+            <FlashMessage position={"top"} />
+            <UpdateApp
+              isUpdateAvailable={isUpdateAvailable}
+              _onPressUpdate={onPressUpdate}
+            />
+          </SafeAreaView>
+        </SafeAreaProvider>
+      </MenuProvider>
     </Provider>
   );
 };

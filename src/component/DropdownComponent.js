@@ -53,7 +53,7 @@ export default function DropdownComponent(props) {
 const styles = StyleSheet.create({
   container: {
     backgroundColor: 'white',
-    padding: 16,
+   
     paddingLeft:0
   },
   dropdown: {
@@ -62,6 +62,7 @@ const styles = StyleSheet.create({
     borderWidth: 0.5,
     borderRadius: 8,
     paddingHorizontal: 8,
+    marginTop:16
   },
   label: {
     position: 'absolute',

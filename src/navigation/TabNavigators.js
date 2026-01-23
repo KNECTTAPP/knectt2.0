@@ -79,7 +79,7 @@ const TabNavigators = () => {
         component={OfferingsScreen}
         options={{
           tabBarIcon: ({ focused }) => (
-            <View style={[styles.tabItem, { marginTop: 8 }]}>
+            <View style={[styles.tabItem, { marginTop: 0 }]}>
               <Image
                 source={BodyMatch}
                 style={{
@@ -97,14 +97,7 @@ const TabNavigators = () => {
               >
                 Body Matched
               </Text>
-              <Text
-                style={[
-                  styles.label,
-                  { color: focused ? colors.primaryColor : "grey" },
-                ]}
-              >
-                Products
-              </Text>
+              
             </View>
           ),
         }}

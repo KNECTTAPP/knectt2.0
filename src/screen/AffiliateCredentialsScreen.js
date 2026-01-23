@@ -1,45 +1,34 @@
-import React, { useState, Component, useEffect, useRef } from "react";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import Clipboard from "@react-native-clipboard/clipboard";
+import React, { useEffect, useRef, useState } from "react";
 import {
-  Platform,
-  View,
-  Button,
-  Text,
-  Share,
+  ActivityIndicator,
+  Alert,
+  Dimensions,
   Image,
   Linking,
-  Dimensions,
-  TouchableWithoutFeedback,
-  Alert,
-  StyleSheet,
-  Pressable,
-  
+  NativeModules,
+  Platform,
   ScrollView,
+  Share,
+  StyleSheet,
+  Text,
   TouchableOpacity,
-  ActivityIndicator,
-  FlatList,
-  StatusBar,
-  ToastAndroid,
+  View
 } from "react-native";
-import HTMLView from "react-native-htmlview";
-import { scale } from "react-native-size-matters";
-import Clipboard from "@react-native-clipboard/clipboard";
-import { TextField } from "rn-material-ui-textfield";
-import { ProgressLoader } from "../component/ProgressLoader";
-import FlashMessage, {
-  showMessage,
-  hideMessage,
-} from "react-native-flash-message";
-import Header from "../component/Header";
-import Feather from "react-native-feather";
-import thumsImg from "../../assets/img/thumbs.png";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import EndUrl from "../api/EndUrl";
-import Video from "react-native-video";
-import { ButtonCustom } from "../component/ButtonCustom";
 import DeviceInfo from "react-native-device-info";
+import FlashMessage, {
+  showMessage
+} from "react-native-flash-message";
 import RNPrint from "react-native-print";
-import { NativeModules } from 'react-native';
 import { SafeAreaView } from "react-native-safe-area-context";
+import Feather from 'react-native-vector-icons/Feather';
+
+import { TextInput } from "react-native-paper";
+import thumsImg from "../../assets/img/thumbs.png";
+import EndUrl from "../api/EndUrl";
+import Header from "../component/Header";
+import { ProgressLoader } from "../component/ProgressLoader";
 const { PDFExporter } = NativeModules;
 
 const SLIDER_1_FIRST_ITEM = 1;
@@ -213,14 +202,14 @@ const AffiliateCredentialsScreen = ({ navigation, route }) => {
     }
   };
 
-const generatePdfios = async (link) => {
-  try {
-    // Resolve local logo image to a URI
-    const logoSource = require('../assets/brandwithouttext.png'); // your logo
-    const logoUri = Image.resolveAssetSource(logoSource).uri;
+  const generatePdfios = async (link) => {
+    try {
+      // Resolve local logo image to a URI
+      const logoSource = require('../assets/brandwithouttext.png'); // your logo
+      const logoUri = Image.resolveAssetSource(logoSource).uri;
 
-    // HTML content for PDF
-    const htmlContent = `
+      // HTML content for PDF
+      const htmlContent = `
 <!DOCTYPE html>
 <html>
 <head>
@@ -267,45 +256,45 @@ const generatePdfios = async (link) => {
         </h1>
 
         <img src="https://api.qrserver.com/v1/create-qr-code/?data=${encodeURIComponent(
-          link
-        )}&size=350x350" />
+        link
+      )}&size=350x350" />
     </div>
 </body>
 </html>
 `;
 
 
-    // Generate PDF using the native module
-    const filePath = await PDFExporter.createPDF(htmlContent, 'Ambassador_QR');
+      // Generate PDF using the native module
+      const filePath = await PDFExporter.createPDF(htmlContent, 'Ambassador_QR');
 
-    Alert.alert(
-      '✅ PDF Saved!',
-      'Check Files app → On My iPhone → KNECTT → Downloads → Ambassador_QR.pdf',
-      [
-        {
-          text: 'Open Folder',
-          onPress: async() => {
-            await Linking.openURL('shareddocuments://');
+      Alert.alert(
+        '✅ PDF Saved!',
+        'Check Files app → On My iPhone → KNECTT → Downloads → Ambassador_QR.pdf',
+        [
+          {
+            text: 'Open Folder',
+            onPress: async () => {
+              await Linking.openURL('shareddocuments://');
+            }
           }
-        }
-      ]
-    );
-    console.log('PDF saved at:', filePath);
-  } catch (error) {
-    console.log('PDF generation error:', error);
-    Alert.alert('Error', 'Failed to generate PDF');
-  }
-};
+        ]
+      );
+      console.log('PDF saved at:', filePath);
+    } catch (error) {
+      console.log('PDF generation error:', error);
+      Alert.alert('Error', 'Failed to generate PDF');
+    }
+  };
 
 
   const generatePdf = async (link) => {
-  try {
-    // Resolve local logo image to a URI
-    const logoSource = require('../assets/brandwithouttext.png'); // your logo
-    const logoUri = Image.resolveAssetSource(logoSource).uri;
+    try {
+      // Resolve local logo image to a URI
+      const logoSource = require('../assets/brandwithouttext.png'); // your logo
+      const logoUri = Image.resolveAssetSource(logoSource).uri;
 
-    // HTML content for PDF
-    const htmlContent = `
+      // HTML content for PDF
+      const htmlContent = `
   <div style="text-align:center; margin-top:20px; font-family: Arial, sans-serif;">
   <h1 style="margin-bottom:20px; font-size:25px; font-weight:500;">
     KNECTT
@@ -329,25 +318,25 @@ const generatePdfios = async (link) => {
 
 
   <img src="https://api.qrserver.com/v1/create-qr-code/?data=${encodeURIComponent(
-    link
-  )}&size=420x420" />
+        link
+      )}&size=420x420" />
 </div>
 `;
 
 
-    // Generate PDF
-    await RNPrint.print({
-      html: htmlContent,
-      fileName: 'Ambassador_QR',
-      isLandscape: false,
-    });
+      // Generate PDF
+      await RNPrint.print({
+        html: htmlContent,
+        fileName: 'Ambassador_QR',
+        isLandscape: false,
+      });
 
-    Alert.alert('Success', 'PDF is ready to save/share!');
-  } catch (error) {
-    console.log('PDF generation error:', error);
-    Alert.alert('Error', 'Failed to generate PDF');
-  }
-};
+      Alert.alert('Success', 'PDF is ready to save/share!');
+    } catch (error) {
+      console.log('PDF generation error:', error);
+      Alert.alert('Error', 'Failed to generate PDF');
+    }
+  };
 
 
   const sendSms = async () => {
@@ -415,12 +404,12 @@ const generatePdfios = async (link) => {
   };
 
   return (
-    <SafeAreaView style={styles.screenContainer}>
+    <SafeAreaView style={styles.screenContainer} edges={['top']}>
       {/* <StatusBar barStyle="light-content" backgroundColor="#FFF" /> */}
       <ProgressLoader isVisible={loading} />
       <FlashMessage />
-      <Header categoryTitle={categoryTitle} backButtonwithtext backButtonCustomFun={()=>navigation.navigate("TabNavigators")}/>
-      <ScrollView style={{ flex: 1 }}>
+      <Header categoryTitle={categoryTitle} backButtonwithtext backButtonCustomFun={() => navigation.navigate("TabNavigators")} />
+      <ScrollView style={{ flex: 1,marginHorizontal:10 }}>
         <View
           style={{
             width: "100%",
@@ -455,16 +444,21 @@ const generatePdfios = async (link) => {
                   flex: 1,
                 }}
               >
-                <TextField
-                  style={{ marginBottom: 0, marginTop: 0 }}
-                  required
-                  variant="filled"
+                <TextInput
+                  mode="outlined"                     // = filled style
                   label="Your Dedicated App link"
                   value={applink}
                   editable={false}
+                  multiline
                   onChangeText={setApplink}
-                  onBlur={(e) => checkValidate("applink")}
-                  multiline={true}
+                  onBlur={() => checkValidate("applink")}
+                  style={{
+                    marginVertical: 4,
+                    backgroundColor: "#FFFFFF", // ✅ force white
+                  }}
+                  contentStyle={{ paddingLeft: 8 }}
+                  underlineColor="transparent"
+                  activeUnderlineColor="transparent"
                 />
               </View>
               <View style={styles.categorytext}>
@@ -486,7 +480,7 @@ const generatePdfios = async (link) => {
                 </Text>
                 <Text style={styles.litemtext}>
                   <Feather
-                    name={"copy"}
+                    name="copy"
                     style={{
                       color: "#424553",
                       fontSize: 25,
@@ -556,141 +550,153 @@ const generatePdfios = async (link) => {
                 https://knectt.com/
               </Text>
             </TouchableOpacity>
-            <TextField
-              variant="filled"
+            <TextInput
+              mode="outlined"                     // = filled style
               label="Your User ID"
               value={userid}
-              onChangeText={setUserid}
               editable={false}
-              onBlur={(e) => checkValidate("userid")}
+              onChangeText={setUserid}
+              onBlur={() => checkValidate("userid")}
+              style={{
+                marginVertical: 4,
+                backgroundColor: "#FFFFFF", // ✅ force white
+              }}
+              underlineColor="transparent"
+              activeUnderlineColor="transparent"
             />
             <View
-  style={{
-    marginBottom: 0,
-    marginTop: 0,
-    flexDirection: "row",
-    justifyContent: "space-between",
-  }}
->
-  {/* LEFT SIDE — PASSWORD TEXTFIELD */}
-  <View
-    style={{
-      marginBottom: 0,
-      marginTop: 0,
-      flex: 1,
-    }}
-  >
-    <TextField
-      style={{ marginBottom: 0, marginTop: 0 }}
-      variant="filled"
-      label="Password"
-      value={password}
-      editable={false}
-      onChangeText={setPassword}
-      onBlur={() => checkValidate("password")}
-    />
-  </View>
+              style={{
+                marginBottom: 0,
+                marginTop: 0,
+                flexDirection: "row",
+                justifyContent: "space-between",
+              }}
+            >
+              {/* LEFT SIDE — PASSWORD TEXTFIELD */}
+              <View
+                style={{
+                  marginBottom: 0,
+                  marginTop: 0,
+                  flex: 1,
+                }}
+              >
+                <TextInput
+                  mode="outlined"                 // = filled
+                  label="Password"
+                  value={password}
+                  editable={false}            // ya disabled (neeche dekho)
+                  secureTextEntry
+                  onChangeText={setPassword}
+                  onBlur={() => checkValidate("password")}
+                  style={{
+                    marginVertical: 4,
+                    backgroundColor: "#FFFFFF", // ✅ force white
+                  }}
+                  underlineColor="transparent"
+                  activeUnderlineColor="transparent"
+                />
+              </View>
 
-  {/* RIGHT SIDE — COPY ICON */}
-  <View style={styles.categorytext}>
-    <Text style={styles.litemtextCop}>
-      <Feather
-        name="copy"
-        style={{
-          color: "#424553",
-          fontSize: 25,
-          fontWeight: 300,
-          backgroundColor: "white",
-          textAlign: "right",
-          padding: 5,
-        }}
-        onPress={copyToPassword}
-      />
-    </Text>
-  </View>
-</View>
-<View style={{ alignItems: 'center', marginVertical: 20 }}>
-  {/* Logo */}
-   <Text style={{ 
-    color: '#000', 
-    fontWeight: '500', 
-    fontSize: 16, // larger text
-    textAlign:'center',
-    marginHorizontal:'6%',
-    marginBottom:10
-  }}>
-    {`KNECTT`}
-  </Text>
-  <Text style={{ 
-    color: '#000', 
-    fontWeight: '500', 
-    fontSize: 16, // larger text
-    textAlign:'center',
-    marginHorizontal:'6%',
-    marginBottom:10
-  }}>
-    {`360° intelligent Metabolic Health Suite`}
-  </Text>
-  <Image
-    source={require('../assets/brandwithouttext.png')} // replace with your logo
-    style={{ width: 180, height: 90, marginBottom: 10 }}
-    resizeMode="contain"
-  />
+              {/* RIGHT SIDE — COPY ICON */}
+              <View style={styles.categorytext}>
+                <Text style={styles.litemtextCop}>
+                  <Feather
+                    name="copy"
+                    style={{
+                      color: "#424553",
+                      fontSize: 25,
+                      fontWeight: 300,
+                      backgroundColor: "white",
+                      textAlign: "right",
+                      padding: 5,
+                    }}
+                    onPress={copyToPassword}
+                  />
+                </Text>
+              </View>
+            </View>
+            <View style={{ alignItems: 'center', marginVertical: 20 }}>
+              {/* Logo */}
+              <Text style={{
+                color: '#000',
+                fontWeight: '500',
+                fontSize: 16, // larger text
+                textAlign: 'center',
+                marginHorizontal: '6%',
+                marginBottom: 10
+              }}>
+                {`KNECTT`}
+              </Text>
+              <Text style={{
+                color: '#000',
+                fontWeight: '500',
+                fontSize: 16, // larger text
+                textAlign: 'center',
+                marginHorizontal: '6%',
+                marginBottom: 10
+              }}>
+                {`360° intelligent Metabolic Health Suite`}
+              </Text>
+              <Image
+                source={require('../assets/brandwithouttext.png')} // replace with your logo
+                style={{ width: 180, height: 90, marginBottom: 10 }}
+                resizeMode="contain"
+              />
 
-  {/* Text */}
-  <Text style={{ 
-    color: '#000', 
-    fontWeight: '500', 
-    fontSize: 16, // larger text
-    textAlign:'center',
-    marginHorizontal:'6%',
-    marginBottom:10
-  }}>
-    {`Get Full Body Check-up, Predictive Health Profile, Guided Nutrition Plan, Body-Matched Multi-Brand Superfoods Delivery, AI- led Dynamic Tracking & Analysis. Pick any from exclusive discounted improvement plans.`}
-  </Text>
+              {/* Text */}
+              <Text style={{
+                color: '#000',
+                fontWeight: '500',
+                fontSize: 16, // larger text
+                textAlign: 'center',
+                marginHorizontal: '6%',
+                marginBottom: 10
+              }}>
+                {`Get Full Body Check-up, Predictive Health Profile, Guided Nutrition Plan, Body-Matched Multi-Brand Superfoods Delivery, AI- led Dynamic Tracking & Analysis. Pick any from exclusive discounted improvement plans.`}
+              </Text>
 
-  {/* QR Code Image */}
-  <Image 
-    source={{ uri: `https://api.qrserver.com/v1/create-qr-code/?data=${encodeURIComponent(applink)}&size=200x200` }}
-    style={{ width: 200, height: 200, marginBottom: 15 }}
-  />
+              {/* QR Code Image */}
+              <Image
+                source={{ uri: `https://api.qrserver.com/v1/create-qr-code/?data=${encodeURIComponent(applink)}&size=200x200` }}
+                style={{ width: 200, height: 200, marginBottom: 15 }}
+              />
 
-  {/* Download PDF Button */}
-  <TouchableOpacity
-  style={{
-    backgroundColor: '#132742',
-    width: 250,            // make the button wider
-    paddingVertical: 15,   // taller button
-    borderRadius: 12,      // slightly more rounded
-    alignItems: 'center',  // center the text
-    marginVertical: 20,    // spacing from other elements
-    shadowColor: '#000',   // optional: adds shadow for depth
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.3,
-    shadowRadius: 3,
-    elevation: 5,          // for Android shadow
-  }}
-  onPress={async () => {
-    if (Platform.OS === 'ios') {
-      await generatePdfios(applink);
-    } else {
-      await generatePdf(applink);
-    }
-  }}
->
-  <Text style={{ 
-    color: '#fff', 
-    fontWeight: '700', 
-    fontSize: 18 // larger text
-  }}>
-    Download QR PDF
-  </Text>
-</TouchableOpacity>
-  {/* <Text style={{ fontSize: 22, fontWeight: '600', marginBottom: 10 }}>
+              {/* Download PDF Button */}
+              <TouchableOpacity
+                style={{
+                  backgroundColor: '#132742',
+                  width: 250,            // make the button wider
+                  paddingVertical: 15,   // taller button
+                  borderRadius: 12,      // slightly more rounded
+                  alignItems: 'center',  // center the text
+                  marginVertical: 20,    // spacing from other elements
+                  shadowColor: '#000',   // optional: adds shadow for depth
+                  shadowOffset: { width: 0, height: 2 },
+                  shadowOpacity: 0.3,
+                  shadowRadius: 3,
+                  elevation: 5,          // for Android shadow
+                }}
+                onPress={async () => {
+                  if (Platform.OS === 'ios') {
+                    await generatePdfios(applink);
+                  } else {
+                    await generatePdf(applink);
+                  }
+                }}
+              >
+                <Text style={{
+                  color: '#fff',
+                  fontWeight: '700',
+                  fontSize: 18 // larger text
+                }}>
+                  Download QR PDF
+                </Text>
+              </TouchableOpacity>
+              {/* <Text style={{ fontSize: 22, fontWeight: '600', marginBottom: 10 }}>
     Ambassador Link
   </Text> */}
 
-</View>
+            </View>
 
 
           </View>

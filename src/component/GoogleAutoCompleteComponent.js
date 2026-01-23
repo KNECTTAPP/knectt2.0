@@ -172,7 +172,8 @@ export default function PlacesAutocompleteInput({
 
         style={{
           backgroundColor: "#fff",   // white background
-          paddingHorizontal: 0,      // input start aligned
+          paddingHorizontal: 0,  
+          paddingBottom:4    // input start aligned
         }}
 
         contentStyle={{

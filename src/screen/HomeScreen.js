@@ -357,48 +357,14 @@ const HomeScreen = ({ route, navigation }) => {
   const handleBackPress = () => {
     BackHandler.exitApp();
   };
-  const getProfileData = async () => {
-    let usertoken = await AsyncStorage.getItem("usertoken");
-    const closeDate = await AsyncStorage.getItem("closeDate");
-    const settingsGet = {
-      method: "GET",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-        token: JSON.parse(usertoken),
-        Version: DeviceInfo.getVersion().replace(/(\r\n|\n|\r)/gm, ""),
-        Platform: Platform.OS,
-      },
-    };
-    const response = await fetch(EndUrl.getprofilenew, settingsGet);
-    const updateAvailable = response.headers.get("updateAvailable");
-    const forceUpdate = response.headers.get("forceUpdate");
-    const isOldFordeUpdatePopup = response.headers.get(
-      "useOldFordeUpdatePopup"
-    );
-    if (updateAvailable === "1") {
-      await AsyncStorage.setItem("updateAvailable", "true");
-    }
-    if (forceUpdate === "1") {
-      await AsyncStorage.setItem("forceUpdate", "true");
-    }
-    if (isOldFordeUpdatePopup === "1") {
-      await AsyncStorage.setItem("useOldFordeUpdatePopup", "true");
-    }
-    const json = await response.json();
-    console.log(JSON.stringify(json), "getProfileData>>>>>>>");
-    await AsyncStorage.setItem("userData", JSON.stringify(json.data));
-    global.userdata = json?.data[0];
-    if (
-      json.data[0].body_profile == 0 &&
-      closeDate != moment(new Date()).format("DD-MM-YYYY")
-    ) {
-      let date = moment(new Date()).format("DD-MM-YYYY");
-      setTimeout(() => {
-        setNotyfy(true);
-      }, 500);
-    }
-  };
+const loadProfile = async () => {
+  try {
+    const profile = await getProfileData();
+    setUserData(profile);
+  } catch (error) {
+    console.log("Profile error:", error.message);
+  }
+};
 
   const Cloasenotify = async () => {
     try {
@@ -497,7 +463,7 @@ const HomeScreen = ({ route, navigation }) => {
   useEffect(() => {
     {
       const unsubscribe = navigation.addListener("focus", () => {
-        getProfileData();
+        loadProfile();
         getstodata();
         getCartcountAj();
         getSpecialcategory();

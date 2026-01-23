@@ -107,38 +107,14 @@ const InputScreen = ({ navigation, route }) => {
     //setSlctedata(selectedDate.format('YYYY-MM-DD'));
     getInputData(selectedDate.format("YYYY-MM-DD"));
   };
-
-  const getProfileData = async () => {
-    let usertoken = await AsyncStorage.getItem("usertoken");
-    const settingsGet = {
-      method: "GET",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-        token: JSON.parse(usertoken),
-        Version: DeviceInfo.getVersion().replace(/(\r\n|\n|\r)/gm, ""),
-        Platform: Platform.OS,
-      },
-    };
-    const response = await fetch(EndUrl.getprofile, settingsGet);
-    const updateAvailable = response.headers.get("updateAvailable");
-    const forceUpdate = response.headers.get("forceUpdate");
-    const isOldFordeUpdatePopup = response.headers.get(
-      "useOldFordeUpdatePopup"
-    );
-    if (updateAvailable === 1) {
-      await AsyncStorage.setItem("updateAvailable", "true");
-    }
-    if (forceUpdate === 1) {
-      await AsyncStorage.setItem("forceUpdate", "true");
-    }
-    if (isOldFordeUpdatePopup === 1) {
-      await AsyncStorage.setItem("useOldFordeUpdatePopup", "true");
-    }
-    const json = await response.json();
-    setUserData(json.data[0]);
-    setUserGender(json.data[0].gender);
-  };
+const loadProfile = async () => {
+  try {
+    const profile = await getProfileData();
+    setUserData(profile);
+  } catch (error) {
+    console.log("Profile error:", error.message);
+  }
+};
 
   const submitInput = async () => {
     setLoading(true);
@@ -714,7 +690,7 @@ const InputScreen = ({ navigation, route }) => {
     );
   };
   useEffect(() => {
-    getProfileData();
+    loadProfile();
     getInputData();
   }, [navigation]);
 

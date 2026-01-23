@@ -65,9 +65,11 @@ const Header = ({
   const [cartCount, setCartCount] = useState();
   const [notificationCount, setNotificationCount] = useState(0);
 
+
   const handleLeftPress = () => {};
   const getstodataStorege = async () => {
     let cartCountshow = await AsyncStorage.getItem("cartcount");
+    console.log("asdasdasdasdasdasd",cartCountshow)
     let notificationcount = await AsyncStorage.getItem("notificationcount");
     setCartCount(JSON.parse(cartCountshow));
     setNotificationCount(notificationcount);
@@ -136,7 +138,7 @@ const Header = ({
           activeOpacity={1}
           onPress={backButtonCustomFun ?? backButtonp}
         >
-          // <IconArrowLeft />
+           <IconArrowLeft />
         </TouchableOpacity>
       ) : null}
       <View style={styles.iconStyle}>

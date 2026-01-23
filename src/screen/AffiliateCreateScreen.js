@@ -659,528 +659,113 @@ const AffiliateCreateScreen = ({ route }) => {
   const win = Dimensions.get("window");
 
   return (
-    <SafeAreaView style={[styles.screenContainer]}>
-      {/* <StatusBar barStyle="light-content" backgroundColor="#FFF" /> */}
+    <SafeAreaView style={styles.screenContainer}>
       <Loader loading={loading} />
       <FlashMessage />
-      <Header categoryTitle={categoryTitle} backButtonwithtext />
-      <ScrollView style={{ flex: 1 }}>
-        <Animated.View
-          style={[
-            {
-              width: "100%",
-              padding: 0,
-              marginTop: 0,
-              marginLeft: 0,
-              marginRight: 0,
+      <Header categoryTitle="Affiliate Account Creation" backButtonwithtext />
+
+      <ScrollView
+        style={{ flex: 1 }}
+        contentContainerStyle={styles.scrollContainer}
+      >
+        <Text style={styles.sectionTitle}>Title</Text>
+        <View style={styles.halfholder}>
+          {title.map((item) => (
+            <RadioButton
+              key={item.id}
+              selected={item.selected}
+              onPress={() => onRadioBtnClickTitle(item)}
+            >
+              {item.name}
+            </RadioButton>
+          ))}
+        </View>
+
+        <TextInput
+          label="First Name *"
+          mode="flat"                // 👈 underline style
+          underlineColor="#999"
+          activeUnderlineColor="#4649b0"
+
+          style={{
+            backgroundColor: "#fff", // 👈 white bg
+            paddingHorizontal: 0,
+          }}
+
+          contentStyle={{
+            paddingHorizontal: 0,
+          }}
+
+          theme={{
+            colors: {
+              background: "#fff",
+              surface: "#fff",
+              onSurfaceVariant: "#999", // label color (inactive)
+              primary: "#6e5af4",          // label + underline active
             },
+          }} value={firstname} onChangeText={setFirstname} />
+        {firstnameError && <Text style={styles.error}>{firstnameError}</Text>}
 
-          ]}
-        >
-          <View
-            style={{
-              width: "100%",
-              padding: 5,
-              marginTop: 0,
-              marginLeft: 0,
-              marginRight: 0,
-            }}
-          >
-            <View>
-              <Text style={styles.text}>Title</Text>
+        <TextInput label="Last Name *" value={lastname} onChangeText={setLastname} style={styles.input} />
+        {lastnameError && <Text style={styles.error}>{lastnameError}</Text>}
+
+        <TextInput label="Email *" value={email} onChangeText={setEmail} style={styles.input} />
+        {emailError && <Text style={styles.error}>{emailError}</Text>}
+
+        <TextInput label="Confirm Email *" value={confirmEmail} onChangeText={setConfirmEmail} style={styles.input} />
+        {confirmEmailError && <Text style={styles.error}>{confirmEmailError}</Text>}
+
+        <Text style={styles.sectionTitle}>Gender</Text>
+        <View style={styles.halfholder}>
+          {isLiked.map((item) => (
+            <RadioButton
+              key={item.id}
+              selected={item.selected}
+              onPress={() => onRadioBtnClick(item)}
+            >
+              {item.name}
+            </RadioButton>
+          ))}
+        </View>
+
+        <DropdownComponent data={city} state={state} setState={setState} />
+        {stateError && <Text style={styles.error}>{stateError}</Text>}
+
+        <Text style={styles.sectionTitle}>Payment Mode</Text>
+        <View style={styles.halfholder}>
+          <RadioButton selected={accountType === "upi"} onPress={() => setAccountType("upi")}>
+            UPI
+          </RadioButton>
+          <RadioButton selected={accountType === "account"} onPress={() => setAccountType("account")}>
+            Bank Account
+          </RadioButton>
+        </View>
+
+        {accountType === "upi" ? (
+          <>
+            <View style={styles.row}>
+              <TextInput label="UPI" value={upi} onChangeText={setUpi} style={[styles.input, { flex: 1 }]} />
+              <ButtonCustom title="Verify" onPress={handleValidateUpi} containerStyle={{padding:20}} />
             </View>
-            <View style={styles.halfholder}>
-              {title.map((item) => (
-                <RadioButton
-                  onPress={() => onRadioBtnClickTitle(item)}
-                  selected={item.selected}
-                  key={item.id}
-                >
-                  {item.name}
-                </RadioButton>
-              ))}
+            {upiError && <Text style={styles.error}>{upiError}</Text>}
+            {isUPIVerified && <Text style={styles.success}>Verified</Text>}
+          </>
+        ) : (
+          <>
+            <TextInput label="A/C Holder Name" value={accountHolderName} onChangeText={setAccountHolderName} style={styles.input} />
+            <TextInput label="Bank A/C Number" value={acnumber} onChangeText={setAcnumber} style={styles.input} />
+            <View style={styles.row}>
+              <TextInput label="IFSC" value={ifc} onChangeText={(t) => setIfc(t.toUpperCase())} style={[styles.input, { flex: 1 }]} />
+              <ButtonCustom title="Verify" onPress={handleVerifyIfc}containerStyle={{padding:20}}/>
             </View>
-            <View style={{ marginLeft: 4 }}>
+            {isIFSCVerified && <Text style={styles.success}>Verified</Text>}
+            <TextInput label="Branch Name" value={branchName} onChangeText={setBranchName} style={styles.input} />
+          </>
+        )}
 
-              <TextInput
-                label="First Name *"
-                value={firstname}
-                onChangeText={setFirstname}
-                onBlur={() => checkValidate("firstname")}
-
-                mode="flat"                // 👈 underline style
-                underlineColor="#999"
-                activeUnderlineColor="#4649b0"
-
-                style={{
-                  backgroundColor: "#fff", // 👈 white bg
-                  paddingHorizontal: 0,
-                }}
-
-                contentStyle={{
-                  paddingHorizontal: 0,
-                }}
-
-                theme={{
-                  colors: {
-                    background: "#fff",
-                    surface: "#fff",
-                    onSurfaceVariant: "#999", // label color (inactive)
-                    primary: "#6e5af4",          // label + underline active
-                  },
-                }}
-              />
-
-              {firstnameError ? (
-                <Text style={styles.error}>{firstnameError}</Text>
-              ) : null}
-            </View>
-            <View style={{ marginBottom: 0, marginTop: 0 }}>
-
-
-              <TextInput
-                label="Last Name *"
-                value={lastname || ""}
-                onChangeText={setLastname}
-                onBlur={() => checkValidate("lastname")}
-                mode="flat"                  // 👈 filled style
-                underlineColor="#999"
-                activeUnderlineColor="#4649b0"
-                style={{
-                  backgroundColor: "#fff", // 👈 white bg
-                  paddingHorizontal: 0,
-                }}
-
-                contentStyle={{
-                  paddingHorizontal: 0,
-                }}
-
-                theme={{
-                  colors: {
-                    background: "#fff",
-                    surface: "#fff",
-                    onSurfaceVariant: "#999", // label color (inactive)
-                    primary: "#6e5af4",          // label + underline active
-                  },
-                }}
-              />
-
-              {lastnameError ? (
-                <Text style={styles.error}>{lastnameError}</Text>
-              ) : null}
-            </View>
-            <View style={{ marginBottom: 0, marginTop: 0 }}>
-
-              <TextInput
-                label="Email *"
-                value={email || ""}
-                onChangeText={setEmail}
-                onBlur={() => checkValidate("email")}
-                autoCapitalize="none"
-                keyboardType="email-address"
-                mode="flat"                  // 👈 filled style
-                underlineColor="#999"
-                activeUnderlineColor="#4649b0"
-                style={{
-                  backgroundColor: "#fff", // 👈 white bg
-                  paddingHorizontal: 0,
-                }}
-
-                contentStyle={{
-                  paddingHorizontal: 0,
-                }}
-
-                theme={{
-                  colors: {
-                    background: "#fff",
-                    surface: "#fff",
-                    onSurfaceVariant: "#999", // label color (inactive)
-                    primary: "#6e5af4",          // label + underline active
-                  },
-                }}
-              />
-
-              {emailError ? (
-                <Text style={styles.error}>{emailError}</Text>
-              ) : null}
-            </View>
-            <View style={{ marginBottom: 0, marginTop: 0 }}>
-
-              <TextInput
-                label="Confirm Email *"
-                value={confirmEmail || ""}
-                onChangeText={setConfirmEmail}
-                onBlur={() => checkValidate("confirmEmail")}
-                autoCapitalize="none"
-                keyboardType="email-address"
-
-                mode="flat"                  // 👈 filled style
-                underlineColor="#999"
-                activeUnderlineColor="#4649b0"
-                style={{
-                  backgroundColor: "#fff", // 👈 white bg
-                  paddingHorizontal: 0,
-                }}
-
-                contentStyle={{
-                  paddingHorizontal: 0,
-                }}
-
-                theme={{
-                  colors: {
-                    background: "#fff",
-                    surface: "#fff",
-                    onSurfaceVariant: "#999", // label color (inactive)
-                    primary: "#6e5af4",          // label + underline active
-                  },
-                }}
-              />
-
-              {confirmEmailError ? (
-                <Text style={styles.error}>{confirmEmailError}</Text>
-              ) : null}
-            </View>
-            <View>
-              <Text style={styles.text}>Gender</Text>
-            </View>
-            <View style={styles.halfholder}>
-              {isLiked.map((item) => (
-                <RadioButton
-                  onPress={() => onRadioBtnClick(item)}
-                  selected={item.selected}
-                   tintColors={{ true: "#132742",false :"#999" }}
-                  key={item.id}
-                >
-                  {item.name}
-                </RadioButton>
-              ))}
-            </View>
-            <View style={styles.addressHolder}>
-              <View>
-                <View>
-                  <DropdownComponent
-                    data={city}
-                    state={state}
-                    setState={setState}
-                  />
-                  {!state && stateError ? (
-                    <Text style={styles.error}>{stateError}</Text>
-                  ) : null}
-                </View>
-                {/* <View
-                  style={{
-                    paddingLeft: 2,
-                    marginBottom: 5,
-                    marginTop: 5,
-                    paddingBottom: 10,
-                  }}
-                >
-                  <TouchableWithoutFeedback onPress={handleChoosePhoto}>
-                    <Text style={{ fontSize: 16, padding: 10 }}>
-                      {" "}
-                       <Feather name={"paperclip"} style={styles.editIcon} /> 
-                      <IconPaperClip />
-                      Upload Photo id(KYC)*
-                    </Text>
-                  </TouchableWithoutFeedback>
-                  {kycError ? (
-                    <Text style={styles.error}>{kycError}</Text>
-                  ) : null}
-                </View> */}
-                <View style={styles.addressTypeholder}>
-                  <View style={{ paddingRight: 5, paddingLeft: 5 }}>
-                    <Text style={{ marginBottom: 5, marginTop: 4 }}>
-                      Payment mode *
-                    </Text>
-                    <View style={styles.halfholder}>
-                      <RadioButton
-                        onPress={() => onSetAccountType("upi")}
-                        selected={accountType == "upi" ? true : false}
-                      >
-                        UPI
-                      </RadioButton>
-                      <RadioButton
-                        onPress={() => onSetAccountType("account")}
-                        selected={accountType == "account" ? true : false}
-                      // selected={true}
-                      >
-                        Bank Account
-                      </RadioButton>
-                    </View>
-                  </View>
-                </View>
-                {accountType == "upi" ? (
-                  <View>
-                    <View
-                      style={{ flex: 1, flexDirection: "row", width: "100%" }}
-                    >
-                      <View
-                        style={{ justifyContent: "flex-end", width: "68%" }}
-                      >
-
-                        <TextInput
-                          label="UPI"
-                          value={upi || ""}
-                          onChangeText={setUpi}
-                          onBlur={() => handleValidateUpi("upi")}
-                          mode="flat"                  // 👈 filled / underline style
-                          underlineColor="#999"        // inactive underline
-                          activeUnderlineColor="#6e5af4"  // focused / active underline
-                          style={{
-                            backgroundColor: "#fff",   // white background (filled look)
-                            paddingHorizontal: 0,
-                          }}
-
-                          contentStyle={{
-                            paddingHorizontal: 0,      // input text start aligned
-                          }}
-
-                          theme={{
-                            colors: {
-                              background: "#fff",
-                              surface: "#fff",
-                              onSurfaceVariant: "#999", // label inactive color
-                              primary: "#6e5af4",       // label + underline active color
-                            },
-                          }}
-                        />
-
-                      </View>
-                      <View
-                        style={{
-                          justifyContent: "flex-end",
-                          width: "30%",
-                          marginBottom: 10,
-                        }}
-                      >
-                        <ButtonCustom
-                          title="Verify"
-                          onPress={handleValidateUpi}
-                        />
-                      </View>
-                    </View>
-                    {upiError ? (
-                      <Text style={[styles.error, { marginBottom: 15 }]}>
-                        {upiError}
-                      </Text>
-                    ) : null}
-                    {isUPIVerified && (
-                      <Text style={{ color: "green", marginBottom: 15 }}>
-                        {"Verified"}
-                      </Text>
-                    )}
-                  </View>
-                ) : (
-                  <View>
-                    <TextInput
-                      label="A/C Holder Name"
-                      value={accountHolderName || ""}
-                      onChangeText={setAccountHolderName}
-                      onBlur={() => checkValidate("acHolder")}
-
-                      mode="flat"                  // 👈 filled / underline style
-                      underlineColor="#999"        // inactive underline
-                      activeUnderlineColor="#6e5af4"  // focused / active underline
-
-                      style={{
-                        backgroundColor: "#fff",   // white background (filled look)
-                        paddingHorizontal: 0,
-                      }}
-
-                      contentStyle={{
-                        paddingHorizontal: 0,      // input text start aligned
-                      }}
-
-                      theme={{
-                        colors: {
-                          background: "#fff",
-                          surface: "#fff",
-                          onSurfaceVariant: "#999", // label inactive color
-                          primary: "#6e5af4",       // label + underline active color
-                        },
-                      }}
-                    />
-
-                    {acHolderErr ? (
-                      <Text style={styles.error}>{acHolderErr}</Text>
-                    ) : null}
-                    <TextInput
-                      label="Bank A/C number"
-                      value={acnumber || ""}
-                      onChangeText={setAcnumber}
-                      keyboardType="numeric"
-                      onBlur={() => checkValidate("acnumber")}
-
-                      mode="flat"                  // 👈 filled / underline style
-                      underlineColor="#999"        // inactive underline
-                      activeUnderlineColor="#6e5af4"  // focused / active underline
-
-                      style={{
-                        backgroundColor: "#fff",   // white background (filled look)
-                        paddingHorizontal: 0,
-                      }}
-
-                      contentStyle={{
-                        paddingHorizontal: 0,      // input text start aligned
-                      }}
-
-                      theme={{
-                        colors: {
-                          background: "#fff",
-                          surface: "#fff",
-                          onSurfaceVariant: "#999", // label inactive color
-                          primary: "#6e5af4",       // label + underline active color
-                        },
-                      }}
-                    />
-
-                    {acNumnerError ? (
-                      <Text style={styles.error}>{acNumnerError}</Text>
-                    ) : null}
-                    <TextInput
-                      label="Bank A/C number"
-                      value={acnumber || ""}
-                      onChangeText={setAcnumber}
-                      keyboardType="numeric"
-                      onBlur={() => checkValidate("acnumber")}
-
-                      mode="flat"                  // 👈 filled / underline style
-                      underlineColor="#999"        // inactive underline
-                      activeUnderlineColor="#6e5af4"  // focused / active underline
-
-                      style={{
-                        backgroundColor: "#fff",   // white background (filled look)
-                        paddingHorizontal: 0,
-                      }}
-
-                      contentStyle={{
-                        paddingHorizontal: 0,      // input text start aligned
-                      }}
-
-                      theme={{
-                        colors: {
-                          background: "#fff",
-                          surface: "#fff",
-                          onSurfaceVariant: "#999", // label inactive color
-                          primary: "#6e5af4",       // label + underline active color
-                        },
-                      }}
-                    />
-
-                    {bankNameError ? (
-                      <Text style={styles.error}>{bankNameError}</Text>
-                    ) : null}
-                    <View
-                      style={{ flex: 1, flexDirection: "row", width: "100%" }}
-                    >
-                      <View
-                        style={{ justifyContent: "flex-end", width: "68%" }}
-                      >
-                        <TextInput
-                          label="IFSC"
-                          value={ifc || ""}
-                          onChangeText={(item) => {
-                            setIfc(item?.trim()?.toUpperCase());
-                            setIsIfscVerified(false);
-                          }}
-                          onBlur={() => checkValidate("ifc")}
-
-                          mode="flat"                  // 👈 filled / underline style
-                          underlineColor="#999"        // inactive underline
-                          activeUnderlineColor="#6e5af4"  // focused / active underline
-
-                          style={{
-                            backgroundColor: "#fff",   // white background (filled look)
-                            paddingHorizontal: 0,
-                          }}
-
-                          contentStyle={{
-                            paddingHorizontal: 0,      // input text start aligned
-                          }}
-
-                          theme={{
-                            colors: {
-                              background: "#fff",
-                              surface: "#fff",
-                              onSurfaceVariant: "#999", // label inactive color
-                              primary: "#6e5af4",       // label + underline active color
-                            },
-                          }}
-                        />
-
-                      </View>
-                      <View
-                        style={{
-                          justifyContent: "flex-end",
-                          width: "30%",
-                          marginBottom: 10,
-                        }}
-                      >
-                        {/* <Button
-                          title="Verify"
-                          color="#F79489"
-                          mode="outlined"
-                        /> */}
-                        <ButtonCustom
-                          title="Verify"
-                          onPress={handleVerifyIfc}
-                        />
-                      </View>
-                    </View>
-                    {ifcError ? (
-                      <Text style={styles.error}>{ifcError}</Text>
-                    ) : null}
-                    {isIFSCVerified && (
-                      <Text style={{ color: "green" }}>{"Verified"}</Text>
-                    )}
-                    <TextInput
-                      label="Branch Name"
-                      value={branchName || ""}
-                      onChangeText={setBranchName}
-                      // onBlur={() => checkValidate("branchName")}
-
-                      mode="flat"                  // 👈 filled / underline style
-                      underlineColor="#999"        // inactive underline
-                      activeUnderlineColor="#6e5af4"  // focused / active underline
-
-                      style={{
-                        backgroundColor: "#fff",   // white background (filled look)
-                        paddingHorizontal: 0,
-                      }}
-
-                      contentStyle={{
-                        paddingHorizontal: 0,      // input text start aligned
-                      }}
-
-                      theme={{
-                        colors: {
-                          background: "#fff",
-                          surface: "#fff",
-                          onSurfaceVariant: "#999", // label inactive color
-                          primary: "#6e5af4",       // label + underline active color
-                        },
-                      }}
-                    />
-
-                    {branchNameError ? (
-                      <Text style={styles.error}>{branchNameError}</Text>
-                    ) : null}
-                  </View>
-                )}
-              </View>
-            </View>
-            {/* <Button
-              color="#F79489"
-              mode="outlined"
-              uppercase={false}
-              title="Submit"
-              onPress={createAlliiate}
-            /> */}
-            <View style={{ marginBottom: 20, marginTop: 10 }}>
-            <ButtonCustom title="Submit" onPress={createAlliiate} />
-            </View>
-          </View>
-        </Animated.View>
+        <View style={{ marginVertical: 24 }}>
+          <ButtonCustom title="Submit" />
+        </View>
       </ScrollView>
     </SafeAreaView>
   );
@@ -1189,69 +774,63 @@ const AffiliateCreateScreen = ({ route }) => {
 const styles = StyleSheet.create({
   screenContainer: {
     flex: 1,
-    backgroundColor: "white",
-    flexGrow: 1,
+    backgroundColor: "#fff",
   },
-  addressTypeholder: {
-    marginTop: 3,
-    flex: 1,
-    backgroundColor: "#FFF",
+  scrollContainer: {
+    paddingHorizontal: 16,
+    paddingBottom: 40,
+  },
+  sectionTitle: {
+    fontSize: 16,
+    marginTop: 12,
+    marginBottom: 6,
+  },
+  input: {
+    backgroundColor: "#fff", // 👈 white bg
+    paddingHorizontal: 0,
+  },
+  halfholder: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginBottom: 10,
   },
   radioButtonContainer: {
     flexDirection: "row",
     alignItems: "center",
-    marginBottom: 5,
+    marginRight: 20,
   },
   radioButton: {
     height: 20,
     width: 20,
-    marginLeft: 5,
-    backgroundColor: "#F8F8F8",
     borderRadius: 10,
     borderWidth: 1,
-    borderColor: "#E6E6E6",
+    borderColor: "#ccc",
     alignItems: "center",
     justifyContent: "center",
   },
   radioButtonIcon: {
-    height: 14,
-    width: 14,
-    borderRadius: 7,
+    height: 12,
+    width: 12,
+    borderRadius: 6,
     backgroundColor: "#132742",
   },
   radioButtonText: {
-    fontSize: 16,
-    marginLeft: 16,
+    marginLeft: 8,
+    fontSize: 15,
   },
-  text: {
-    lineHeight: 30,
-    fontSize: 16,
-    marginVertical: 5,
-  },
-  editIcon: {
-    fontSize: 16,
-    marginRight: 5,
-    fontWeight: "bold",
-  },
-  halfholder: {
+  row: {
     flexDirection: "row",
-    paddingRight: 5,
-    paddingLeft: 5,
-    backgroundColor: "#FFF",
-  },
-  addressbox: {
-    backgroundColor: "#fff",
-    marginBottom: 10,
-    paddingLeft: 5,
-  },
-  addressHolder: {
-    marginTop: 10,
-    flex: 1,
-    flexDirection: "column",
-    alignItems: "stretch",
+    alignItems: "center",
+    gap: 10,
   },
   error: {
     color: "red",
+    marginBottom: 6,
+  },
+  success: {
+    color: "green",
+    marginBottom: 6,
   },
 });
+
 export default AffiliateCreateScreen;

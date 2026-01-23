@@ -37,7 +37,7 @@ import fonts from "../utils/fonts";
 const CartScreen = ({ navigation, route }) => {
   const [totalPrice, setTotalPrice] = useState(0);
   const [loading, setLoading] = useState(true);
-  const [walletBalance,setWalletBalance]=useState('0');
+  const [walletBalance, setWalletBalance] = useState('0');
   const [refresh, setRefresh] = useState(false);
   const [categoryTitle, setCategoryTitle] = useState("Cart");
   const [cartproduct, setCartproduct] = useState([]);
@@ -62,9 +62,9 @@ const CartScreen = ({ navigation, route }) => {
   const [on_diet, setOndiet] = useState(0);
   const [on_products, setOnProducts] = useState(0);
   const [on_bloodtest, setOnbloodtest] = useState(0);
-  const [usedWalletAmount,setUsedWalletAmount]=useState('');
+  const [usedWalletAmount, setUsedWalletAmount] = useState('');
   const [earned_cashback, setEarnedCashback] = useState(0);
-  const [on_wallet,setOnWallet]=useState(0);
+  const [on_wallet, setOnWallet] = useState(0);
   const [couponCode, setCouponCode] = useState("");
   const [cartOffer, setCartOffer] = useState([]);
   const [bloodOffer, setBloodOffer] = useState([]);
@@ -816,6 +816,7 @@ const CartScreen = ({ navigation, route }) => {
     removeCartItem(id);
   };
 
+
   //method to increase the quantity of the item in(cart) redux
   const increaseQuantity = (id, quantity) => {
     //if (avaiableQuantity > quantity) {
@@ -842,7 +843,7 @@ const CartScreen = ({ navigation, route }) => {
     getCartProduct();
     getProfileData();
     setTotalPrice(
-      cartproduct.reduce((accumulator, object) => {
+      cartproduct?.reduce((accumulator, object) => {
         return accumulator + object.applied_price;
       }, 0)
     );
@@ -978,7 +979,7 @@ const CartScreen = ({ navigation, route }) => {
       />
       {console.log("cartproduct==>", cartproduct)}
       <View style={styles.container}>
-        {cartproduct?.length === 0 ? (
+        {(!cartproduct || cartproduct.length === 0) ? (
           <View style={styles.cartProductListContiainerEmpty}>
             <Text
               onPress={() => {
@@ -993,7 +994,7 @@ const CartScreen = ({ navigation, route }) => {
           </View>
         ) : (
           <ScrollView style={styles.cartProductListContiainer}>
-            {cartproduct.map((item, index) => (
+            {cartproduct?.map((item, index) => (
               <CartProductList
                 key={index}
                 index={index}
@@ -1067,9 +1068,9 @@ const CartScreen = ({ navigation, route }) => {
                 <View style={styles.child}>
                   <View style={styles.checkboxContainer}>
                     <CheckBox
-                      tintColors={{ true: "#132742",false: "#d6d9ddff" }}
+                      tintColors={{ true: "#132742", false: "#d6d9ddff" }}
                       value={on_diet}
-                      onValueChange={() => {setOnWallet(false);setOndiet(!on_diet)}}
+                      onValueChange={() => { setOnWallet(false); setOndiet(!on_diet) }}
                       style={styles.checkbox}
                       boxType={"square"}
                     />
@@ -1082,9 +1083,9 @@ const CartScreen = ({ navigation, route }) => {
                   </View>
                   <View style={styles.checkboxContainer}>
                     <CheckBox
-                      tintColors={{ true: "#132742",false: "#d6d9ddff" }}
+                      tintColors={{ true: "#132742", false: "#d6d9ddff" }}
                       value={on_products}
-                      onValueChange={() => {setOnWallet(false);setOnProducts(!on_products)}}
+                      onValueChange={() => { setOnWallet(false); setOnProducts(!on_products) }}
                       style={styles.checkbox}
                       boxType={"square"}
                     />
@@ -1097,9 +1098,9 @@ const CartScreen = ({ navigation, route }) => {
                   </View>
                   <View style={styles.checkboxContainer}>
                     <CheckBox
-                      tintColors={{ true: "#132742",false: "#d6d9ddff" }}
+                      tintColors={{ true: "#132742", false: "#d6d9ddff" }}
                       value={on_bloodtest}
-                      onValueChange={() => {setOnWallet(false);setOnbloodtest(!on_bloodtest)}}
+                      onValueChange={() => { setOnWallet(false); setOnbloodtest(!on_bloodtest) }}
                       style={styles.checkbox}
                       boxType={"square"}
                     />
@@ -1112,9 +1113,9 @@ const CartScreen = ({ navigation, route }) => {
                   </View>
                   <View style={styles.checkboxContainer}>
                     <CheckBox
-                      tintColors={{ true: "#132742",false: "#d6d9ddff" }}
+                      tintColors={{ true: "#132742", false: "#d6d9ddff" }}
                       value={on_wallet}
-                      onValueChange={() => {setOnbloodtest(false);setOnProducts(false);setOndiet(false);setCouponCodeValue("");setOnWallet(!on_wallet)}}
+                      onValueChange={() => { setOnbloodtest(false); setOnProducts(false); setOndiet(false); setCouponCodeValue(""); setOnWallet(!on_wallet) }}
                       style={styles.checkbox}
                       boxType={"square"}
                     />
@@ -1134,7 +1135,7 @@ const CartScreen = ({ navigation, route }) => {
                     }}
                   >
                     <CheckBox
-                      tintColors={{ true: "#132742",false: "#d6d9ddff" }}
+                      tintColors={{ true: "#132742", false: "#d6d9ddff" }}
                       value={!!couponCodeValue}
                       style={{ marginTop: 5 }}
                       boxType={"square"}
@@ -1151,7 +1152,7 @@ const CartScreen = ({ navigation, route }) => {
                       <TextInput
                         placeholder="Enter Coupon"
                         value={couponCodeValue}
-                        onChangeText={(text) => {setOnWallet(false);setCouponCodeValue(text)}}
+                        onChangeText={(text) => { setOnWallet(false); setCouponCodeValue(text) }}
                         style={{
                           borderWidth: 1,
                           borderColor: "#000",
@@ -1352,7 +1353,7 @@ const CartScreen = ({ navigation, route }) => {
                     <Text
                       style={[styles.cartBottomSecondaryText, styles.discount]}
                     >
-                      {"\u20B9"} {knecttBonus.discount}
+                      {"\u20B9"} {knecttBonus?.discount}
                     </Text>
                   </View>
                   <View
@@ -1365,7 +1366,7 @@ const CartScreen = ({ navigation, route }) => {
                   >
                     <Text style={styles.cartBottomPrimaryText}>Subtotal</Text>
                     <Text style={styles.cartBottomSecondaryText}>
-                      {"\u20B9"} {knecttBonus.subtotal}
+                      {"\u20B9"} {knecttBonus?.subtotal}
                     </Text>
                   </View>
 
@@ -1429,7 +1430,7 @@ const CartScreen = ({ navigation, route }) => {
                     <Text
                       style={[styles.cartBottomSecondaryText, styles.discount]}
                     >
-                      {"\u20B9"} {knecttBonus.knectt_bonus_amt}
+                      {"\u20B9"} {knecttBonus?.knectt_bonus_amt}
                     </Text>
                   </View>
                 </View>
@@ -1447,7 +1448,7 @@ const CartScreen = ({ navigation, route }) => {
                   >
                     {/* <Text style={styles.cartBottomPrimaryText}>Subtotal</Text>
                     <Text style={styles.cartBottomSecondaryText}>
-                      {"\u20B9"} {cartSummery.subtotal}
+                      {"\u20B9"} {cartSummery?.subtotal}
                     </Text> */}
                     <Text style={styles.cartBottomPrimaryText}>
                       Discount on MRP
@@ -1455,7 +1456,7 @@ const CartScreen = ({ navigation, route }) => {
                     <Text
                       style={[styles.cartBottomSecondaryText, styles.discount]}
                     >
-                      {"\u20B9"} {handleDecimal(cartSummery.discount)}
+                      {"\u20B9"} {handleDecimal(cartSummery?.discount)}
                     </Text>
                   </View>
                   <View
@@ -1469,11 +1470,11 @@ const CartScreen = ({ navigation, route }) => {
                   >
                     {/* <Text style={styles.cartBottomPrimaryText}>Discount</Text>
                     <Text style={styles.cartBottomSecondaryText}>
-                      {"\u20B9"} {cartSummery.discount}
+                      {"\u20B9"} {cartSummery?.discount}
                     </Text> */}
                     <Text style={styles.cartBottomPrimaryText}>Subtotal</Text>
                     <Text style={styles.cartBottomSecondaryText}>
-                      {"\u20B9"} {handleDecimal(cartSummery.subtotal)}
+                      {"\u20B9"} {handleDecimal(cartSummery?.subtotal)}
                     </Text>
                   </View>
                   <View
@@ -1490,13 +1491,13 @@ const CartScreen = ({ navigation, route }) => {
                     </Text>
                     <Text style={styles.cartBottomSecondaryText}>
                       {" "}
-                      - {"\u20B9"} {cartSummery.knectt_bonus_amt}
+                      - {"\u20B9"} {cartSummery?.knectt_bonus_amt}
                     </Text> */}
                     <Text style={styles.cartBottomPrimaryText}>
                       Delivery Charge
                     </Text>
                     <Text style={styles.cartBottomSecondaryText}>
-                      {"\u20B9"} {handleDecimal(cartSummery.delivery_charge)}
+                      {"\u20B9"} {handleDecimal(cartSummery?.delivery_charge)}
                     </Text>
                   </View>
                   <View
@@ -1512,13 +1513,13 @@ const CartScreen = ({ navigation, route }) => {
                       Delivery Charge
                     </Text>
                     <Text style={styles.cartBottomSecondaryText}>
-                      {"\u20B9"} {cartSummery.delivery_charge}
+                      {"\u20B9"} {cartSummery?.delivery_charge}
                     </Text> */}
                     <Text style={styles.cartBottomPrimaryText}>
                       Handling Charge
                     </Text>
                     <Text style={styles.cartBottomSecondaryText}>
-                      {"\u20B9"} {handleDecimal(cartSummery.shipping_handling)}
+                      {"\u20B9"} {handleDecimal(cartSummery?.shipping_handling)}
                     </Text>
                   </View>
                   <View
@@ -1534,11 +1535,11 @@ const CartScreen = ({ navigation, route }) => {
                       Handling Charge
                     </Text>
                     <Text style={styles.cartBottomSecondaryText}>
-                      {"\u20B9"} {cartSummery.shipping_handling}
+                      {"\u20B9"} {cartSummery?.shipping_handling}
                     </Text> */}
                     <Text style={styles.cartBottomPrimaryText}>Tax</Text>
                     <Text style={styles.cartBottomSecondaryText}>
-                      {"\u20B9"} {handleDecimal(cartSummery.tax)}
+                      {"\u20B9"} {handleDecimal(cartSummery?.tax)}
                     </Text>
                   </View>
                   <View
@@ -1554,7 +1555,7 @@ const CartScreen = ({ navigation, route }) => {
                       Offer Price
                     </Text>
                     <Text style={styles.cartBottomSecondaryText}>
-                      {"\u20B9"} {handleDecimal(cartSummery.grand_total)}
+                      {"\u20B9"} {handleDecimal(cartSummery?.grand_total)}
                     </Text>
                   </View>
                   <View
@@ -1570,7 +1571,7 @@ const CartScreen = ({ navigation, route }) => {
                       Grand Total
                     </Text>
                     <Text style={styles.cartBottomSecondaryText}>
-                      {"\u20B9"} {cartSummery.grand_total}
+                      {"\u20B9"} {cartSummery?.grand_total}
                     </Text> */}
                     <View
                       style={{
@@ -1602,7 +1603,7 @@ const CartScreen = ({ navigation, route }) => {
                       >
                         {" "}
                         - {"\u20B9"}{" "}
-                        {handleDecimal(cartSummery.knectt_bonus_amt)}
+                        {handleDecimal(cartSummery?.knectt_bonus_amt)}
                       </Text>
                     </View>
 
@@ -1637,24 +1638,24 @@ const CartScreen = ({ navigation, route }) => {
                   >
                     {/* <Text style={styles.cartBottomPrimaryText}>Subtotal</Text>
                     <Text style={styles.cartBottomSecondaryText}>
-                      {"\u20B9"} {cartSummery.subtotal}
+                      {"\u20B9"} {cartSummery?.subtotal}
                     </Text> */}
-                    <Text style={[styles.cartBottomPrimaryText,{width:'37%'}]}>
+                    <Text style={[styles.cartBottomPrimaryText, { width: '37%' }]}>
                       Wallet Amount
                     </Text>
                     <Text
-                      style={[styles.cartBottomSecondaryText, styles.discount,{width:'23%'}]}
+                      style={[styles.cartBottomSecondaryText, styles.discount, { width: '23%' }]}
                     >
-                        - {"\u20B9"}
-                        {handleDecimal(cartSummery.used_wallet_amount)}
+                      - {"\u20B9"}
+                      {handleDecimal(cartSummery?.used_wallet_amount)}
                     </Text>
-                    {cartSummery.used_wallet_amount > 0 ? (
-  <TouchableOpacity onPress={removeWallet} style={{ justifyContent: "center" }}>
-    <Text style={{ color: "red", marginLeft: "5%", alignSelf: "center", fontSize: 16 }}>
-      Remove
-    </Text>
-  </TouchableOpacity>
-):null}
+                    {cartSummery?.used_wallet_amount > 0 ? (
+                      <TouchableOpacity onPress={removeWallet} style={{ justifyContent: "center" }}>
+                        <Text style={{ color: "red", marginLeft: "5%", alignSelf: "center", fontSize: 16 }}>
+                          Remove
+                        </Text>
+                      </TouchableOpacity>
+                    ) : null}
 
                   </View>
                   <View
@@ -1671,11 +1672,11 @@ const CartScreen = ({ navigation, route }) => {
                       Grand Total
                     </Text>
                     <Text style={styles.cartBottomSecondaryText}>
-                      {"\u20B9"} {cartSummery.grand_total}
+                      {"\u20B9"} {cartSummery?.grand_total}
                     </Text> */}
                     <Text style={styles.cartBottomPrimaryText}>Pay</Text>
                     <Text style={styles.cartBottomSecondaryText}>
-                      {"\u20B9"} {handleDecimal(cartSummery.final_amount)}
+                      {"\u20B9"} {handleDecimal(cartSummery?.final_amount)}
                     </Text>
                   </View>
                 </View>
@@ -1695,7 +1696,7 @@ const CartScreen = ({ navigation, route }) => {
           marginBottom: "2%",
         }}
       >
-        {cartproduct.length > 0 ? (
+        {cartproduct?.length > 0 ? (
           // <Button
           //   color="#F79489"
           //   mode="outlined"
@@ -1706,9 +1707,9 @@ const CartScreen = ({ navigation, route }) => {
           // />
           <ButtonCustom title="CHECKOUT" onPress={() => createOder()} />
         ) : null}
-        {cartSummery.line_after_button ? (
+        {cartSummery?.line_after_button ? (
           <Text style={styles.afterbutton}>
-            {cartSummery.line_after_button}
+            {cartSummery?.line_after_button}
           </Text>
         ) : null}
       </View>

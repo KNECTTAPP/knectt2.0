@@ -1,26 +1,24 @@
-import "react-native-gesture-handler";
-import React, { useState, useFocusEffect, useEffect, useCallback, useEffectEvent } from "react";
+import React, { useEffect, useEffectEvent, useState } from "react";
 import {
-
-  View,
-  StyleSheet,
   Image,
-  Text,
-  FlatList,
   Linking,
   Platform,
   ScrollView,
+  StyleSheet,
+  Text,
+  View
 } from "react-native";
+import "react-native-gesture-handler";
 
-import logos from "../../assets/img/BrandLogoMobile.png";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import logos from "../../assets/img/BrandLogoMobile.png";
 //noimageprofile.png
-import EndUrl from "../api/EndUrl";
-import fonts from "../utils/fonts";
-import DeviceInfo from "react-native-device-info";
-import { closeDrawer } from "../navigation/DrawerService";
-import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import { useNavigation } from "@react-navigation/native";
+import DeviceInfo from "react-native-device-info";
+import { SafeAreaView } from "react-native-safe-area-context";
+import EndUrl from "../api/EndUrl";
+import { closeDrawer } from "../navigation/DrawerService";
+import fonts from "../utils/fonts";
 const CustomSidebarMenu = (props) => {
 
   const navigationr = useNavigation()

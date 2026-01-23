@@ -32,7 +32,7 @@ export const IconPlayCircle = () => {
 };
 
 export const IconMenu = () => {
-  if (Platform.OS === "ios1") {
+  if (Platform.OS === "ios") {
     return (
       <Menu
         width={30}
@@ -59,7 +59,7 @@ export const IconMenu = () => {
 };
 
 export const IconArrowLeft = () => {
-  if (Platform.OS === "ios1") {
+  if (Platform.OS === "ios") {
     return (
       <ArrowLeft
         width={30}
@@ -86,7 +86,7 @@ export const IconArrowLeft = () => {
 };
 
 export const IconSearch = () => {
-  if (Platform.OS === "ios1") {
+  if (Platform.OS === "ios") {
     return (
       <Search
         color={"#424553"}
@@ -112,7 +112,7 @@ export const IconSearch = () => {
 };
 
 export const IconBell = () => {
-  if (Platform.OS === "ios1") {
+  if (Platform.OS === "ios") {
     return (
       <Bell
         color={"#424553"}
@@ -146,7 +146,7 @@ export const IconBell = () => {
 };
 
 export const IconDollar = () => {
-  if (Platform.OS === "ios1") {
+  if (Platform.OS === "ios") {
     return (
       <DollarSign
         color={"#F79489"}
@@ -180,7 +180,7 @@ export const IconDollar = () => {
 };
 
 export const IconPhoneCall = () => {
-  if (Platform.OS === "ios1") {
+  if (Platform.OS === "ios") {
     return (
       <PhoneCall
         color={"#F79489"}
@@ -212,7 +212,7 @@ export const IconPhoneCall = () => {
 };
 
 export const IconMessageCircle = () => {
-  if (Platform.OS === "ios1") {
+  if (Platform.OS === "ios") {
     return (
      
       <Feather name="message-circle" size={24} color="#000" />
@@ -237,7 +237,7 @@ export const IconMessageCircle = () => {
 };
 
 export const IconShoppingCart = () => {
-  if (Platform.OS === "ios1") {
+  if (Platform.OS === "ios") {
     return (
       <ShoppingCart
         color={"#F79489"}
@@ -269,7 +269,7 @@ export const IconShoppingCart = () => {
 };
 
 export const IconTrash = () => {
-  if (Platform.OS === "ios1") {
+  if (Platform.OS === "ios") {
     return <Trash color={"#F79489"} style={{ height: 15, width: 15 }} />;
   }
   return (
@@ -282,21 +282,21 @@ export const IconTrash = () => {
 };
 
 export const IconArrowDown = () => {
-  if (Platform.OS === "ios1") {
+  if (Platform.OS === "ios") {
     return <ArrowDown color={"red"} />;
   }
   return <Feather name={"arrow-down"} size={30} color={"red"} />;
 };
 
 export const IconClose = () => {
-  if (Platform.OS === "ios1") {
+  if (Platform.OS === "ios") {
     return <XCircle color={"red"} />;
   }
   return <Feather name={"x-circle"} size={30} color={"red"} />;
 };
 
 export const IconPaperClip = () => {
-  if (Platform.OS === "ios1") {
+  if (Platform.OS === "ios") {
     return <Paperclip style={{ height: 16, marginRight: 5 }} color={"grey"} />;
   }
   return (
@@ -308,14 +308,14 @@ export const IconPaperClip = () => {
 };
 
 export const IconIosCheckMark = () => {
-  if (Platform.OS === "ios1") {
+  if (Platform.OS === "ios") {
     return <CheckCircle style={{ height: 16, width: 16 }} color={"#132742"} />;
   }
   return <Ionicons name="ios-checkmark-circle" size={16} color={"#132742"} />;
 };
 
 export const IconArrowRight = ({ color }) => {
-  if (Platform.OS === "ios1") {
+  if (Platform.OS === "ios") {
     return <ArrowRight width={30} height={30} color={color || "#F79489"} />;
   }
   return (
@@ -334,7 +334,7 @@ export const IconArrowRight = ({ color }) => {
 };
 
 export const IconCheck = () => {
-  if (Platform.OS === "ios1") {
+  if (Platform.OS === "ios") {
     return <Check color="#424553" style={{ height: 30, width: 30 }} />;
   }
   return (
@@ -353,7 +353,7 @@ export const IconCheck = () => {
 };
 
 export const IconMapPin = () => {
-  if (Platform.OS === "ios1") {
+  if (Platform.OS === "ios") {
     return <MapPin color="#000" style={{ height: 16, width: 16 }} />;
   }
   return (
@@ -367,7 +367,7 @@ export const IconMapPin = () => {
 };
 
 export const IconDownload = () => {
-  if (Platform.OS === "ios1") {
+  if (Platform.OS === "ios") {
     return <Download color="#424553" style={{ height: 30, width: 30 }} />;
   }
   return (

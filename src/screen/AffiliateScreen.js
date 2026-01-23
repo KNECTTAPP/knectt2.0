@@ -151,8 +151,7 @@ const AffiliateScreen = ({ navigation, route }) => {
 
       <ScrollView
         style={{ flex: 1 }}
-        
-        contentContainerStyle={{ paddingBottom: 100 }} // 👈 button space
+
         showsVerticalScrollIndicator={false}
       >
         {/* VIDEO */}

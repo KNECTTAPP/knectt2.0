@@ -66,30 +66,14 @@ const CategoryScreen = ({ navigation, route }) => {
   };
   const [bodyModalVisible, setBodyModalVisible] = useState(false);
 
-  const getProfileData = async () => {
-    let usertoken = await AsyncStorage.getItem("usertoken");
-    const settingsGet = {
-      method: "GET",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-        token: JSON.parse(usertoken),
-        Version: DeviceInfo.getVersion().replace(/(\r\n|\n|\r)/gm, ""),
-        Platform: Platform.OS,
-      },
-    };
-    const responseuser = await fetch(EndUrl.getprofile, settingsGet);
-    const updateAvailable = responseuser.headers.get("updateAvailable");
-    const forceUpdate = responseuser.headers.get("forceUpdate");
-    if (updateAvailable) {
-      await AsyncStorage.setItem("updateAvailable", "true");
-    }
-    if (forceUpdate) {
-      await AsyncStorage.setItem("forceUpdate", "true");
-    }
-    const jsonuser = await responseuser.json();
-    setUserData(jsonuser.data[0]);
-  };
+ const loadProfile = async () => {
+  try {
+    const profile = await getProfileData();
+    setUserData(profile);
+  } catch (error) {
+    console.log("Profile error:", error.message);
+  }
+};
 
   const getSpecialcategory = async () => {
     try {
@@ -305,7 +289,7 @@ const CategoryScreen = ({ navigation, route }) => {
     //setLoading(false);
 
     getstodata();
-    getProfileData();
+    loadProfile();
     getCategory();
     getSpecialcategory();
     getCartcountAj();

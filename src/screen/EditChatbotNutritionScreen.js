@@ -1,44 +1,20 @@
-import React, { useState, Component, useEffect, useCallback } from "react";
-import {
-  Platform,
-  View,
-  Button,
-  Text,
-  Image,
-  Linking,
-  Dimensions,
-  TouchableWithoutFeedback,
-  Alert,
-  StyleSheet,
-  Pressable,
-  
-  ScrollView,
-  TouchableOpacity,
-  FlatList,
-  StatusBar,
-} from "react-native";
-import CheckBox from "@react-native-community/checkbox";
-import HTMLView from "react-native-htmlview";
-import { format } from "date-fns";
-import ChatBot from "react-native-chatbot";
-import { scale } from "react-native-size-matters";
-import { TabNavigators } from "../../TabNavigators.js";
-import ModalTester from "../component/ModalComponent";
-import { ProgressLoader } from "../component/ProgressLoader";
-import Header from "../component/Header";
-import ImageCarousel from "../component/SimilerProductCarousel";
-import bodyMatchbtn from "../../assets/img/bodyMatchbtn.png";
-import TestProfileScreen from "./TestProfileScreen.js";
-import EndUrl from "../api/EndUrl";
-import HTML from "react-native-render-html";
-import ViewMoreText from "react-native-view-more-text";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import FlashMessage, {
-  showMessage,
-  hideMessage,
-} from "react-native-flash-message";
-import { ButtonCustom } from "../component/ButtonCustom.js";
+import CheckBox from "@react-native-community/checkbox";
+import React, { useEffect, useState } from "react";
+import {
+  Dimensions,
+  FlatList,
+  Platform,
+  StyleSheet,
+  Text,
+  View
+} from "react-native";
+import ChatBot from "react-native-chatbot";
 import DeviceInfo from "react-native-device-info";
+import FlashMessage from "react-native-flash-message";
+import EndUrl from "../api/EndUrl";
+import { ButtonCustom } from "../component/ButtonCustom.js";
+import Header from "../component/Header";
 
 //arrow-right
 const SLIDER_1_FIRST_ITEM = 1;

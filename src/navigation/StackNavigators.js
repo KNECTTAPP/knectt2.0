@@ -81,10 +81,6 @@ function RootStack({initialRoute}) {
       />
       <Stack.Screen name="MainCategory" component={MainCategory} />
        <Stack.Screen name="TermsAndCondition" component={TermsAndCondition} />
-             <Stack.Screen
-        name="AffiliateCreate"
-        component={AffiliateCreateScreen}
-      />
     
            <Stack.Screen
         name="ContactUs"
@@ -96,6 +92,10 @@ function RootStack({initialRoute}) {
         name="Affiliate"
         component={AffiliateScreen}
         options={{ headerShown: false }}
+      />
+        <Stack.Screen
+        name="AffiliateCreate"
+        component={AffiliateCreateScreen}
       />
       <Stack.Screen
         name="RefeEarn"
@@ -345,6 +345,7 @@ function RootStack({initialRoute}) {
 
 // ------------- Root Navigation -------------
 function RootNavigator({ initialRoute }) {
+  console.log("asdfasdasdasdasdasd",1)
   return (
     <NavigationContainer ref={navigationRef}>
       <DrawerProvider>
@@ -359,11 +360,11 @@ function RootNavigator({ initialRoute }) {
 export default function StackNavigators({ linking }) {
   const [isReady, setIsReady] = useState(false);
   const [initialRoute, setInitialRoute] = useState(null);
-
+ console.log("asdasdasdasdasdsadasdasdasd",1)
   useEffect(() => {
     const init = async () => {
       try {
-       
+        console.log("asdasdasdasdasdsadasdasdasd",2)
         let token = await AsyncStorage.getItem("usertoken");
       
         setInitialRoute(token ? "TabNavigators" : "login");
@@ -378,10 +379,12 @@ export default function StackNavigators({ linking }) {
     init();
   }, []);
 
-  
-  if (!isReady || !initialRoute) {
-    return null; // ya Loader component
-  }
+   console.log("asdasdasdasdasdsadasdasdasd",isReady, initialRoute)
+  // if (!isReady || !initialRoute) {
+  //   return null; // ya Loader component
+  // }
+
+  console.log("asdasdasdasdasdsadasdasdasd",4)
 
   return <RootNavigator initialRoute={initialRoute} linking={linking} />;
 }

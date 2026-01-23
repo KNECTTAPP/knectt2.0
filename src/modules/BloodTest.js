@@ -1,37 +1,29 @@
-import React, { Component, useEffect, useState } from "react";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import DateTimePicker from "@react-native-community/datetimepicker";
+import React, { useEffect, useState } from "react";
 import {
-  View,
-  Text,
-  StyleSheet,
-  TextInput,
-  KeyboardAvoidingView,
-  ScrollView,
-  SafeAreaView,
-  Image,
-  Keyboard,
   Alert,
-  useWindowDimensions,
-  Button,
+  Keyboard,
+  KeyboardAvoidingView,
   Platform,
+  ScrollView,
+  StyleSheet,
+  View
 } from "react-native";
-import strings from "../utils/strings";
-import colors from "../utils/colors";
-import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
-import InputComp from "../component/InputComp";
-import { convertIntoDateFormat } from "../utils/commonFunctions";
+import DeviceInfo from "react-native-device-info";
+import { SafeAreaView } from "react-native-safe-area-context";
+import endUrls from "../api/EndUrl";
 import AutoCompleteInput from "../component/AutoCompleteInput";
 import { ButtonCustom } from "../component/ButtonCustom";
-import DatePicker from "react-native-date-picker";
 import ChipsContainer from "../component/ChipsContainer";
-import { addBloodTestToCart, fetchAvailableSlots } from "../services";
-import Header from "../component/Header";
 import Divider from "../component/Divider";
-import ModalCommon from "../component/ModalCommon";
-import RadioModal from "../component/RadioModal";
+import Header from "../component/Header";
+import InputComp from "../component/InputComp";
 import { ProgressLoader } from "../component/ProgressLoader";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import endUrls from "../api/EndUrl";
-import DeviceInfo from "react-native-device-info";
+import { addBloodTestToCart, fetchAvailableSlots } from "../services";
+import colors from "../utils/colors";
+import { convertIntoDateFormat } from "../utils/commonFunctions";
+import strings from "../utils/strings";
 
 const BloodTestScreen = ({ navigation, route }) => {
   const [location, setLocation] = useState(null);
@@ -60,6 +52,8 @@ const BloodTestScreen = ({ navigation, route }) => {
   const [showSlotButton, setShowSlotButton] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
   const [cartCountshow, setCartCountshow] = useState();
+  const [pickerDate, setPickerDate] = useState(new Date());
+
 
   useEffect(() => {
     getCartcountAj();
@@ -239,156 +233,166 @@ const BloodTestScreen = ({ navigation, route }) => {
   };
 
   return (
-    <KeyboardAvoidingView
-      style={{ backgroundColor: colors, flex: 1 }}
-      behavior={Platform.OS === "ios" ? "padding" : "height"}
-      keyboardVerticalOffset={10}
-    >
-      <ProgressLoader isVisible={isLoading} />
-      <>
-        <Header
-          categoryTitle={"Book Test"}
-          cartCountshow={cartCountshow}
-          cart
-          backButtonwithtext
+    <SafeAreaView style={{ flex: 1, backgroundColor: "#fff" }} edges={["top"]}>
+      <KeyboardAvoidingView
+        style={{ backgroundColor: colors, flex: 1 }}
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
+        keyboardVerticalOffset={10}
+      >
+        <ProgressLoader isVisible={isLoading} />
+        <>
+          <Header
+            categoryTitle={"Book Test"}
+            cartCountshow={cartCountshow}
+            cart
+            backButtonwithtext
           // notification
-        />
-        <ScrollView keyboardShouldPersistTaps="handled">
-          <View style={styles.container}>
-            <AutoCompleteInput
-              textInputProps={{
-                style: styles.textInput,
-                onChangeText: (e) => {
-                  setLocation(e);
-                },
-              }}
-              onPress={_onPressAddress}
-              isError={isLocationError}
-            />
+          />
+          <ScrollView keyboardShouldPersistTaps="handled">
+            <View style={styles.container}>
+              <AutoCompleteInput
+                textInputProps={{
+                  style: styles.textInput,
+                  onChangeText: (e) => {
+                    setLocation(e);
+                  },
+                }}
+                onPress={_onPressAddress}
+                isError={isLocationError}
+              />
 
-            <InputComp
-              title={strings.select_date}
-              placeholder={strings.dd_mm_yyyy}
-              styleTextInput={{ width: "50%" }}
-              isError={isDateError}
-              onPressIn={() => {
-                setIsDateModalVisible(true);
-                Keyboard.dismiss();
-              }}
-              value={dateData}
-              cursorColor={"transparent"}
-            />
-            <DatePicker
-              mode="date"
-              date={new Date()}
-              modal
-              open={isDateModalVisible}
-              onCancel={() => setIsDateModalVisible(false)}
-              onConfirm={_confirmDate}
-            />
+              <InputComp
+                title={strings.select_date}
+                placeholder={strings.dd_mm_yyyy}
+                styleTextInput={{ width: "50%" }}
+                isError={isDateError}
+                onPressIn={() => {
+                  setIsDateModalVisible(true);
+                  Keyboard.dismiss();
+                }}
+                value={dateData}
+                cursorColor={"transparent"}
+              />
+              {isDateModalVisible && (
+                <DateTimePicker
+                  value={pickerDate}   // ✅ Date object ONLY
+                  mode="date"
+                  display={Platform.OS === "ios" ? "spinner" : "default"}
+                  onChange={(event, selectedDate) => {
+                    setIsDateModalVisible(false);
 
-            {!!availableSlots && (
-              <>
-                <ChipsContainer
-                  data={availableSlots}
-                  selectedSlot={_selectedChip}
+                    if (event.type === "dismissed") return;
+
+                    setPickerDate(selectedDate);   // ✅ keep picker stable
+                    _confirmDate(selectedDate);
+                  }}
                 />
-                {!!availableSlots.length && (
-                  <>
-                    <View style={{ marginBottom: 20 }} />
-                    <Divider />
-                    <InputComp
-                      title={"Name"}
-                      placeholder={"Name"}
-                      isError={isNameError}
-                      onChangeText={setName}
-                      value={name}
-                    />
-                    <InputComp
-                      title={"Email"}
-                      placeholder={"Email"}
-                      isError={isMailError}
-                      onChangeText={setEmail}
-                      value={email}
-                    />
+              )}
 
-                    <View style={styles.subContainer}>
-                      <InputComp
-                        title={"Gender"}
-                        placeholder={"M/F"}
-                        // styleTextInput={{ width: "50%" }}
-                        isError={isGenderError}
-                        value={gender}
-                        onChangeText={setGender}
-                        containerStyle={{ width: "49%" }}
-                      />
-                      <InputComp
-                        title={"Age"}
-                        placeholder={"Age"}
-                        // styleTextInput={{ width: "50%" }}
-                        containerStyle={{ width: "49%" }}
-                        isError={isDateError}
-                        value={age}
-                        keyboardType="number-pad"
-                        maxLength={3}
-                        onChangeText={setAge}
-                      />
-                    </View>
+
+              {!!availableSlots && (
+                <>
+                  <ChipsContainer
+                    data={availableSlots}
+                    selectedSlot={_selectedChip}
+                  />
+                  {!!availableSlots.length && (
                     <>
-                      <InputComp
-                        title={strings.house_flat_floor}
-                        placeholder={strings.house_flat_floor}
-                        isError={isHouseError}
-                        onChangeText={setHouseDetails}
-                        value={houseDetails}
-                      />
-                      <InputComp
-                        title={strings.apartment_road_area}
-                        placeholder={strings.apartment_road_area}
-                        isError={isApartmentError}
-                        onChangeText={setApartmentDetails}
-                        value={apartmentDetails}
-                      />
-
-                      <InputComp
-                        title={strings.pin_code}
-                        placeholder={strings.pincode_6_digits}
-                        styleTextInput={{ width: "50%" }}
-                        keyboardType="number-pad"
-                        maxLength={6}
-                        isError={isPincodeError}
-                        onChangeText={setPincode}
-                        value={pincode}
-                      />
-
                       <View style={{ marginBottom: 20 }} />
+                      <Divider />
+                      <InputComp
+                        title={"Name"}
+                        placeholder={"Name"}
+                        isError={isNameError}
+                        onChangeText={setName}
+                        value={name}
+                      />
+                      <InputComp
+                        title={"Email"}
+                        placeholder={"Email"}
+                        isError={isMailError}
+                        onChangeText={setEmail}
+                        value={email}
+                      />
+
+                      <View style={styles.subContainer}>
+                        <InputComp
+                          title={"Gender"}
+                          placeholder={"M/F"}
+                          // styleTextInput={{ width: "50%" }}
+                          isError={isGenderError}
+                          value={gender}
+                          onChangeText={setGender}
+                          containerStyle={{ width: "49%" }}
+                        />
+                        <InputComp
+                          title={"Age"}
+                          placeholder={"Age"}
+                          // styleTextInput={{ width: "50%" }}
+                          containerStyle={{ width: "49%" }}
+                          isError={isDateError}
+                          value={age}
+                          keyboardType="number-pad"
+                          maxLength={3}
+                          onChangeText={setAge}
+                        />
+                      </View>
+                      <>
+                        <InputComp
+                          title={strings.house_flat_floor}
+                          placeholder={strings.house_flat_floor}
+                          isError={isHouseError}
+                          onChangeText={setHouseDetails}
+                          value={houseDetails}
+                        />
+                        <InputComp
+                          title={strings.apartment_road_area}
+                          placeholder={strings.apartment_road_area}
+                          isError={isApartmentError}
+                          onChangeText={setApartmentDetails}
+                          value={apartmentDetails}
+                        />
+
+                        <InputComp
+                          title={strings.pin_code}
+                          placeholder={strings.pincode_6_digits}
+                          styleTextInput={{ width: "50%" }}
+                          keyboardType="number-pad"
+                          maxLength={6}
+                          isError={isPincodeError}
+                          onChangeText={setPincode}
+                          value={pincode}
+                        />
+
+                        <View style={{ marginBottom: 20 }} />
+                      </>
                     </>
-                  </>
-                )}
-              </>
+                  )}
+                </>
+              )}
+            </View>
+          </ScrollView>
+          <View style={{ marginBottom: 10, marginHorizontal: 10 }}>
+            {showSlotButton ? (
+              <ButtonCustom
+                title={strings.get_time_slot}
+                onPress={_handleOnPressButton}
+                disabled={isLoading}
+                isLoading={isLoading}
+              />
+            ) : (
+              <ButtonCustom
+                title={strings.add_to_cart}
+                onPress={_onPressAddToCart}
+                disabled={isLoading}
+                isLoading={isLoading}
+              />
             )}
           </View>
-        </ScrollView>
-        <View style={{ marginBottom: 10, marginHorizontal: 10 }}>
-          {showSlotButton ? (
-            <ButtonCustom
-              title={strings.get_time_slot}
-              onPress={_handleOnPressButton}
-              disabled={isLoading}
-              isLoading={isLoading}
-            />
-          ) : (
-            <ButtonCustom
-              title={strings.add_to_cart}
-              onPress={_onPressAddToCart}
-              disabled={isLoading}
-              isLoading={isLoading}
-            />
-          )}
-        </View>
-        {/* <RadioModal/> */}
-      </>
-    </KeyboardAvoidingView>
+          {/* <RadioModal/> */}
+        </>
+      </KeyboardAvoidingView>
+    </SafeAreaView>
   );
 };
 

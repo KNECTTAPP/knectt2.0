@@ -259,30 +259,14 @@ const SearchScreen = ({ navigation, route }) => {
   const goMenuClick = (arg) => {
     navigation.navigate(arg);
   };
-  const getProfileData = async () => {
-    let usertoken = await AsyncStorage.getItem("usertoken");
-    const settingsGet = {
-      method: "GET",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-        token: JSON.parse(usertoken),
-        Version: DeviceInfo.getVersion().replace(/(\r\n|\n|\r)/gm, ""),
-        Platform: Platform.OS,
-      },
-    };
-    const response = await fetch(EndUrl.getprofile, settingsGet);
-    const updateAvailable = response.headers.get("updateAvailable");
-    const forceUpdate = response.headers.get("forceUpdate");
-    if (updateAvailable) {
-      await AsyncStorage.setItem("updateAvailable", "true");
-    }
-    if (forceUpdate) {
-      await AsyncStorage.setItem("forceUpdate", "true");
-    }
-    const json = await response.json();
-    setUserData(json.data[0]);
-  };
+  const loadProfile = async () => {
+  try {
+    const profile = await getProfileData();
+    setUserData(profile);
+  } catch (error) {
+    console.log("Profile error:", error.message);
+  }
+};
   const getCartcountAj = async () => {
     setLoading(true);
     try {
@@ -383,7 +367,7 @@ const SearchScreen = ({ navigation, route }) => {
 
   useEffect(() => {
     setLoading(false);
-    getProfileData();
+    loadProfile();
   }, [navigation]);
 
   const onMomentumScrollEnd = async ({ nativeEvent }) => {

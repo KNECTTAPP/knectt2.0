@@ -18,7 +18,7 @@ import FlashMessage, {
   showMessage
 } from "react-native-flash-message";
 import { TextInput } from "react-native-paper";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { SafeAreaView, useSafeAreaInsets } from "react-native-safe-area-context";
 import Toast from 'react-native-simple-toast';
 import EndUrl from "../api/EndUrl";
 import PlacesAutocomplete from "../component/GoogleAutoCompleteComponent.js";
@@ -366,8 +366,9 @@ const AddEditAddressScreen = ({ navigation, route }) => {
   }, []);
 
   return (
-    <View style={styles.screenContainer}>
-      <KeyboardAvoidingView
+    <SafeAreaView style={{ flex: 1, backgroundColor: "#fff" } } edges={["top"]}>
+      <View style={styles.screenContainer}>
+        <KeyboardAvoidingView
         style={{ flex: 1 }}
         behavior={Platform.OS === "ios" ? "padding" : undefined}
         keyboardVerticalOffset={Platform.OS === "ios" ? insets.top : 0}
@@ -425,7 +426,7 @@ const AddEditAddressScreen = ({ navigation, route }) => {
           </View>
 
           <View style={styles.halfholder}>
-            <View style={{ width: "45%", marginRight: 5 }}>
+            <View style={{ width: "50%", marginRight: 5 }}>
               <TextInput
                 label="First Name *"
                 value={firstname}
@@ -643,7 +644,7 @@ const AddEditAddressScreen = ({ navigation, route }) => {
               <Text style={{ marginBottom: 5, marginTop: 4 }}>
                 Type of Address *
               </Text>
-              <View style={styles.halfholder}>
+              <View style={{flexDirection:'row'}}>
                 <RadioButton
                   onPress={() => onRadioBtnClick(1)}
                   selected={homeradiSelcted}
@@ -657,29 +658,7 @@ const AddEditAddressScreen = ({ navigation, route }) => {
                   Office
                 </RadioButton>
               </View>
-              {ismodesection ? (
-                <View>
-                  <Text>Is your office open on weekends ? </Text>
-                  <View style={styles.checkboxContainer}>
-                    <CheckBox
-                      tintColors={{ true: "#132742", false: "#999" }}
-                      value={isSelected}
-                      onValueChange={setSelection}
-                      style={styles.checkbox}
-                    />
-                    <Text style={styles.label}>Open on Saturday</Text>
-                  </View>
-                  <View style={styles.checkboxContainer}>
-                    <CheckBox
-                     tintColors={{ true: "#132742", false: "#999" }}
-                      value={isSunSelected}
-                      onValueChange={setSundSelection}
-                      style={styles.checkbox}
-                    />
-                    <Text style={styles.label}>Open on Sunday</Text>
-                  </View>
-                </View>
-              ) : null}
+           
             </View>
           </View>
 
@@ -725,8 +704,9 @@ const AddEditAddressScreen = ({ navigation, route }) => {
             </Text>
           </TouchableHighlight>
         </View>
-      </KeyboardAvoidingView>
-    </View>
+        </KeyboardAvoidingView>
+      </View>
+    </SafeAreaView>
   );
 };
 
@@ -739,15 +719,18 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#FFF",
     marginBottom: 10,
+    paddingHorizontal: 5,
   },
   addressbox: {
     backgroundColor: "#fff",
     marginBottom: 10,
-    paddingLeft: 5,
-    paddingBottom: 10,
+    paddingHorizontal: 10,
+    paddingVertical: 5,
+    borderBottomColor: "#E6E6E6",
+   
   },
   addressHolder: {
-    marginTop: 10,
+    marginTop: -20,
     flex: 1,
     flexDirection: "column",
     alignItems: "stretch",
@@ -762,8 +745,10 @@ const styles = StyleSheet.create({
   },
   halfholder: {
     flexDirection: "row",
-    paddingRight: 5,
-    paddingLeft: 5,
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginBottom: 10,
+    paddingHorizontal: 10,
     backgroundColor: "#FFF",
     paddingBottom: 10,
   },
