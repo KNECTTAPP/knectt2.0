@@ -10,7 +10,8 @@ import {
   StyleSheet,
   Text,
   TouchableOpacity,
-  View
+  View,
+  KeyboardAvoidingView,
 } from "react-native";
 import appsFlyer from "react-native-appsflyer";
 import DeviceInfo from "react-native-device-info";
@@ -664,109 +665,115 @@ const AffiliateCreateScreen = ({ route }) => {
       <FlashMessage />
       <Header categoryTitle="Affiliate Account Creation" backButtonwithtext />
 
-      <ScrollView
+      <KeyboardAvoidingView
         style={{ flex: 1 }}
-        contentContainerStyle={styles.scrollContainer}
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
+        keyboardVerticalOffset={Platform.OS === "ios" ? 80 : 0}
       >
-        <Text style={styles.sectionTitle}>Title</Text>
-        <View style={styles.halfholder}>
-          {title.map((item) => (
-            <RadioButton
-              key={item.id}
-              selected={item.selected}
-              onPress={() => onRadioBtnClickTitle(item)}
-            >
-              {item.name}
+        <ScrollView
+          style={{ flex: 1 }}
+          contentContainerStyle={styles.scrollContainer}
+        >
+          <Text style={styles.sectionTitle}>Title</Text>
+          <View style={styles.halfholder}>
+            {title.map((item) => (
+              <RadioButton
+                key={item.id}
+                selected={item.selected}
+                onPress={() => onRadioBtnClickTitle(item)}
+              >
+                {item.name}
+              </RadioButton>
+            ))}
+          </View>
+
+          <TextInput
+            label="First Name *"
+            mode="flat"                // 👈 underline style
+            underlineColor="#999"
+            activeUnderlineColor="#4649b0"
+
+            style={{
+              backgroundColor: "#fff", // 👈 white bg
+              paddingHorizontal: 0,
+            }}
+
+            contentStyle={{
+              paddingHorizontal: 0,
+            }}
+
+            theme={{
+              colors: {
+                background: "#fff",
+                surface: "#fff",
+                onSurfaceVariant: "#999", // label color (inactive)
+                primary: "#6e5af4",          // label + underline active
+              },
+            }} value={firstname} onChangeText={setFirstname} />
+          {firstnameError && <Text style={styles.error}>{firstnameError}</Text>}
+
+          <TextInput label="Last Name *" value={lastname} onChangeText={setLastname} style={styles.input} />
+          {lastnameError && <Text style={styles.error}>{lastnameError}</Text>}
+
+          <TextInput label="Email *" value={email} onChangeText={setEmail} style={styles.input} />
+          {emailError && <Text style={styles.error}>{emailError}</Text>}
+
+          <TextInput label="Confirm Email *" value={confirmEmail} onChangeText={setConfirmEmail} style={styles.input} />
+          {confirmEmailError && <Text style={styles.error}>{confirmEmailError}</Text>}
+
+          <Text style={styles.sectionTitle}>Gender</Text>
+          <View style={styles.halfholder}>
+            {isLiked.map((item) => (
+              <RadioButton
+                key={item.id}
+                selected={item.selected}
+                onPress={() => onRadioBtnClick(item)}
+              >
+                {item.name}
+              </RadioButton>
+            ))}
+          </View>
+
+          <DropdownComponent data={city} state={state} setState={setState} />
+          {stateError && <Text style={styles.error}>{stateError}</Text>}
+
+          <Text style={styles.sectionTitle}>Payment Mode</Text>
+          <View style={styles.halfholder}>
+            <RadioButton selected={accountType === "upi"} onPress={() => setAccountType("upi")}>
+              UPI
             </RadioButton>
-          ))}
-        </View>
-
-        <TextInput
-          label="First Name *"
-          mode="flat"                // 👈 underline style
-          underlineColor="#999"
-          activeUnderlineColor="#4649b0"
-
-          style={{
-            backgroundColor: "#fff", // 👈 white bg
-            paddingHorizontal: 0,
-          }}
-
-          contentStyle={{
-            paddingHorizontal: 0,
-          }}
-
-          theme={{
-            colors: {
-              background: "#fff",
-              surface: "#fff",
-              onSurfaceVariant: "#999", // label color (inactive)
-              primary: "#6e5af4",          // label + underline active
-            },
-          }} value={firstname} onChangeText={setFirstname} />
-        {firstnameError && <Text style={styles.error}>{firstnameError}</Text>}
-
-        <TextInput label="Last Name *" value={lastname} onChangeText={setLastname} style={styles.input} />
-        {lastnameError && <Text style={styles.error}>{lastnameError}</Text>}
-
-        <TextInput label="Email *" value={email} onChangeText={setEmail} style={styles.input} />
-        {emailError && <Text style={styles.error}>{emailError}</Text>}
-
-        <TextInput label="Confirm Email *" value={confirmEmail} onChangeText={setConfirmEmail} style={styles.input} />
-        {confirmEmailError && <Text style={styles.error}>{confirmEmailError}</Text>}
-
-        <Text style={styles.sectionTitle}>Gender</Text>
-        <View style={styles.halfholder}>
-          {isLiked.map((item) => (
-            <RadioButton
-              key={item.id}
-              selected={item.selected}
-              onPress={() => onRadioBtnClick(item)}
-            >
-              {item.name}
+            <RadioButton selected={accountType === "account"} onPress={() => setAccountType("account")}>
+              Bank Account
             </RadioButton>
-          ))}
-        </View>
+          </View>
 
-        <DropdownComponent data={city} state={state} setState={setState} />
-        {stateError && <Text style={styles.error}>{stateError}</Text>}
+          {accountType === "upi" ? (
+            <>
+              <View style={styles.row}>
+                <TextInput label="UPI" value={upi} onChangeText={setUpi} style={[styles.input, { flex: 1 }]} />
+                <ButtonCustom title="Verify" onPress={handleValidateUpi} containerStyle={{ padding: 20 }} />
+              </View>
+              {upiError && <Text style={styles.error}>{upiError}</Text>}
+              {isUPIVerified && <Text style={styles.success}>Verified</Text>}
+            </>
+          ) : (
+            <>
+              <TextInput label="A/C Holder Name" value={accountHolderName} onChangeText={setAccountHolderName} style={styles.input} />
+              <TextInput label="Bank A/C Number" value={acnumber} onChangeText={setAcnumber} style={styles.input} />
+              <View style={styles.row}>
+                <TextInput label="IFSC" value={ifc} onChangeText={(t) => setIfc(t.toUpperCase())} style={[styles.input, { flex: 1 }]} />
+                <ButtonCustom title="Verify" onPress={handleVerifyIfc} containerStyle={{ padding: 20 }} />
+              </View>
+              {isIFSCVerified && <Text style={styles.success}>Verified</Text>}
+              <TextInput label="Branch Name" value={branchName} onChangeText={setBranchName} style={styles.input} />
+            </>
+          )}
 
-        <Text style={styles.sectionTitle}>Payment Mode</Text>
-        <View style={styles.halfholder}>
-          <RadioButton selected={accountType === "upi"} onPress={() => setAccountType("upi")}>
-            UPI
-          </RadioButton>
-          <RadioButton selected={accountType === "account"} onPress={() => setAccountType("account")}>
-            Bank Account
-          </RadioButton>
-        </View>
-
-        {accountType === "upi" ? (
-          <>
-            <View style={styles.row}>
-              <TextInput label="UPI" value={upi} onChangeText={setUpi} style={[styles.input, { flex: 1 }]} />
-              <ButtonCustom title="Verify" onPress={handleValidateUpi} containerStyle={{padding:20}} />
-            </View>
-            {upiError && <Text style={styles.error}>{upiError}</Text>}
-            {isUPIVerified && <Text style={styles.success}>Verified</Text>}
-          </>
-        ) : (
-          <>
-            <TextInput label="A/C Holder Name" value={accountHolderName} onChangeText={setAccountHolderName} style={styles.input} />
-            <TextInput label="Bank A/C Number" value={acnumber} onChangeText={setAcnumber} style={styles.input} />
-            <View style={styles.row}>
-              <TextInput label="IFSC" value={ifc} onChangeText={(t) => setIfc(t.toUpperCase())} style={[styles.input, { flex: 1 }]} />
-              <ButtonCustom title="Verify" onPress={handleVerifyIfc}containerStyle={{padding:20}}/>
-            </View>
-            {isIFSCVerified && <Text style={styles.success}>Verified</Text>}
-            <TextInput label="Branch Name" value={branchName} onChangeText={setBranchName} style={styles.input} />
-          </>
-        )}
-
-        <View style={{ marginVertical: 24 }}>
-          <ButtonCustom title="Submit" />
-        </View>
-      </ScrollView>
+          <View style={{ marginVertical: 24 }}>
+            <ButtonCustom title="Submit" />
+          </View>
+        </ScrollView>
+      </KeyboardAvoidingView>
     </SafeAreaView>
   );
 };

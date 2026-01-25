@@ -11,9 +11,10 @@ import {
 import FlashMessage from "react-native-flash-message";
 import "react-native-gesture-handler";
 import { setCustomText } from "react-native-global-props";
-import StackNavigators from "./src/navigation/StackNavigators";
 import { StorageProvider } from "../KnecttApp/src/storage/StorageContext";
+import StackNavigators from "./src/navigation/StackNavigators";
 import UpdateApp from "./src/screen/UpdateApp";
+
 import {
   appFlayerInitialize
 } from "./src/utils/appflayerDeepLink";
@@ -26,7 +27,6 @@ import notifee, {
 } from "@notifee/react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import appsFlyer from "react-native-appsflyer";
-import BootSplash from "react-native-bootsplash";
 import DeviceInfo from "react-native-device-info";
 import { Settings } from "react-native-fbsdk-next";
 import { MenuProvider } from "react-native-popup-menu";
@@ -38,10 +38,12 @@ import {
   navigationRef,
   NavigationService,
 } from "./src/services/NavigationService";
+import { getFirebaseToken } from "./src/services/firebaseToken";
 
 global.userdata = [];
 const APPSFLYER_ONE_LINK_ID = "APPSFLYER_ONE_LINK_ID";
 const App = () => {
+   
 
 
   //   import { useSelector } from "react-redux";
@@ -58,7 +60,6 @@ const App = () => {
 
 
   // const [navigationRef, setNavigationRef] = useState(null);
-  BootSplash.isVisible().then((value) => console.log("sadfasfadfasdasdasdds" + value));
   const [deepLinkUrl, setDeepLinkUrl] = useState(null);
   const appState = useRef(AppState.currentState);
   const [hasSkippedUpdate, setHasSkippedUpdate] = useState(false);
@@ -92,7 +93,7 @@ const App = () => {
 
   useEffect(() => {
     requestUserPermission();
-    getFCMToken();
+   
     setupNotificationChannels();
     // setupNotificationListeners();
   }, []);
@@ -136,6 +137,19 @@ const App = () => {
     setTimeout(() => {
       if (navigationRef.isReady()) checkInitialLink();
     }, 1000);
+  }, []);
+
+
+  useEffect(() => {
+    const init = async () => {
+      const token = await getFirebaseToken();
+      console.log("✅ FINAL TOKEN:", token);
+      if (token) {
+        await AsyncStorage.setItem("fcmToken", token);
+      }
+    };
+
+    init();
   }, []);
 
   // useEffect(() => {
@@ -212,6 +226,7 @@ const App = () => {
   const requestUserPermission = async () => {
     const settings = await notifee.requestPermission();
     if (settings.authorizationStatus >= AuthorizationStatus.AUTHORIZED) {
+      console.log("asdasdsadasdasdasdsad",true)
       // getFCMToken(); // Only get the FCM token if the permission is granted
     } else {
     }
@@ -226,20 +241,7 @@ const App = () => {
     });
   };
 
-  const getFCMToken = async () => {
-    try {
-      let fcmToken = await AsyncStorage.getItem("fcmToken");
-      if (!fcmToken) {
-        fcmToken = 'sdfsdfdsfsdf';
-        if (fcmToken) await AsyncStorage.setItem("fcmToken", fcmToken);
-      }
-      // console.log("FCM Token:", fcmToken || "Not Found");
-      return fcmToken;
-    } catch (error) {
-      console.error("Error retrieving FCM token:", error);
-      return null;
-    }
-  };
+
 
   const checkForUpdate = async () => {
     try {
@@ -322,19 +324,17 @@ const App = () => {
     <Provider store={store}>
       <MenuProvider>
         <SafeAreaProvider>
-          <SafeAreaView style={styles.container}>
+       
             <StatusBar barStyle="dark-content" backgroundColor="#FFF" />
-
-
-           <StorageProvider>
-            <StackNavigators linking={linking} />
-           </StorageProvider>
+            <StorageProvider>
+              <StackNavigators linking={linking} />
+            </StorageProvider>
             <FlashMessage position={"top"} />
             <UpdateApp
               isUpdateAvailable={isUpdateAvailable}
               _onPressUpdate={onPressUpdate}
             />
-          </SafeAreaView>
+         
         </SafeAreaProvider>
       </MenuProvider>
     </Provider>

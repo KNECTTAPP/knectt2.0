@@ -366,166 +366,72 @@ const AddEditAddressScreen = ({ navigation, route }) => {
   }, []);
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: "#fff" } } edges={["top"]}>
+    <SafeAreaView style={{ flex: 1, backgroundColor: "#fff" }} edges={["top"]}>
       <View style={styles.screenContainer}>
         <KeyboardAvoidingView
-        style={{ flex: 1 }}
-        behavior={Platform.OS === "ios" ? "padding" : undefined}
-        keyboardVerticalOffset={Platform.OS === "ios" ? insets.top : 0}
-      >
-        <FlashMessage />
-        <Header categoryTitle={categoryTitle} backButtonwithtext />
-        <ScrollView style={{ flex: 1 }}>
+          style={{ flex: 1 }}
+          behavior={Platform.OS === "ios" ? "padding" : "height"}
+          keyboardVerticalOffset={Platform.OS === "ios" ? 80 : 0}
+        >
+          <FlashMessage />
+          <Header categoryTitle={categoryTitle} backButtonwithtext />
+          <ScrollView style={{ flex: 1 }}>
 
-          <View style={styles.addressbox}>
-            <PlacesAutocomplete
-              apiKey={configs.GOOGLE_PLACES_KEY}
-              onPlaceSelected={(placeItem) => {
-                console.log(placeItem, "placeItem");
-                setLatlongError()
-
-                // --- DETAILS EXIST CHECK ---
-                const details = placeItem?.details ?? {};
-
-                // LAT/LNG
-                if (details.location) {
-                  setLatLong(details.location);
-                }
-
-                // MAIN TEXT (Street)
-                // if (placeItem?.mainText) {
-                //   setAddress_1(placeItem.mainText);
-                // }
-
-                // // SECONDARY TEXT (Area, locality)
-                // if (placeItem?.secondaryText) {
-                //   setAddress_2(placeItem.secondaryText);
-                // }
-
-                // // POSTAL CODE
-                // if (details.postalCode) {
-                //   setPostalCode(details.postalCode);
-                // }
-
-                // // STATE
-                // if (details.state) {
-                //   setState(details.state);
-                // }
-
-                // // CITY
-                // if (details.city) {
-                //   setCity(details.city);
-                // }
-              }}
-
-              placeholder="Search Location"
-            />
-            {latLongError ? (
-              <Text style={styles.error}>{latLongError}</Text>
-            ) : null}
-          </View>
-
-          <View style={styles.halfholder}>
-            <View style={{ width: "50%", marginRight: 5 }}>
-              <TextInput
-                label="First Name *"
-                value={firstname}
-                onChangeText={setFirstname}
-                onBlur={() => checkValidate("firstname")}
-                mode="flat"
-                underlineColor="#999"
-                activeUnderlineColor="#6e5af4"
-                style={{ backgroundColor: "#fff", paddingHorizontal: 0 }}
-                contentStyle={{ paddingHorizontal: 0 }}
-                theme={{
-                  colors: {
-                    background: "#fff",
-                    surface: "#fff",
-                    onSurfaceVariant: "#999",
-                    primary: "#6e5af4",
-                  },
-                }}
-              />
-              {firstnameError ? <Text style={styles.error}>{firstnameError}</Text> : null}
-            </View>
-
-            <View style={{ width: "50%" }}>
-              <TextInput
-                label="Last Name *"
-                value={lastname}
-                onChangeText={setLastname}
-                onBlur={() => checkValidate("lastname")}
-                mode="flat"
-                underlineColor="#999"
-                activeUnderlineColor="#6e5af4"
-                style={{ backgroundColor: "#fff", paddingHorizontal: 0 }}
-                contentStyle={{ paddingHorizontal: 0 }}
-                theme={{
-                  colors: {
-                    background: "#fff",
-                    surface: "#fff",
-                    onSurfaceVariant: "#999",
-                    primary: "#6e5af4",
-                  },
-                }}
-              />
-              {lastnameError ? <Text style={styles.error}>{lastnameError}</Text> : null}
-            </View>
-          </View>
-
-          <View style={styles.addressHolder}>
             <View style={styles.addressbox}>
-              <TextInput
-                label="Phone Number *"
-                value={phone}
-                onChangeText={setPhone}
-                onBlur={() => checkValidate("phone")}
-                keyboardType="numeric"
-                mode="flat"
-                underlineColor="#999"
-                activeUnderlineColor="#6e5af4"
-                style={{ backgroundColor: "#fff", paddingHorizontal: 0 }}
-                contentStyle={{ paddingHorizontal: 0 }}
-                theme={{
-                  colors: {
-                    background: "#fff",
-                    surface: "#fff",
-                    onSurfaceVariant: "#999",
-                    primary: "#6e5af4",
-                  },
-                }}
-              />
-              {phoneError ? <Text style={styles.error}>{phoneError}</Text> : null}
+              <PlacesAutocomplete
+                apiKey={configs.GOOGLE_PLACES_KEY}
+                onPlaceSelected={(placeItem) => {
+                  console.log(placeItem, "placeItem");
+                  setLatlongError()
 
-              <TextInput
-                label="Email *"
-                value={email}
-                onChangeText={setEmail}
-                onBlur={() => checkValidate("email")}
-                autoCapitalize="none"
-                mode="flat"
-                underlineColor="#999"
-                activeUnderlineColor="#6e5af4"
-                style={{ backgroundColor: "#fff", paddingHorizontal: 0, }}
-                contentStyle={{ paddingHorizontal: 0 }}
-                theme={{
-                  colors: {
-                    background: "#fff",
-                    surface: "#fff",
-                    onSurfaceVariant: "#999",
-                    primary: "#6e5af4",
-                  },
+                  // --- DETAILS EXIST CHECK ---
+                  const details = placeItem?.details ?? {};
+
+                  // LAT/LNG
+                  if (details.location) {
+                    setLatLong(details.location);
+                  }
+
+                  // MAIN TEXT (Street)
+                  // if (placeItem?.mainText) {
+                  //   setAddress_1(placeItem.mainText);
+                  // }
+
+                  // // SECONDARY TEXT (Area, locality)
+                  // if (placeItem?.secondaryText) {
+                  //   setAddress_2(placeItem.secondaryText);
+                  // }
+
+                  // // POSTAL CODE
+                  // if (details.postalCode) {
+                  //   setPostalCode(details.postalCode);
+                  // }
+
+                  // // STATE
+                  // if (details.state) {
+                  //   setState(details.state);
+                  // }
+
+                  // // CITY
+                  // if (details.city) {
+                  //   setCity(details.city);
+                  // }
                 }}
+
+                placeholder="Search Location"
               />
-              {emailError ? <Text style={styles.error}>{emailError}</Text> : null}
+              {latLongError ? (
+                <Text style={styles.error}>{latLongError}</Text>
+              ) : null}
             </View>
 
             <View style={styles.halfholder}>
-              <View style={{ width: "45%", marginRight: 5 }}>
+              <View style={{ width: "50%", marginRight: 5 }}>
                 <TextInput
-                  label="Pincode"
-                  value={postalCode}
-                  onChangeText={setPostalCode}
+                  label="First Name *"
+                  value={firstname}
+                  onChangeText={setFirstname}
+                  onBlur={() => checkValidate("firstname")}
                   mode="flat"
                   underlineColor="#999"
                   activeUnderlineColor="#6e5af4"
@@ -540,12 +446,182 @@ const AddEditAddressScreen = ({ navigation, route }) => {
                     },
                   }}
                 />
+                {firstnameError ? <Text style={styles.error}>{firstnameError}</Text> : null}
               </View>
+
               <View style={{ width: "50%" }}>
                 <TextInput
-                  label="State"
-                  value={state}
-                  onChangeText={setState}
+                  label="Last Name *"
+                  value={lastname}
+                  onChangeText={setLastname}
+                  onBlur={() => checkValidate("lastname")}
+                  mode="flat"
+                  underlineColor="#999"
+                  activeUnderlineColor="#6e5af4"
+                  style={{ backgroundColor: "#fff", paddingHorizontal: 0 }}
+                  contentStyle={{ paddingHorizontal: 0 }}
+                  theme={{
+                    colors: {
+                      background: "#fff",
+                      surface: "#fff",
+                      onSurfaceVariant: "#999",
+                      primary: "#6e5af4",
+                    },
+                  }}
+                />
+                {lastnameError ? <Text style={styles.error}>{lastnameError}</Text> : null}
+              </View>
+            </View>
+
+            <View style={styles.addressHolder}>
+              <View style={styles.addressbox}>
+                <TextInput
+                  label="Phone Number *"
+                  value={phone}
+                  onChangeText={setPhone}
+                  onBlur={() => checkValidate("phone")}
+                  keyboardType="numeric"
+                  mode="flat"
+                  underlineColor="#999"
+                  activeUnderlineColor="#6e5af4"
+                  style={{ backgroundColor: "#fff", paddingHorizontal: 0 }}
+                  contentStyle={{ paddingHorizontal: 0 }}
+                  theme={{
+                    colors: {
+                      background: "#fff",
+                      surface: "#fff",
+                      onSurfaceVariant: "#999",
+                      primary: "#6e5af4",
+                    },
+                  }}
+                />
+                {phoneError ? <Text style={styles.error}>{phoneError}</Text> : null}
+
+                <TextInput
+                  label="Email *"
+                  value={email}
+                  onChangeText={setEmail}
+                  onBlur={() => checkValidate("email")}
+                  autoCapitalize="none"
+                  mode="flat"
+                  underlineColor="#999"
+                  activeUnderlineColor="#6e5af4"
+                  style={{ backgroundColor: "#fff", paddingHorizontal: 0, }}
+                  contentStyle={{ paddingHorizontal: 0 }}
+                  theme={{
+                    colors: {
+                      background: "#fff",
+                      surface: "#fff",
+                      onSurfaceVariant: "#999",
+                      primary: "#6e5af4",
+                    },
+                  }}
+                />
+                {emailError ? <Text style={styles.error}>{emailError}</Text> : null}
+              </View>
+
+              <View style={styles.halfholder}>
+                <View style={{ width: "45%", marginRight: 5 }}>
+                  <TextInput
+                    label="Pincode"
+                    value={postalCode}
+                    onChangeText={setPostalCode}
+                    mode="flat"
+                    underlineColor="#999"
+                    activeUnderlineColor="#6e5af4"
+                    style={{ backgroundColor: "#fff", paddingHorizontal: 0 }}
+                    contentStyle={{ paddingHorizontal: 0 }}
+                    theme={{
+                      colors: {
+                        background: "#fff",
+                        surface: "#fff",
+                        onSurfaceVariant: "#999",
+                        primary: "#6e5af4",
+                      },
+                    }}
+                  />
+                </View>
+                <View style={{ width: "50%" }}>
+                  <TextInput
+                    label="State"
+                    value={state}
+                    onChangeText={setState}
+                    mode="flat"
+                    underlineColor="#999"
+                    activeUnderlineColor="#6e5af4"
+                    style={{ backgroundColor: "#fff", paddingHorizontal: 0 }}
+                    contentStyle={{ paddingHorizontal: 0 }}
+                    theme={{
+                      colors: {
+                        background: "#fff",
+                        surface: "#fff",
+                        onSurfaceVariant: "#999",
+                        primary: "#6e5af4",
+                      },
+                    }}
+                  />
+                </View>
+              </View>
+
+              <View style={styles.addressbox}>
+                <TextInput
+                  label="Address"
+                  value={address_1}
+                  onChangeText={setAddress_1}
+                  mode="flat"
+                  underlineColor="#999"
+                  activeUnderlineColor="#6e5af4"
+                  style={{ backgroundColor: "#fff", paddingHorizontal: 0 }}
+                  contentStyle={{ paddingHorizontal: 0 }}
+                  theme={{
+                    colors: {
+                      background: "#fff",
+                      surface: "#fff",
+                      onSurfaceVariant: "#999",
+                      primary: "#6e5af4",
+                    },
+                  }}
+                />
+                <TextInput
+                  label="Address Line 2"
+                  value={address_2}
+                  onChangeText={setAddress_2}
+                  mode="flat"
+                  underlineColor="#999"
+                  activeUnderlineColor="#6e5af4"
+                  style={{ backgroundColor: "#fff", paddingHorizontal: 0 }}
+                  contentStyle={{ paddingHorizontal: 0 }}
+                  theme={{
+                    colors: {
+                      background: "#fff",
+                      surface: "#fff",
+                      onSurfaceVariant: "#999",
+                      primary: "#6e5af4",
+                    },
+                  }}
+                />
+                <TextInput
+                  label="City / District *"
+                  value={city}
+                  onChangeText={setCity}
+                  mode="flat"
+                  underlineColor="#999"
+                  activeUnderlineColor="#6e5af4"
+                  style={{ backgroundColor: "#fff", paddingHorizontal: 0 }}
+                  contentStyle={{ paddingHorizontal: 0 }}
+                  theme={{
+                    colors: {
+                      background: "#fff",
+                      surface: "#fff",
+                      onSurfaceVariant: "#999",
+                      primary: "#6e5af4",
+                    },
+                  }}
+                />
+                <TextInput
+                  label="Landmark"
+                  value={locality}
+                  onChangeText={setLocality}
                   mode="flat"
                   underlineColor="#999"
                   activeUnderlineColor="#6e5af4"
@@ -563,147 +639,71 @@ const AddEditAddressScreen = ({ navigation, route }) => {
               </View>
             </View>
 
-            <View style={styles.addressbox}>
-              <TextInput
-                label="Address"
-                value={address_1}
-                onChangeText={setAddress_1}
-                mode="flat"
-                underlineColor="#999"
-                activeUnderlineColor="#6e5af4"
-                style={{ backgroundColor: "#fff", paddingHorizontal: 0 }}
-                contentStyle={{ paddingHorizontal: 0 }}
-                theme={{
-                  colors: {
-                    background: "#fff",
-                    surface: "#fff",
-                    onSurfaceVariant: "#999",
-                    primary: "#6e5af4",
-                  },
-                }}
-              />
-              <TextInput
-                label="Address Line 2"
-                value={address_2}
-                onChangeText={setAddress_2}
-                mode="flat"
-                underlineColor="#999"
-                activeUnderlineColor="#6e5af4"
-                style={{ backgroundColor: "#fff", paddingHorizontal: 0 }}
-                contentStyle={{ paddingHorizontal: 0 }}
-                theme={{
-                  colors: {
-                    background: "#fff",
-                    surface: "#fff",
-                    onSurfaceVariant: "#999",
-                    primary: "#6e5af4",
-                  },
-                }}
-              />
-              <TextInput
-                label="City / District *"
-                value={city}
-                onChangeText={setCity}
-                mode="flat"
-                underlineColor="#999"
-                activeUnderlineColor="#6e5af4"
-                style={{ backgroundColor: "#fff", paddingHorizontal: 0 }}
-                contentStyle={{ paddingHorizontal: 0 }}
-                theme={{
-                  colors: {
-                    background: "#fff",
-                    surface: "#fff",
-                    onSurfaceVariant: "#999",
-                    primary: "#6e5af4",
-                  },
-                }}
-              />
-              <TextInput
-                label="Landmark"
-                value={locality}
-                onChangeText={setLocality}
-                mode="flat"
-                underlineColor="#999"
-                activeUnderlineColor="#6e5af4"
-                style={{ backgroundColor: "#fff", paddingHorizontal: 0 }}
-                contentStyle={{ paddingHorizontal: 0 }}
-                theme={{
-                  colors: {
-                    background: "#fff",
-                    surface: "#fff",
-                    onSurfaceVariant: "#999",
-                    primary: "#6e5af4",
-                  },
-                }}
-              />
-            </View>
-          </View>
-
-          <View style={styles.addressTypeholder}>
-            <View style={{ paddingRight: 5, paddingLeft: 5 }}>
-              <Text style={{ marginBottom: 5, marginTop: 4 }}>
-                Type of Address *
-              </Text>
-              <View style={{flexDirection:'row'}}>
-                <RadioButton
-                  onPress={() => onRadioBtnClick(1)}
-                  selected={homeradiSelcted}
-                >
-                  Home
-                </RadioButton>
-                <RadioButton
-                  onPress={() => onRadioBtnClick(2)}
-                  selected={officeradiSelcted}
-                >
-                  Office
-                </RadioButton>
-              </View>
-           
-            </View>
-          </View>
-
-        </ScrollView>
-
-        {/* FOOTER BUTTONS */}
-        <View style={styles.butnActionholder}>
-          <View style={{ width: "50%", padding: 5 }}>
-            <Text style={{ width: "100%", textAlign: "center" }}>
-              <TouchableHighlight
-                onPress={_onPresCancle}
-                style={{ width: "100%" }}
-              >
-                <Text style={{ fontFamily: fonts.whitneySemiBold, fontSize: 20 }}>
-                  CANCEL
+            <View style={styles.addressTypeholder}>
+              <View style={{ paddingRight: 5, paddingLeft: 5 }}>
+                <Text style={{ marginBottom: 5, marginTop: 4 }}>
+                  Type of Address *
                 </Text>
-              </TouchableHighlight>
-            </Text>
-          </View>
+                <View style={{ flexDirection: 'row' }}>
+                  <RadioButton
+                    onPress={() => onRadioBtnClick(1)}
+                    selected={homeradiSelcted}
+                  >
+                    Home
+                  </RadioButton>
+                  <RadioButton
+                    onPress={() => onRadioBtnClick(2)}
+                    selected={officeradiSelcted}
+                  >
+                    Office
+                  </RadioButton>
+                </View>
 
-          <TouchableHighlight
-            onPress={() => {
-              if (checkValidate()) {
-                // All fields valid → proceed
-                route.params.action?.toLowerCase() === "edit" ? _updateAddress() : _onPressButton();
-              } else {
-                // At least one error → errors already set, shown below fields
-                Toast.show("Please fix all errors", Toast.SHORT);
-              }
-            }}
-            style={{ width: "50%", padding: 10, backgroundColor: disableColer }}
-          >
-            <Text
-              style={{
-                width: "100%",
-                textAlign: "center",
-                fontFamily: fonts.whitneySemiBold,
-                fontSize: 20,
-                color: "#FFF",
+              </View>
+            </View>
+
+          </ScrollView>
+
+          {/* FOOTER BUTTONS */}
+          <View style={styles.butnActionholder}>
+            <View style={{ width: "50%", padding: 5 }}>
+              <Text style={{ width: "100%", textAlign: "center" }}>
+                <TouchableHighlight
+                  onPress={_onPresCancle}
+                  style={{ width: "100%" }}
+                >
+                  <Text style={{ fontFamily: fonts.whitneySemiBold, fontSize: 20 }}>
+                    CANCEL
+                  </Text>
+                </TouchableHighlight>
+              </Text>
+            </View>
+
+            <TouchableHighlight
+              onPress={() => {
+                if (checkValidate()) {
+                  // All fields valid → proceed
+                  route.params.action?.toLowerCase() === "edit" ? _updateAddress() : _onPressButton();
+                } else {
+                  // At least one error → errors already set, shown below fields
+                  Toast.show("Please fix all errors", Toast.SHORT);
+                }
               }}
+              style={{ width: "50%", padding: 10, backgroundColor: disableColer }}
             >
-              SAVE
-            </Text>
-          </TouchableHighlight>
-        </View>
+              <Text
+                style={{
+                  width: "100%",
+                  textAlign: "center",
+                  fontFamily: fonts.whitneySemiBold,
+                  fontSize: 20,
+                  color: "#FFF",
+                }}
+              >
+                SAVE
+              </Text>
+            </TouchableHighlight>
+          </View>
         </KeyboardAvoidingView>
       </View>
     </SafeAreaView>
@@ -727,7 +727,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     paddingVertical: 5,
     borderBottomColor: "#E6E6E6",
-   
+
   },
   addressHolder: {
     marginTop: -20,

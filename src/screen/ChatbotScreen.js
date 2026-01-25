@@ -43,6 +43,7 @@ import FlashMessage, {
 import { ButtonCustom } from "../component/ButtonCustom.js";
 import DeviceInfo from "react-native-device-info";
 import { useFocusEffect } from "@react-navigation/native";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 //arrow-right
 const SLIDER_1_FIRST_ITEM = 1;
@@ -787,6 +788,7 @@ const ChatbotScreen = ({ navigation, route }) => {
 
   return (
     <>
+    <SafeAreaView style={{flex:1}}  edges={['top']} >
     <ChatBot
       isUpdateAvailable={newUpdate}
       setBackUpdate={()=>setNewUpdate(false)}
@@ -802,6 +804,7 @@ const ChatbotScreen = ({ navigation, route }) => {
         isUpdateAvailable={isUpdateAvailable}
         _onPressUpdate={onPressUpdate}
       /> */}
+      </SafeAreaView>
     </>
   );
 };

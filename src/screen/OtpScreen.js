@@ -454,7 +454,7 @@ const OtpScreen = ({ route, navigation }) => {
               justifyContent: "flex-end",
               // elevation: 10,
               // margin: 10,
-              paddingHorizontal: 14,
+           
               shadowColor: "#000",
               shadowOffset: {
                 width: 0,
@@ -483,7 +483,7 @@ const OtpScreen = ({ route, navigation }) => {
             <View style={styles.inputContainer} pointerEvents="box-none">
               <OTPInputView
                 ref={otpInputRef}
-                style={{ height: 50 }}
+                style={{ height: 50, }}
                 pinCount={6}
                 code={internalVal}
                 onCodeChanged={(code) => {

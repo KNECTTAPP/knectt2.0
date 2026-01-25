@@ -17,7 +17,7 @@ class MainActivity : ReactActivity() {
 
   @SuppressLint("ResourceType")
   override fun onCreate(savedInstanceState: Bundle?) {
-      RNBootSplash.init(this, R.drawable.bootsplash) // ✅
+      RNBootSplash.init(this, R.style.BootTheme)
       super.onCreate(null) // ❗ MUST be null for RN 0.70+
 
   }

@@ -48,7 +48,7 @@ import PoliciesScreen from "../screen/PoliciesScreen";
 import OrderThanksScreen from "../screen/OrderThanksScreen";
 import DietThanksScreen from "../screen/DietThanksScreen";
 import DietPayScreen from "../screen/DietPayScreen";
-import MyOrderDetialScreen from "../screen/MyOrderDetialScreen";  
+import MyOrderDetialScreen from "../screen/MyOrderDetialScreen";
 import EditChatbotNutritionScreen from "../screen/EditChatbotNutritionScreen";
 import BloodTestScreen from "../modules/BloodTest";
 import LearnMore from "../screen/LearnMore";
@@ -67,33 +67,33 @@ const Stack = createNativeStackNavigator();
 //const Drawer = createDrawerNavigator();
 
 // ------------- Root Stack -------------
-function RootStack({initialRoute}) {
-  console.log("asdasdasdasdasdasdasdasd",initialRoute)
+function RootStack({ initialRoute }) {
+
   return (
-    <Stack.Navigator screen screenOptions={{headerShown:false}}
-     initialRouteName={initialRoute == "login" ? "Login" : "TabNavigators"}
+    <Stack.Navigator screen screenOptions={{ headerShown: false }}
+      initialRouteName={initialRoute == "login" ? "Login" : "TabNavigators"}
     >
       <Stack.Screen name="TabNavigators" component={TabNavigators} />
       <Stack.Screen name="Login" component={LoginScreen} />
-            <Stack.Screen
+      <Stack.Screen
         name="otp"
         component={OtpScreen}
       />
       <Stack.Screen name="MainCategory" component={MainCategory} />
-       <Stack.Screen name="TermsAndCondition" component={TermsAndCondition} />
-    
-           <Stack.Screen
+      <Stack.Screen name="TermsAndCondition" component={TermsAndCondition} />
+
+      <Stack.Screen
         name="ContactUs"
         component={ContactUsScreen}
         options={{ headerShown: false }}
       />
-    
-          <Stack.Screen
+
+      <Stack.Screen
         name="Affiliate"
         component={AffiliateScreen}
         options={{ headerShown: false }}
       />
-        <Stack.Screen
+      <Stack.Screen
         name="AffiliateCreate"
         component={AffiliateCreateScreen}
       />
@@ -103,7 +103,7 @@ function RootStack({initialRoute}) {
         options={{ headerShown: false }}
       />
 
-           <Stack.Screen
+      <Stack.Screen
         name="AccountProfile"
         component={AccountProfileScreen}
         options={{ headerShown: false }}
@@ -114,19 +114,19 @@ function RootStack({initialRoute}) {
         options={{ headerShown: false }}
       />
 
-           <Stack.Screen
+      <Stack.Screen
         name="RCsplash"
         component={SpashScreen}
         options={{ headerShown: false }}
       />
 
-           <Stack.Screen
+      <Stack.Screen
         name="Fewbasicinfo"
         component={Fewbasicinfo}
         options={{ headerShown: false }}
       />
 
-         <Stack.Screen
+      <Stack.Screen
         name="CategoryList"
         component={CategoryListScreen}
         options={{ headerShown: false }}
@@ -142,7 +142,7 @@ function RootStack({initialRoute}) {
         options={{ headerShown: false }}
       />
 
-        <Stack.Screen
+      <Stack.Screen
         name="AddEditAddress"
         component={AddEditAddressScreen}
         options={{ headerShown: false }}
@@ -158,7 +158,7 @@ function RootStack({initialRoute}) {
         options={{ headerShown: false }}
       />
 
-        <Stack.Screen
+      <Stack.Screen
         name="Checkout"
         component={CheckoutScreen}
         options={{ headerShown: false }}
@@ -179,7 +179,7 @@ function RootStack({initialRoute}) {
         options={{ headerShown: false }}
       />
 
-       <Stack.Screen
+      <Stack.Screen
         name="Search"
         component={SearchScreen}
         options={{ headerShown: false }}
@@ -200,7 +200,7 @@ function RootStack({initialRoute}) {
         options={{ headerShown: false }}
       />
 
-       <Stack.Screen
+      <Stack.Screen
         name="chat"
         component={ChatbotScreen}
         options={{ headerShown: false }}
@@ -221,7 +221,7 @@ function RootStack({initialRoute}) {
         options={{ headerShown: false }}
       />
 
-            <Stack.Screen
+      <Stack.Screen
         name="EditDietProfile"
         component={ChatbotEditScreen}
         options={{ headerShown: false }}
@@ -237,7 +237,7 @@ function RootStack({initialRoute}) {
         options={{ headerShown: false }}
       />
 
-       <Stack.Screen
+      <Stack.Screen
         name="Policies"
         component={PoliciesScreen}
         options={{ headerShown: false }}
@@ -264,7 +264,7 @@ function RootStack({initialRoute}) {
         options={{ headerShown: false }}
       />
 
-       <Stack.Screen
+      <Stack.Screen
         name="EditChatbotNutrition"
         component={EditChatbotNutritionScreen}
         options={{ headerShown: false }}
@@ -295,7 +295,7 @@ function RootStack({initialRoute}) {
         options={{ headerShown: false }}
       />
 
-        <Stack.Screen
+      <Stack.Screen
         name="UploadReport"
         component={UploadReport}
         options={{ headerShown: false }}
@@ -315,8 +315,8 @@ function RootStack({initialRoute}) {
         component={NutritionistLiveChat}
         options={{ headerShown: false }}
       />
-    
-  
+
+
       {/* Add all other Stack screens here */}
     </Stack.Navigator>
   );
@@ -334,7 +334,7 @@ function RootStack({initialRoute}) {
 //       }}
 //       drawerContent={(props) => <CustomSidebarMenu {...props} />}
 //     >
-    
+
 //        <Drawer.Screen name="RootDrawer">
 //         {(props) => <RootStack {...props} initialRoute={initialRoute} />}
 //       </Drawer.Screen>
@@ -345,12 +345,12 @@ function RootStack({initialRoute}) {
 
 // ------------- Root Navigation -------------
 function RootNavigator({ initialRoute }) {
-  console.log("asdfasdasdasdasdasd",1)
+
   return (
     <NavigationContainer ref={navigationRef}>
       <DrawerProvider>
-     
-      {initialRoute === "login" ? <RootStack initialRoute={initialRoute} /> : <RootStack initialRoute={initialRoute} />}
+
+        {initialRoute === "login" ? <RootStack initialRoute={initialRoute} /> : <RootStack initialRoute={initialRoute} />}
       </DrawerProvider>
     </NavigationContainer>
   );
@@ -360,18 +360,19 @@ function RootNavigator({ initialRoute }) {
 export default function StackNavigators({ linking }) {
   const [isReady, setIsReady] = useState(false);
   const [initialRoute, setInitialRoute] = useState(null);
- console.log("asdasdasdasdasdsadasdasdasd",1)
+
   useEffect(() => {
     const init = async () => {
       try {
-        console.log("asdasdasdasdasdsadasdasdasd",2)
         let token = await AsyncStorage.getItem("usertoken");
-      
         setInitialRoute(token ? "TabNavigators" : "login");
       } catch (error) {
         setInitialRoute("login");
       } finally {
-        await BootSplash.hide({ fade: true });
+        setTimeout(async () => {
+          await BootSplash.hide({ fade: false });
+        }, 2000);
+
         setIsReady(true);
       }
     };
@@ -379,12 +380,9 @@ export default function StackNavigators({ linking }) {
     init();
   }, []);
 
-   console.log("asdasdasdasdasdsadasdasdasd",isReady, initialRoute)
-  // if (!isReady || !initialRoute) {
-  //   return null; // ya Loader component
-  // }
-
-  console.log("asdasdasdasdasdsadasdasdasd",4)
+  if (!isReady || !initialRoute) {
+    return null; // ya Loader component
+  }
 
   return <RootNavigator initialRoute={initialRoute} linking={linking} />;
 }

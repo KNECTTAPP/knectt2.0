@@ -247,120 +247,118 @@ const MyDietScreen = ({ navigation, route }) => {
           end: d,
         }))
         )
-        if (json.hasOwnProperty("earlymorning")) {
-          var calrories = json.earlymorning.hasOwnProperty("calorie")
-            ? json.earlymorning.calorie + " kcal"
-            : 0;
-          daietatarespon.push({
-            id: 1,
-            data: json.earlymorning.content,
-            images: json.earlymorning.picture,
-            calories: calrories,
-            time: "Early Morning",
-          });
-        }
-        if (json.hasOwnProperty("breakfast")) {
-          var calrories = json.breakfast.hasOwnProperty("calorie")
-            ? json.breakfast.calorie + " kcal"
-            : 0;
-          daietatarespon.push({
-            id: 2,
-            data: json.breakfast.content,
-            images: json.breakfast.picture,
-            calories: calrories,
-            time: "Breakfast",
-          });
-        }
-        if (json.hasOwnProperty("mid_morning")) {
-          var calrories = json.mid_morning.hasOwnProperty("calorie")
-            ? json.mid_morning.calorie + " kcal"
-            : 0;
-          daietatarespon.push({
-            id: 3,
-            data: json.mid_morning.content,
-            images: json.mid_morning.picture,
-            calories: calrories,
-            time: "Mid Morning",
-          });
-        }
+        // if (json.hasOwnProperty("earlymorning")) {
+        //   var calrories = json.earlymorning.hasOwnProperty("calorie")
+        //     ? json.earlymorning.calorie + " kcal"
+        //     : 0;
+        //   daietatarespon.push({
+        //     id: 1,
+        //     data: json.earlymorning.content,
+        //     images: json.earlymorning.picture,
+        //     calories: calrories,
+        //     time: "Early Morning",
+        //   });
+        // }
+        // if (json.hasOwnProperty("breakfast")) {
+        //   var calrories = json.breakfast.hasOwnProperty("calorie")
+        //     ? json.breakfast.calorie + " kcal"
+        //     : 0;
+        //   daietatarespon.push({
+        //     id: 2,
+        //     data: json.breakfast.content,
+        //     images: json.breakfast.picture,
+        //     calories: calrories,
+        //     time: "Breakfast",
+        //   });
+        // }
+        // if (json.hasOwnProperty("mid_morning")) {
+        //   var calrories = json.mid_morning.hasOwnProperty("calorie")
+        //     ? json.mid_morning.calorie + " kcal"
+        //     : 0;
+        //   daietatarespon.push({
+        //     id: 3,
+        //     data: json.mid_morning.content,
+        //     images: json.mid_morning.picture,
+        //     calories: calrories,
+        //     time: "Mid Morning",
+        //   });
+        // }
+        // if (json.hasOwnProperty("lunch")) {
+        //   var calrories = json.lunch.hasOwnProperty("calorie")
+        //     ? json.lunch.calorie + " kcal"
+        //     : 0;
+        //   daietatarespon.push({
+        //     id: 4,
+        //     data: json.lunch.content,
+        //     images: json.lunch.picture,
+        //     calories: calrories,
+        //     time: "Lunch",
+        //   });
+        // }
+        // if (json.hasOwnProperty("evening")) {
+        //   var calrories = json.evening.hasOwnProperty("calorie")
+        //     ? json.evening.calorie + " kcal"
+        //     : 0;
+        //   daietatarespon.push({
+        //     id: 5,
+        //     data: json.evening.content,
+        //     images: json.evening.picture,
+        //     calories: calrories,
+        //     time: "Evening",
+        //   });
+        // }
 
-        if (json.hasOwnProperty("lunch")) {
-          var calrories = json.lunch.hasOwnProperty("calorie")
-            ? json.lunch.calorie + " kcal"
-            : 0;
-          daietatarespon.push({
-            id: 4,
-            data: json.lunch.content,
-            images: json.lunch.picture,
-            calories: calrories,
-            time: "Lunch",
-          });
-        }
+        // if (json.hasOwnProperty("predinner")) {
+        //   var calrories = json.predinner.hasOwnProperty("calorie")
+        //     ? json.predinner.calorie + " kcal"
+        //     : 0;
+        //   daietatarespon.push({
+        //     id: 6,
+        //     data: json.predinner.content,
+        //     images: json.predinner.picture,
+        //     calories: calrories,
+        //     time: "Pre Dinner",
+        //   });
+        // }
 
-        if (json.hasOwnProperty("evening")) {
-          var calrories = json.evening.hasOwnProperty("calorie")
-            ? json.evening.calorie + " kcal"
-            : 0;
-          daietatarespon.push({
-            id: 5,
-            data: json.evening.content,
-            images: json.evening.picture,
-            calories: calrories,
-            time: "Evening",
-          });
-        }
+        // if (json.hasOwnProperty("dinner")) {
+        //   var calrories = json.dinner.hasOwnProperty("calorie")
+        //     ? json.dinner.calorie + " kcal"
+        //     : 0;
+        //   daietatarespon.push({
+        //     id: 7,
+        //     data: json.dinner.content,
+        //     images: json.dinner.picture,
+        //     calories: calrories,
+        //     time: "Dinner",
+        //   });
+        // }
 
-        if (json.hasOwnProperty("predinner")) {
-          var calrories = json.predinner.hasOwnProperty("calorie")
-            ? json.predinner.calorie + " kcal"
-            : 0;
-          daietatarespon.push({
-            id: 6,
-            data: json.predinner.content,
-            images: json.predinner.picture,
-            calories: calrories,
-            time: "Pre Dinner",
-          });
-        }
+        // if (json.hasOwnProperty("postdinner")) {
+        //   var calrories = json.postdinner.hasOwnProperty("calorie")
+        //     ? json.postdinner.calorie + " kcal"
+        //     : 0;
+        //   daietatarespon.push({
+        //     id: 7,
+        //     data: json.postdinner.content,
+        //     images: json.postdinner.picture,
+        //     calories: calrories,
+        //     time: "Post Dinner",
+        //   });
+        // }
 
-        if (json.hasOwnProperty("dinner")) {
-          var calrories = json.dinner.hasOwnProperty("calorie")
-            ? json.dinner.calorie + " kcal"
-            : 0;
-          daietatarespon.push({
-            id: 7,
-            data: json.dinner.content,
-            images: json.dinner.picture,
-            calories: calrories,
-            time: "Dinner",
-          });
-        }
-
-        if (json.hasOwnProperty("postdinner")) {
-          var calrories = json.postdinner.hasOwnProperty("calorie")
-            ? json.postdinner.calorie + " kcal"
-            : 0;
-          daietatarespon.push({
-            id: 7,
-            data: json.postdinner.content,
-            images: json.postdinner.picture,
-            calories: calrories,
-            time: "Post Dinner",
-          });
-        }
-
-        if (json.hasOwnProperty("whole_day")) {
-          var calrories = json.whole_day.hasOwnProperty("calorie")
-            ? json.whole_day.calorie + " kcal"
-            : 0;
-          daietatarespon.push({
-            id: 7,
-            data: json.whole_day.content,
-            images: json.whole_day.picture,
-            calories: calrories,
-            time: "Whole Day",
-          });
-        }
+        // if (json.hasOwnProperty("whole_day")) {
+        //   var calrories = json.whole_day.hasOwnProperty("calorie")
+        //     ? json.whole_day.calorie + " kcal"
+        //     : 0;
+        //   daietatarespon.push({
+        //     id: 7,
+        //     data: json.whole_day.content,
+        //     images: json.whole_day.picture,
+        //     calories: calrories,
+        //     time: "Whole Day",
+        //   });
+        // }
         console.log("diet==>", daietatarespon);
         setDietData(daietatarespon);
       }
@@ -612,7 +610,7 @@ const CustomeHeader = () => {
             <Text style={{ fontSize: 17, color: "#99999" }}>
               Assigned calories
             </Text>
-            <Text>{totalcalories} kcal</Text>
+            
           </View>
           <FlatList
             extraData={dietData}

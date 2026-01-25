@@ -58,7 +58,7 @@ const Header = ({
   cartCountshow,
   call,
   headerBackButton = true,
-  walletAmountLeft=false,
+  walletAmountLeft = false,
   backButtonCustomFun,
 }) => {
   const refSearchBox = useRef();
@@ -66,10 +66,10 @@ const Header = ({
   const [notificationCount, setNotificationCount] = useState(0);
 
 
-  const handleLeftPress = () => {};
+  const handleLeftPress = () => { };
   const getstodataStorege = async () => {
     let cartCountshow = await AsyncStorage.getItem("cartcount");
-    console.log("asdasdasdasdasdasd",cartCountshow)
+    console.log("asdasdasdasdasdasd", cartCountshow)
     let notificationcount = await AsyncStorage.getItem("notificationcount");
     setCartCount(JSON.parse(cartCountshow));
     setNotificationCount(notificationcount);
@@ -138,7 +138,7 @@ const Header = ({
           activeOpacity={1}
           onPress={backButtonCustomFun ?? backButtonp}
         >
-           <IconArrowLeft />
+          <IconArrowLeft />
         </TouchableOpacity>
       ) : null}
       <View style={styles.iconStyle}>
@@ -225,7 +225,7 @@ const Header = ({
             type="clear"
             onPress={notiFication}
             title="Notification"
-            //style={{ marginHorizontal: 10 }}
+          //style={{ marginHorizontal: 10 }}
           >
             <IconBell />
             {notificationCount ? (
@@ -258,32 +258,39 @@ const Header = ({
           </Pressable>
         ) : null}
         {chat ? (
-          <TouchableOpacity onPress={()=>{navigationr.navigate('NutritionistLiveChat')}} type="clear" title="Customer Care">
+          <TouchableOpacity onPress={() => { navigationr.navigate('NutritionistLiveChat') }} type="clear" title="Customer Care">
             <IconMessageCircle />
           </TouchableOpacity>
         ) : null}
-        {walletAmountLeft ? (
-          <View style={{flexDirection:"row",alignItems:'center', marginTop:-5}} type="clear" title="Customer Care">
-            <Text
-              style={{
-                fontSize: 17,
-                // alignSelf: "flex-start",
-                marginRight:10,
-                color: "black",
-              }}
-            >
-              {"₹ "+walletAmountLeft}
-            </Text>
-            <Image source={require('../../assets/icons/walletIcon.png')} 
-        style={{
-          height:25,width:25,
-          padding: 5,
-          paddingHorizontal: 0,
-          paddingLeft: 20,
-          paddingLeft: 20,
-        }}/>
-          </View>
-        ) : null}
+      {walletAmountLeft ? (
+  <View
+    style={{
+      flexDirection: "row",
+      alignItems: "center",
+      justifyContent: "flex-end",
+      marginTop: -5,
+    }}
+  >
+    <Text
+      style={{
+        fontSize: 17,
+        color: "black",
+      }}
+    >
+      {"₹ " + walletAmountLeft}
+    </Text>
+
+    <Image
+      source={require("../../assets/icons/walletIcon.png")}
+      style={{
+        height: 25,
+        width: 25,
+        marginLeft: 8, // padding ki jagah margin
+      }}
+    />
+  </View>
+) : null}
+
         {cart ? (
           <Pressable type="clear" onPress={cartPage} title="Add">
             <IconShoppingCart />
@@ -309,15 +316,15 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     textAlign: "left",
     opacity: 10,
-   
-  
+
+
     backgroundColor: "white",
     paddingBottom: 5,
     paddingLeft: 10,
     paddingRight: 10,
     paddingHorizontal: 5,
     paddingVertical: 3,
- 
+
     // shadowColor: "#000",
     // shadowOffset: {
     //   width: 0,

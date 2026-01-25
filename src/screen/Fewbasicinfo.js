@@ -20,6 +20,7 @@ import DeviceInfo from "react-native-device-info";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import EndUrl from "../api/EndUrl";
 import Header from "../component/Header";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 const Fewbasicinfo = ({ route, navigation }) => {
   const [name, setName] = useState("");
@@ -156,6 +157,7 @@ const Fewbasicinfo = ({ route, navigation }) => {
   };
 
   return (
+   <SafeAreaView style={{flex:1,backgroundColor:'#fff'}}  edges={['top']}>
 
     <View style={styles.container}>
       {loading && <ProgressLoader isVisible={loading} />}
@@ -275,6 +277,7 @@ const Fewbasicinfo = ({ route, navigation }) => {
         </View>
       </ScrollView>
     </View>
+    </SafeAreaView>
   );
 };
 

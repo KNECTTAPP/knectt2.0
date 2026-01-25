@@ -20,9 +20,10 @@ import Images from "../component/Images";
 import { ProgressLoader } from "../component/ProgressLoader";
 import { useStore } from "../state";
 import { getAsyncValue } from "../utils/commonFunctions";
+import { getFirebaseToken, requestNotificationPermissionAndroid } from "../services/firebaseToken";
 const STYLES = ["default", "dark-content", "light-content"];
 const TRANSITIONS = ["fade", "slide", "none"];
-const LoginScreen = ({  }) => {
+const LoginScreen = ({ }) => {
   const navigation = useNavigation();
 
   const [phoneNumber, setphoneNumber] = useState("");
@@ -71,21 +72,21 @@ const LoginScreen = ({  }) => {
       await AsyncStorage.setItem("useOldFordeUpdatePopup", "true");
     }
     const json = await response.json();
-    console.log(json,'bingo lal')
-    if(json.status==400){
+    console.log(json, 'bingo lal')
+    if (json.status == 400) {
       await AsyncStorage.removeItem("usertoken");
-    await AsyncStorage.removeItem("userData");
-    await AsyncStorage.removeItem("updateAvailable");
-    await AsyncStorage.removeItem("forceUpdate");
-    await AsyncStorage.removeItem("useOldFordeUpdatePopup");
-    await AsyncStorage.removeItem("affiliateCode");
-    await AsyncStorage.removeItem("affiliateCreated");
-    await AsyncStorage.removeItem("affiliateCredentials");
-    await AsyncStorage.removeItem("affiliateCredentialsData");
-    await AsyncStorage.clear();
-    return false
+      await AsyncStorage.removeItem("userData");
+      await AsyncStorage.removeItem("updateAvailable");
+      await AsyncStorage.removeItem("forceUpdate");
+      await AsyncStorage.removeItem("useOldFordeUpdatePopup");
+      await AsyncStorage.removeItem("affiliateCode");
+      await AsyncStorage.removeItem("affiliateCreated");
+      await AsyncStorage.removeItem("affiliateCredentials");
+      await AsyncStorage.removeItem("affiliateCredentialsData");
+      await AsyncStorage.clear();
+      return false
     }
-    else{
+    else {
       return true
     }
   };
@@ -112,6 +113,8 @@ const LoginScreen = ({  }) => {
       console.log("error");
     }
   };
+
+
   let option = {
     method: "POST",
     headers: {
@@ -135,11 +138,11 @@ const LoginScreen = ({  }) => {
   useEffect(() => {
     getstodataStorege();
     sum();
-   // setupNotificationListeners();
+    // setupNotificationListeners();
   }, []);
 
   const triggerCrash = () => {
-  
+
   };
 
   const getAffliateLinkUrl = async () => {
@@ -157,6 +160,29 @@ const LoginScreen = ({  }) => {
       (affliateData?.affiliate_code || affliateData?.affiliateCode) ?? ""
     );
   };
+
+  
+
+useEffect(() => {
+  const init = async () => {
+    const hasPermission = await requestNotificationPermissionAndroid();
+
+    if (!hasPermission) {
+      console.log('❌ Notification permission denied');
+      return;
+    }
+
+    const token = await getFirebaseToken();
+    console.log('✅ FINAL TOKEN:', token);
+
+    if (token) {
+      await AsyncStorage.setItem('fcmToken', token);
+    }
+  };
+
+  init();
+}, []);
+
 
   useEffect(() => {
     // if (isFocused) {
@@ -355,7 +381,7 @@ const LoginScreen = ({  }) => {
       // }
     }
   };
-  
+
 
   const moveToHome = async () => {
     AsyncStorage.removeItem("usertoken").then(() => {
@@ -468,7 +494,7 @@ const LoginScreen = ({  }) => {
               <Text style={styles.guestTxt}>
                 Visibility purposes with limited access
               </Text>
-              
+
             </View>
           </View>
         </ScrollView>

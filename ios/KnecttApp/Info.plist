@@ -99,7 +99,7 @@
 	<key>UIFileSharingEnabled</key>
 	<true/>
 	<key>UILaunchStoryboardName</key>
-	<string>LaunchScreen</string>
+	<string>BootSplash</string>
 	<key>UIRequiredDeviceCapabilities</key>
 	<array>
 		<string>armv7</string>
@@ -118,5 +118,10 @@
 	<array>
 		<string>applinks:knectt.onelink.me</string>
 	</array>
+	<key>UIAppFonts</key>
+<array>
+  <string>Feather.ttf</string>
+</array>
+
 </dict>
 </plist>

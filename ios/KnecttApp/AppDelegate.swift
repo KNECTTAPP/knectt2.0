@@ -3,6 +3,7 @@ import React
 import React_RCTAppDelegate
 import ReactAppDependencyProvider
 import RNBootSplash
+import Firebase
 
 
 @main
@@ -30,6 +31,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
       in: window,
       launchOptions: launchOptions
     )
+    
+    if FirebaseApp.app() == nil {
+        FirebaseApp.configure()
+      }
+
 
     return true
   }

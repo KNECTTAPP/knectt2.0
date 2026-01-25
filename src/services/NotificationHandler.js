@@ -116,3 +116,31 @@ const displayNotification = async (notification, data) => {
     });
   }
 };
+
+export const getFirebaseToken = async () => {
+  try {
+    // iOS permission
+    const authStatus = await messaging().requestPermission();
+    const enabled =
+      authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
+      authStatus === messaging.AuthorizationStatus.PROVISIONAL;
+
+    if (!enabled) {
+      console.log("Notification permission denied");
+      return null;
+    }
+
+    const token = await messaging().getToken();
+    console.log("🔥 FCM TOKEN:", token);
+
+    if (token) {
+      await AsyncStorage.setItem("fcmToken", token);
+    }
+
+    return token;
+  } catch (error) {
+    console.error("FCM TOKEN ERROR", error);
+    return null;
+  }
+};
+
