@@ -17,7 +17,7 @@ import Video from "react-native-video";
 import EndUrl from "../api/EndUrl";
 import { ButtonCustom } from "../component/ButtonCustom.js";
 import Header from "../component/Header";
-import { SafeAreaView } from "react-native-safe-area-context";
+import { SafeAreaView, useSafeAreaInsets } from "react-native-safe-area-context";
 import { WebView } from "react-native-webview";
 
 
@@ -144,13 +144,20 @@ const AffiliateScreen = ({ navigation, route }) => {
     </>
   );
 
+  const insets = useSafeAreaInsets();
+
   return (
 
-    <SafeAreaView style={{ flex: 1, backgroundColor: "#fff" }}>
+    <SafeAreaView style={{ flex: 1 }}
+      contentContainerStyle={{
+        backgroundColor: "#fff",
+        paddingBottom: 80 + insets.bottom, // 👈 button height + safe area
+      }}
+      showsVerticalScrollIndicator={false} >
       <Header categoryTitle={categoryTitle} backButtonwithtext />
 
       <ScrollView
-        style={{ flex: 1 }}
+        style={{ flex: 1, backgroundColor: "#fff", }}
 
         showsVerticalScrollIndicator={false}
       >
@@ -201,7 +208,6 @@ const AffiliateScreen = ({ navigation, route }) => {
       {/* FIXED BOTTOM BUTTON */}
       <View
         style={{
-          position: "absolute",
           bottom: 0,
           left: 0,
           right: 0,

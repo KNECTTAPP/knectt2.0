@@ -34,7 +34,7 @@ export default function DietTrackingScreen({ navigation, route }) {
   };
 
   return (
-     <SafeAreaView style={{flex:1,backgroundColor:'#fff'}}  edges={['top']}>
+     <SafeAreaView style={{flex:1,backgroundColor:'#fff'}} >
    
     <KeyboardAvoidingView
             style={{ flex: 1 }}

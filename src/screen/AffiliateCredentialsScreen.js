@@ -404,12 +404,14 @@ const AffiliateCredentialsScreen = ({ navigation, route }) => {
   };
 
   return (
-    <SafeAreaView style={styles.screenContainer} edges={['top']}>
+    <SafeAreaView style={styles.screenContainer}>
       {/* <StatusBar barStyle="light-content" backgroundColor="#FFF" /> */}
       <ProgressLoader isVisible={loading} />
       <FlashMessage />
       <Header categoryTitle={categoryTitle} backButtonwithtext backButtonCustomFun={() => navigation.navigate("TabNavigators")} />
-      <ScrollView style={{ flex: 1,marginHorizontal:10 }}>
+      <ScrollView 
+      showsVerticalScrollIndicator={false}
+      style={{ flex: 1,marginHorizontal:10 }}>
         <View
           style={{
             width: "100%",
@@ -585,7 +587,7 @@ const AffiliateCredentialsScreen = ({ navigation, route }) => {
                   label="Password"
                   value={password}
                   editable={false}            // ya disabled (neeche dekho)
-                  secureTextEntry
+                  
                   onChangeText={setPassword}
                   onBlur={() => checkValidate("password")}
                   style={{

@@ -1,26 +1,22 @@
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import React, { useEffect, useState } from "react";
 import {
-  View,
-  TextInput,
-  Button,
-  Text,
-  StyleSheet,
-  Alert,
-  KeyboardAvoidingView,
-  Platform,
-  ScrollView,
   Image,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TextInput,
+  View
 } from "react-native";
-import Images from "../component/Images";
-import loginLogo from "../../assets/img/BrandLogo.png";
-import { ButtonCustom } from "../component/ButtonCustom";
-import { ProgressLoader } from "../component/ProgressLoader";
-import Toast from "react-native-simple-toast";
 import DeviceInfo from "react-native-device-info";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import EndUrl from "../api/EndUrl";
-import Header from "../component/Header";
 import { SafeAreaView } from "react-native-safe-area-context";
+import Toast from "react-native-simple-toast";
+import loginLogo from "../../assets/img/BrandLogo.png";
+import EndUrl from "../api/EndUrl";
+import { ButtonCustom } from "../component/ButtonCustom";
+import Header from "../component/Header";
+import Images from "../component/Images";
+import { ProgressLoader } from "../component/ProgressLoader";
 
 const Fewbasicinfo = ({ route, navigation }) => {
   const [name, setName] = useState("");
@@ -28,7 +24,7 @@ const Fewbasicinfo = ({ route, navigation }) => {
   const [confirmPhone, setConfirmPhone] = useState("");
   const [loading, setLoading] = useState(false);
   const [deviceid, setDeviceid] = useState();
-  const [companyCode,setCompanyCode]=useState('');
+  const [companyCode, setCompanyCode] = useState('');
   const [email, setEmail] = useState(
     route?.params?.email ? route?.params?.email : ""
   );
@@ -39,17 +35,8 @@ const Fewbasicinfo = ({ route, navigation }) => {
       setDeviceid(androidId);
     });
     getUserData();
-    loadProfile()
   }, []);
 
- const loadProfile = async () => {
-  try {
-    const profile = await getProfileData();
-    setUserData(profile);
-  } catch (error) {
-    console.log("Profile error:", error.message);
-  }
-};
   const getUserData = async () => {
     try {
       const value = await AsyncStorage.getItem("userData");
@@ -98,7 +85,7 @@ const Fewbasicinfo = ({ route, navigation }) => {
     body.append("mobile", phone);
     body.append("mobile_confirmation", confirmPhone);
     body.append("user_id", userid);
-    body.append("corporate_code",companyCode)
+    body.append("corporate_code", companyCode)
 
     // body.append("affiliate_code", affiliateCode);
     console.log(body, "its nody");
@@ -140,12 +127,12 @@ const Fewbasicinfo = ({ route, navigation }) => {
           navigation.goBack();
         } else {
           navigation.replace("TabNavigators", {
-        screen: "ChatScreen",
-        });
+            screen: "ChatScreen",
+          });
         }
       } else {
         setLoading(false);
-        console.log(json,'error')
+        console.log(json, 'error')
         Toast.show(json.message, Toast.SHORT);
       }
     } catch (error) {
@@ -157,81 +144,84 @@ const Fewbasicinfo = ({ route, navigation }) => {
   };
 
   return (
-   <SafeAreaView style={{flex:1,backgroundColor:'#fff'}}  edges={['top']}>
+    <SafeAreaView style={{ flex: 1, backgroundColor: '#fff' }} >
 
-    <View style={styles.container}>
-      {loading && <ProgressLoader isVisible={loading} />}
-      {!route?.params?.email && (
-        <Header
-          categoryTitle={"Edit Basic Info"}
-          //cartCountshow={cartCountshow}
-          backButtonwithtext
+      <View style={styles.container}>
+        {loading && <ProgressLoader isVisible={loading} />}
+        {!route?.params?.email && (
+          <Header
+            categoryTitle={"Edit Basic Info"}
+            //cartCountshow={cartCountshow}
+            backButtonwithtext
           // notification
           // cart
-        />
-      )}
-      {/* <ProgressLoader isVisible={loading} /> */}
+          />
+        )}
+        {/* <ProgressLoader isVisible={loading} /> */}
 
-      <ScrollView
-      // behavior={Platform.OS === "ios" ? "padding" : "height"}
-      >
-        <Images
-          source={loginLogo}
-          imageStyle={{
-            height: 200,
-            width: 200,
-            marginTop: "10%",
-            // marginBottom: "50%",
-          }}
-        />
-        <View style={{ justifyContent: "center", marginTop: "20%" }}>
-          <Text
-            style={{
-              fontSize: 17,
-              bottom: 10,
-              marginLeft: 14,
-              fontFamily: "Verdana",
-              color: "#000",
+        <ScrollView
+        // behavior={Platform.OS === "ios" ? "padding" : "height"}
+        >
+          <Images
+            source={loginLogo}
+            imageStyle={{
+              height: 200,
+              width: 200,
+              marginTop: "10%",
+              // marginBottom: "50%",
             }}
-          >
-            Few basic info
-          </Text>
-        </View>
-        <TextInput
-          style={styles.input}
-          placeholder="Enter Company Code"
-          onChangeText={setCompanyCode}
-          value={companyCode}
-          returnKeyType="next"
-        />
-
-        <TextInput
-          style={styles.input}
-          placeholder="Enter Name"
-          onChangeText={setName}
-          value={name}
-          returnKeyType="next"
-        />
-        <View style={styles.container1}>
-          <View style={styles.prefixContainer}>
-            <Image
-              source={{ uri: "https://flagcdn.com/w40/in.png" }}
-              style={styles.flag}
-            />
-            <Text style={styles.countryCode}>+91</Text>
+          />
+          <View style={{ justifyContent: "center", marginTop: "20%" }}>
+            <Text
+              style={{
+                fontSize: 17,
+                bottom: 10,
+                marginLeft: 14,
+                fontFamily: "Verdana",
+                color: "#000",
+              }}
+            >
+              Few basic info
+            </Text>
           </View>
           <TextInput
-            style={styles.input1}
-            placeholder="Enter Phone Number"
-            keyboardType="phone-pad"
-            onChangeText={(text) => setPhone(text)}
-            maxLength={10}
-            value={phone}
-            returnKeyType="done"
+            style={styles.input}
+            placeholder="Enter Company Code"
+            onChangeText={setCompanyCode}
+            value={companyCode}
+            returnKeyType="next"
+            placeholderTextColor="#9CA3AF"
           />
-        </View>
 
-        {/* <TextInput
+          <TextInput
+            style={styles.input}
+            placeholder="Enter Name"
+            onChangeText={setName}
+            value={name}
+            returnKeyType="next"
+            placeholderTextColor="#9CA3AF"
+          />
+          <View style={styles.container1}>
+            <View style={styles.prefixContainer}>
+              <Image
+                source={{ uri: "https://flagcdn.com/w40/in.png" }}
+                style={styles.flag}
+              />
+              <Text style={styles.countryCode}>+91</Text>
+            </View>
+            <TextInput
+              style={styles.input1}
+              placeholder="Enter Phone Number"
+              keyboardType="phone-pad"
+              onChangeText={(text) => setPhone(text)}
+              maxLength={10}
+              value={phone}
+              returnKeyType="done"
+              placeholderTextColor="#9CA3AF"
+            />
+          </View>
+
+          {/* <TextInput
           style={styles.input}
           placeholder="Enter Phone Number"
           keyboardType="phone-pad"
@@ -240,43 +230,44 @@ const Fewbasicinfo = ({ route, navigation }) => {
           value={phone}
           returnKeyType="done"
         /> */}
-        <View style={styles.container1}>
-          <View style={styles.prefixContainer}>
-            <Image
-              source={{ uri: "https://flagcdn.com/w40/in.png" }}
-              style={styles.flag}
+          <View style={styles.container1}>
+            <View style={styles.prefixContainer}>
+              <Image
+                source={{ uri: "https://flagcdn.com/w40/in.png" }}
+                style={styles.flag}
+              />
+              <Text style={styles.countryCode}>+91</Text>
+            </View>
+            <TextInput
+              style={styles.input1}
+              placeholder="Enter Confirm Phone Number"
+              keyboardType="phone-pad"
+              maxLength={10}
+              onChangeText={(text) => setConfirmPhone(text)}
+              value={confirmPhone}
+              returnKeyType="done"
+                placeholderTextColor="#9CA3AF" 
             />
-            <Text style={styles.countryCode}>+91</Text>
           </View>
-          <TextInput
-            style={styles.input1}
-            placeholder="Enter Confirm Phone Number"
-            keyboardType="phone-pad"
-            maxLength={10}
-            onChangeText={(text) => setConfirmPhone(text)}
-            value={confirmPhone}
-            returnKeyType="done"
-          />
-        </View>
 
-        <View style={styles.buttonView}>
-          <ButtonCustom
-            containerStyle={{
-              width: "100%",
-              backgroundColor: "#F79489",
-              borderRadius: 8,
-              // paddingVertical: 10,
-              height: 48,
-            }}
-            titleStyle={{ fontSize: 17, color: "#fff" }}
-            title={"SUBMIT"}
-            onPress={() => {
-              handleSubmit();
-            }}
-          />
-        </View>
-      </ScrollView>
-    </View>
+          <View style={styles.buttonView}>
+            <ButtonCustom
+              containerStyle={{
+                width: "100%",
+                backgroundColor: "#F79489",
+                borderRadius: 8,
+                // paddingVertical: 10,
+                height: 48,
+              }}
+              titleStyle={{ fontSize: 17, color: "#fff" }}
+              title={"SUBMIT"}
+              onPress={() => {
+                handleSubmit();
+              }}
+            />
+          </View>
+        </ScrollView>
+      </View>
     </SafeAreaView>
   );
 };

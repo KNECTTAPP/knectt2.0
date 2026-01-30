@@ -5,13 +5,13 @@ import {
   Animated,
   Dimensions,
   Keyboard,
+  KeyboardAvoidingView,
   Platform,
   ScrollView,
   StyleSheet,
   Text,
   TouchableOpacity,
   View,
-  KeyboardAvoidingView,
 } from "react-native";
 import appsFlyer from "react-native-appsflyer";
 import DeviceInfo from "react-native-device-info";
@@ -475,140 +475,150 @@ const AffiliateCreateScreen = ({ route }) => {
     }
   };
 
-  const createAlliiate = async () => {
-    const referData = await AsyncStorage.getItem("referer");
-    const data = JSON.parse(referData);
-    console.log("ss");
+  const validateAllFields = () => {
+    let isValid = true;
 
-    checkValidate("firstname");
-    checkValidate("lastname");
-    checkValidate("email");
-    checkValidate("confirmEmail");
-    // checkValidate("city");
-    checkValidate("state");
-    if (accountType == "upi") {
-      checkValidate("upi");
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    if (!firstname?.trim()) {
+      setFirstnameError("First name required");
+      isValid = false;
+    } else setFirstnameError("");
+
+    if (!lastname?.trim()) {
+      setLastnameError("Last name required");
+      isValid = false;
+    } else setLastnameError("");
+
+    if (!email?.trim()) {
+      setEmailError("Email required");
+      isValid = false;
+    } else if (!emailRegex.test(email)) {
+      setEmailError("Invalid email");
+      isValid = false;
+    } else setEmailError("");
+
+    if (!confirmEmail?.trim()) {
+      setConfirmEmailError("Confirm email required");
+      isValid = false;
+    } else if (email !== confirmEmail) {
+      setConfirmEmailError("Email not matching");
+      isValid = false;
+    } else setConfirmEmailError("");
+
+    if (!state) {
+      setStateError("State required");
+      isValid = false;
+    } else setStateError("");
+
+    if (accountType === "upi") {
+      if (!upi?.trim()) {
+        setUpiError("UPI required");
+        isValid = false;
+      } else setUpiError("");
     } else {
-      checkValidate("acHolder");
-      checkValidate("acnumber");
-      checkValidate("bankName");
-      checkValidate("ifc");
-      checkValidate("branchName");
+      if (!accountHolderName?.trim()) {
+        setAcHolderError("Account holder required");
+        isValid = false;
+      } else setAcHolderError("");
+
+      if (!acnumber?.trim()) {
+        setAcNumnerError("Account number required");
+        isValid = false;
+      } else setAcNumnerError("");
+
+      if (!bankName?.trim()) {
+        setBankNameError("Bank name required");
+        isValid = false;
+      } else setBankNameError("");
+
+      if (!ifc?.trim()) {
+        setIfcError("IFSC required");
+        isValid = false;
+      } else if (!isIFSCVerified) {
+        setIfcError("Invalid IFSC");
+        isValid = false;
+      } else setIfcError("");
+
+      if (!branchName?.trim()) {
+        setBranchNameError("Branch required");
+        isValid = false;
+      } else setBranchNameError("");
     }
-    // if (
-    //   firstname &&
-    //   lastname &&
-    //   email &&
-    //   state &&
-    //   accountHolderName &&
-    //   bankName &&
-    //   acnumber &&
-    //   ifc &&
-    //   branchName &&
-    //   isIFSCVerified
-    // ) {
+
+    return isValid;
+  };
+
+
+  const createAlliiate = async () => {
+    const isValid = validateAllFields();
+
+    if (!isValid) {
+      console.log("❌ Validation failed, API not called");
+      return;
+    }
+
     setLoading(true);
-    var body = new FormData();
 
-    // if (photo) {
-    //   const file = {
-    //     uri: photo.uri,
-    //     name: photo.fileName,
-    //     type: photo.type,
-    //   };
-    //   body.append("kyc_image", file);
-    // }
-
-    if (accountType == "upi") {
-      body.append("upi", upi);
-    }
-    body.append("first_name", firstname);
-    body.append("last_name", lastname);
-    body.append("gender", gender);
-    body.append("email", email);
-    body.append("title", perfix);
-    body.append("state_id", state);
-
-    if (accountType == "account") {
-      body.append("bank_name", bankName);
-      body.append("ifsc", ifc);
-      body.append("branch", branchName);
-      body.append("account_number", acnumber);
-      body.append("account_holder_name", accountHolderName);
-    }
-    if (data) {
-      body.append("affiliate_code", data?.data?.custom_param);
-    }
-    //
-    console.log("body======>", body);
-    // //saveaffiliate
     try {
+      const referData = await AsyncStorage.getItem("referer");
+      const data = JSON.parse(referData);
+
+      let body = new FormData();
+
+      body.append("first_name", firstname);
+      body.append("last_name", lastname);
+      body.append("email", email);
+      body.append("gender", gender);
+      body.append("title", perfix);
+      body.append("state_id", state);
+
+      if (accountType === "upi") {
+        body.append("upi", upi);
+      } else {
+        body.append("bank_name", bankName);
+        body.append("ifsc", ifc);
+        body.append("branch", branchName);
+        body.append("account_number", acnumber);
+        body.append("account_holder_name", accountHolderName);
+      }
+
+      if (data) {
+        body.append("affiliate_code", data?.data?.custom_param);
+      }
+
       let usertoken = await AsyncStorage.getItem("usertoken");
+
       const response = await fetch(EndUrl.saveaffiliate, {
         method: "POST",
         headers: {
           Accept: "application/json",
           "Content-Type": "multipart/form-data",
           token: JSON.parse(usertoken),
-          Version: DeviceInfo.getVersion().replace(/(\r\n|\n|\r)/gm, ""),
+          Version: DeviceInfo.getVersion(),
           Platform: Platform.OS,
         },
         body,
       });
-      const updateAvailable = response.headers.get("updateAvailable");
-      const forceUpdate = response.headers.get("forceUpdate");
-      const isOldFordeUpdatePopup = response.headers.get(
-        "useOldFordeUpdatePopup"
-      );
-      if (updateAvailable === 1) {
-        await AsyncStorage.setItem("updateAvailable", "true");
-      }
-      if (forceUpdate === 1) {
-        await AsyncStorage.setItem("forceUpdate", "true");
-      }
-      if (isOldFordeUpdatePopup === 1) {
-        await AsyncStorage.setItem("useOldFordeUpdatePopup", "true");
-      }
-      const json = await response.json();
-      console.log(json);
 
-      if (json.status == 200) {
-        // appsFlyer.generateInviteLink(
-        //   {
-        //     channel: json?.affiliate_code,
-        //     campaign: "myCampaign",
-        //     customerID: "1234",
-        //     userParams: {
-        //       deep_link_value: "value", // Deep link param
-        //       deep_link_sub1: "sub1", // Deep link param
-        //       custom_param: json?.affiliate_code,
-        //       brandDomain: "myexample.com",
-        //     },
-        //   },
-        //   (link) => {
-        //     updateAffiliate(link, json);
-        //     console.log("link", link);
-        //   },
-        //   (err) => {
-        //     console.log(err);
-        //   }
-        // );
+      const json = await response.json();
+
+      if (json.status === 200) {
         let referenceLink = `${referralBase}?ac=${json?.affiliate_code ?? ""}`;
-        console.log(referenceLink, "thisisreferencelinkgenerateebyme");
         updateAffiliate(referenceLink, json);
       } else {
         showMessage({
           message: json.message,
-          duration: 2000,
           type: "warning",
         });
       }
-    } catch (error) {
-      console.error(error);
+    } catch (err) {
+      console.error(err);
     } finally {
       setLoading(false);
     }
   };
+
   // };
   const checkIfUserLogin = async () => {
     setLoading(true);
@@ -672,6 +682,8 @@ const AffiliateCreateScreen = ({ route }) => {
       >
         <ScrollView
           style={{ flex: 1 }}
+          showsVerticalScrollIndicator={false}
+          showsHorizontalScrollIndicator={false}
           contentContainerStyle={styles.scrollContainer}
         >
           <Text style={styles.sectionTitle}>Title</Text>
@@ -770,7 +782,7 @@ const AffiliateCreateScreen = ({ route }) => {
           )}
 
           <View style={{ marginVertical: 24 }}>
-            <ButtonCustom title="Submit" />
+            <ButtonCustom title="Submit" onPress={() => createAlliiate()} />
           </View>
         </ScrollView>
       </KeyboardAvoidingView>

@@ -298,6 +298,7 @@ const AddEditAddressScreen = ({ navigation, route }) => {
         const json = await response.json();
         if (json.status == 200) {
           let customeAddress = json.data[0];
+          console.log("asdasdasdasdasd",customeAddress)
           setFirstname(customeAddress.first_name);
           setLastname(customeAddress.last_name);
           setEmail(customeAddress.email);
@@ -366,7 +367,7 @@ const AddEditAddressScreen = ({ navigation, route }) => {
   }, []);
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: "#fff" }} edges={["top"]}>
+    <SafeAreaView style={{ flex: 1, backgroundColor: "#fff" }} >
       <View style={styles.screenContainer}>
         <KeyboardAvoidingView
           style={{ flex: 1 }}

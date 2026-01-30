@@ -1,24 +1,22 @@
-import React, { useEffect } from "react";
-import { Image, View, Text, StyleSheet } from "react-native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { useNavigation } from "@react-navigation/native";
+import React, { useEffect } from "react";
+import { Image, StyleSheet, Text, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
-import OfferingsScreen from "../screen/offeringPage/OfferingPage";
-import MyOrderScreen from "../screen/MyOrderScreen";
 import CategoryTabScreen from "../screen/CategoryTabScreen";
 import ChatbotScreen from "../screen/ChatbotScreen";
-import { setupNotificationListeners } from "../services/NotificationHandler";
+import MyOrderScreen from "../screen/MyOrderScreen";
+import OfferingsScreen from "../screen/offeringPage/OfferingPage";
 
-import menuIcon from "../../assets/img/menuIcon.png";
-import menuIconPink from "../../assets/img/menuIconPink.png";
 import BodyMatch from "../../assets/img/body_match.png";
 import Category from "../../assets/img/category.png";
 import CategoryPink from "../../assets/img/category_pink.png";
+import menuIcon from "../../assets/img/menuIcon.png";
 import Order from "../../assets/img/order.jpg";
 import OrderPink from "../../assets/img/OrderPink.jpeg";
 import colors from "../utils/colors";
-import { openDrawer, closeDrawer } from "./DrawerService";
+import { openDrawer } from "./DrawerService";
 
 
 const Tab = createBottomTabNavigator();
@@ -30,16 +28,18 @@ const TabNavigators = () => {
     //setupNotificationListeners();
   }, []);
 
-  return (
+    const insets = useSafeAreaInsets();
+
+  return (  
     <Tab.Navigator
       initialRouteName="ChatScreen"
       screenOptions={{
         headerShown: false,
         tabBarShowLabel: false,
         tabBarStyle: {
-          height: 75,
           paddingTop: 10,
-          paddingBottom: 10,
+           paddingBottom: Math.max(insets.bottom, 8),
+          height: 60 + insets.bottom,
         },
       }}
     >
