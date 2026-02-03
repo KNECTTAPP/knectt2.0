@@ -492,6 +492,7 @@ const styles = StyleSheet.create({
     marginRight: 0,
     height: height - 200,
     padding: 5,
+     backgroundColor: "#e9e7e7",
     
   },
 });

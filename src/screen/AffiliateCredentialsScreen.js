@@ -202,89 +202,47 @@ const AffiliateCredentialsScreen = ({ navigation, route }) => {
     }
   };
 
-  const generatePdfios = async (link) => {
-    try {
-      // Resolve local logo image to a URI
-      const logoSource = require('../assets/brandwithouttext.png'); // your logo
-      const logoUri = Image.resolveAssetSource(logoSource).uri;
 
-      // HTML content for PDF
-      const htmlContent = `
-<!DOCTYPE html>
-<html>
-<head>
-  <meta charset="UTF-8">
-  <style>
-    body {
-      text-align: center;
-      margin-top: 20px;
-      font-family: Arial, sans-serif;
-    }
-    .title {
-      margin-bottom: 20px;
-      font-size: 25px;
-      font-weight: 500;
-    }
-    .smalltitle {
-      margin-bottom: 40px;
-      font-size: 25px;
-      font-weight: 500;
-    }
-    .subtitle {
-      margin-bottom: 20px;
-      font-size: 15px;
-      font-weight: 400;
-      margin-left: 60px;
-      margin-right: 60px;
-    }
-    img {
-      object-fit: contain;
-      margin-bottom: 10px;
-    }
-  </style>
-</head>
+const generatePdfios = async (link) => {
+  try {
+    const htmlContent = `
+      <!DOCTYPE html>
+      <html>
+        <body style="text-align:center; font-family: Arial;">
+          <h1>KNECTT</h1>
+          <h2>360° intelligent Metabolic Health Suite</h2>
 
-<body>
-    <div>
-        <h1 class="title">KNECTT</h1>
-        <h2 class="smalltitle">360° intelligent Metabolic Health Suite</h2>
+          <img
+            src="https://knectt.com/public/images/1765094166.png"
+            width="200"
+            height="200"
+          />
 
-        <img src="https://knectt.com/public/images/1765094166.png" width="200" height="200" />
+          <p style="margin:20px;">
+            Get Full Body Check-up, Predictive Health Profile, Guided Nutrition Plan,
+            Body-Matched Multi-Brand Superfoods Delivery, AI-led Dynamic Tracking & Analysis.
+          </p>
 
-        <h1 class="subtitle">
-          Get Full Body Check-up, Predictive Health Profile, Guided Nutrition Plan, Body-Matched Multi-Brand Superfoods Delivery, AI- led Dynamic Tracking & Analysis. Pick any from exclusive discounted improvement plans.
-        </h1>
+          <img
+            src="https://api.qrserver.com/v1/create-qr-code/?data=${encodeURIComponent(
+              link
+            )}&size=300x300"
+          />
+        </body>
+      </html>
+    `;
 
-        <img src="https://api.qrserver.com/v1/create-qr-code/?data=${encodeURIComponent(
-        link
-      )}&size=350x350" />
-    </div>
-</body>
-</html>
-`;
+    await RNPrint.print({
+      html: htmlContent,
+    });
 
+    Alert.alert('✅ PDF Ready', 'You can save or share the PDF from print sheet');
 
-      // Generate PDF using the native module
-      const filePath = await PDFExporter.createPDF(htmlContent, 'Ambassador_QR');
-
-      Alert.alert(
-        '✅ PDF Saved!',
-        'Check Files app → On My iPhone → KNECTT → Downloads → Ambassador_QR.pdf',
-        [
-          {
-            text: 'Open Folder',
-            onPress: async () => {
-              await Linking.openURL('shareddocuments://');
-            }
-          }
-        ]
-      );
-      console.log('PDF saved at:', filePath);
-    } catch (error) {
-      console.log('PDF generation error:', error);
-      Alert.alert('Error', 'Failed to generate PDF');
-    }
-  };
+  } catch (err) {
+    console.log('Print/PDF error:', err);
+    Alert.alert('Error', 'PDF generation failed');
+  }
+};
 
 
   const generatePdf = async (link) => {

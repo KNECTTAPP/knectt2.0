@@ -148,7 +148,7 @@ const AffiliateScreen = ({ navigation, route }) => {
 
   return (
 
-    <SafeAreaView style={{ flex: 1 }}
+    <SafeAreaView style={{ flex: 1,  backgroundColor: "#ffffff", }}
       contentContainerStyle={{
         backgroundColor: "#fff",
         paddingBottom: 80 + insets.bottom, // 👈 button height + safe area
@@ -156,11 +156,7 @@ const AffiliateScreen = ({ navigation, route }) => {
       showsVerticalScrollIndicator={false} >
       <Header categoryTitle={categoryTitle} backButtonwithtext />
 
-      <ScrollView
-        style={{ flex: 1, backgroundColor: "#fff", }}
-
-        showsVerticalScrollIndicator={false}
-      >
+    
         {/* VIDEO */}
         <View style={styles.videoContainer}>
           <Video
@@ -175,7 +171,7 @@ const AffiliateScreen = ({ navigation, route }) => {
         </View>
 
         {/* WEBVIEW */}
-        <View style={{ minHeight: 370 }}>
+         <View style={styles.webContainer}>
           <WebView
             originWhitelist={["*"]}
             javaScriptEnabled
@@ -203,7 +199,7 @@ const AffiliateScreen = ({ navigation, route }) => {
             style={{ width: "90%", alignSelf: "center" }}
           />
         </View>
-      </ScrollView>
+     
 
       {/* FIXED BOTTOM BUTTON */}
       <View
@@ -307,6 +303,10 @@ const styles = StyleSheet.create({
     width: "100%",
     height: "100%",
     resizeMode: "cover",
+  },
+  webContainer: {
+    flex: 1, // ✅ remaining screen height
+     backgroundColor: "#ffffff",
   },
 });
 export default AffiliateScreen;

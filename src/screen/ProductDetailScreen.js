@@ -1,62 +1,53 @@
-import React, { useState, Component, useEffect, useCallback } from "react";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useFocusEffect } from "@react-navigation/native";
+import { useCallback, useEffect, useState } from "react";
 import {
-  Platform,
-  View,
-  Button,
-  Text,
+  Alert,
+  Dimensions,
+  FlatList,
   Image,
   Linking,
-  Dimensions,
-  TouchableWithoutFeedback,
-  Alert,
-  StyleSheet,
+  Platform,
   Pressable,
-  
+
   ScrollView,
-  TouchableOpacity,
-  FlatList,
-  StatusBar,
   Share,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View
 } from "react-native";
-import HTMLView from "react-native-htmlview";
-import { scale } from "react-native-size-matters";
-import { TabNavigators } from "../../TabNavigators.js";
-import ModalTester from "../component/ModalComponent";
-import { ProgressLoader } from "../component/ProgressLoader";
-import { ImageSlider } from "react-native-image-slider-banner";
-import Header from "../component/Header";
-import ImageCarousel from "../component/SimilerProductCarousel";
-import EndUrl from "../api/EndUrl";
-import HTML from "react-native-render-html";
-import ViewMoreText from "react-native-view-more-text";
-import { SafeAreaView } from "react-native-safe-area-context";
-import thumsImg from "../../assets/img/thumbs.png";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import FlashMessage, {
-  showMessage,
-  hideMessage,
-} from "react-native-flash-message";
-import fonts from "../utils/fonts.js";
-import { ButtonCustom } from "../component/ButtonCustom.js";
-import { fetchAvailableSlots } from "../services.js";
-import { useFocusEffect } from "@react-navigation/native";
-import { el } from "date-fns/locale";
-import Feather from "react-native-vector-icons/Feather";
 import DeviceInfo from "react-native-device-info";
-import { IconShare } from "../component/IconComp.js";
+import FlashMessage, {
+  showMessage
+} from "react-native-flash-message";
 import {
   Menu,
-  MenuOptions,
   MenuOption,
+  MenuOptions,
   MenuTrigger,
 } from "react-native-popup-menu";
+import { SafeAreaView } from "react-native-safe-area-context";
+import { scale } from "react-native-size-matters";
+import Feather from "react-native-vector-icons/Feather";
+import thumsImg from "../../assets/img/thumbs.png";
+import EndUrl from "../api/EndUrl";
+import { ButtonCustom } from "../component/ButtonCustom.js";
 import BodyMatchModal from "../component/CreateProfileModal.js";
+import Header from "../component/Header";
+import { IconShare } from "../component/IconComp.js";
+import { ProgressLoader } from "../component/ProgressLoader";
+import ImageCarousel from "../component/SimilerProductCarousel";
+import fonts from "../utils/fonts.js";
+import SimpleCarousel from "../component/SimpleCarousel";
+
 
 //arrow-right
 const SLIDER_1_FIRST_ITEM = 1;
 var id = 0;
 var width = Dimensions.get("window").width; //full width
 const ProductDetailScreen = ({ navigation, route }) => {
+ 
   const [titleText, setTitleText] = useState(null);
   const [isModalVisible, setModalVisible] = useState(false);
   const [loading, setLoading] = useState(true);
@@ -75,10 +66,17 @@ const ProductDetailScreen = ({ navigation, route }) => {
   const [applink, setApplink] = useState();
   const [allDeatil, setAllDetail] = useState({});
   const [bodyMatchDetail, setBodyMatchDetail] = useState(null);
-
+ const [activeIndex, setActiveIndex] = useState(0);
   const [textShown, setTextShown] = useState(false); //To show ur remaining Text
   const [lengthMore, setLengthMore] = useState(false); //to show the "Read more & Less Line"
   const [bodyModalVisible, setBodyModalVisible] = useState(false);
+
+
+  const data = [
+  { id: 1, img: "https://picsum.photos/800/400?1" },
+  { id: 2, img: "https://picsum.photos/800/400?2" },
+  { id: 3, img: "https://picsum.photos/800/400?3" },
+];
 
   useEffect(()=>{
 console.log(bodyModalVisible.toString(),'hyeeheheh')
@@ -155,6 +153,7 @@ console.log(bodyModalVisible.toString(),'hyeeheheh')
     }
   };
 
+  
   const toggleNumberOfLines = () => {
     //To toggle the show text or hide it
     setTextShown(!textShown);
@@ -505,25 +504,10 @@ console.log(bodyModalVisible.toString(),'hyeeheheh')
           }}
         >
           <View style={{ flex: 1 }}>
-            <View style={styles.topimage}>
-              <ImageSlider
-                data={bannerdata}
-                autoPlay={false}
-                preview={false}
-                activeIndicatorStyle={{
-                  backgroundColor: "#F79489",
-                  width: 10,
-                  height: 10,
-                }}
-                inActiveIndicatorStyle={{
-                  backgroundColor: "#fff",
-                  width: 10,
-                  height: 10,
-                }}
-                caroselImageStyle={{ resizeMode: "cover", height: scale(400) }}
-                closeIconColor="#fff"
-                onClick={() => console.log("press")}
-              />
+           <View style={styles.topimage}>
+
+              <SimpleCarousel bannerdata={bannerdata}/>
+           
               <TouchableOpacity
                 onPress={onShare}
                 style={{
@@ -540,6 +524,8 @@ console.log(bodyModalVisible.toString(),'hyeeheheh')
                   shadowRadius: 3.84,
                 }}
               >
+         
+              
                 {Platform.OS === "ios" ? (
                   <IconShare />
                 ) : (
@@ -868,7 +854,7 @@ const styles = StyleSheet.create({
   },
   topimage: {
     width: "100%",
-    height: scale(400),
+    height: scale(360),
   },
   brand: {
     margin: 2,

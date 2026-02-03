@@ -389,80 +389,10 @@ const MyDietScreen = ({ navigation, route }) => {
     toggleModal();
     navigation.navigate("chatbot");
   };
-  const getMyOrder = async () => {
-    try {
-      let usertoken = await AsyncStorage.getItem("usertoken");
-      const settingsGet = {
-        method: "GET",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-          token: JSON.parse(usertoken),
-          Version: DeviceInfo.getVersion().replace(/(\r\n|\n|\r)/gm, ""),
-          Platform: Platform.OS,
-        },
-      };
 
-      const response = await fetch(
-        EndUrl.gloabalurl + "checknutritionplan",
-        settingsGet
-      );
-      const updateAvailable = response.headers.get("updateAvailable");
-      const forceUpdate = response.headers.get("forceUpdate");
-      const isOldFordeUpdatePopup = response.headers.get(
-        "useOldFordeUpdatePopup"
-      );
-      if (updateAvailable === 1) {
-        await AsyncStorage.setItem("updateAvailable", "true");
-      }
-      if (forceUpdate === 1) {
-        await AsyncStorage.setItem("forceUpdate", "true");
-      }
-      if (isOldFordeUpdatePopup === 1) {
-        await AsyncStorage.setItem("useOldFordeUpdatePopup", "true");
-      }
-      const json = await response.json();
-      // setChatNutrintion(json.data);
-    } catch (error) {
-      console.error(error);
-    } finally {
-      //setLoading(false);
-    }
+  const getMyOrder = async () => {
   };
   const getReadMore = async (id, plan, planImage) => {
-    setLoading(true);
-    try {
-      setLoading(true);
-      const response = await fetch(EndUrl.gloabalurl + `features/${id}`);
-      const updateAvailable = response.headers.get("updateAvailable");
-      const forceUpdate = response.headers.get("forceUpdate");
-      const isOldFordeUpdatePopup = response.headers.get(
-        "useOldFordeUpdatePopup"
-      );
-      if (updateAvailable === 1) {
-        await AsyncStorage.setItem("updateAvailable", "true");
-      }
-      if (forceUpdate === 1) {
-        await AsyncStorage.setItem("forceUpdate", "true");
-      }
-      if (isOldFordeUpdatePopup === 1) {
-        await AsyncStorage.setItem("useOldFordeUpdatePopup", "true");
-      }
-      const json = await response.json();
-      let data = json.data;
-      setRead(data);
-      setPlanType(plan);
-      setPlanImage(planImage);
-      setId(id);
-      setTimeout(() => {
-        setModalVisible(!isModalVisible);
-      }, 800);
-
-      setLoading(false);
-    } catch (error) {
-      console.error(error);
-      setLoading(false);
-    }
   };
 
 const CustomeHeader = () => {

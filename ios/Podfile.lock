@@ -2894,6 +2894,8 @@ PODS:
     - React-perflogger (= 0.83.0)
     - React-utils (= 0.83.0)
     - SocketRocket
+  - ReactNativeART (1.1.2):
+    - React
   - RNBootSplash (6.3.11):
     - boost
     - DoubleConversion
@@ -3568,6 +3570,7 @@ DEPENDENCIES:
   - ReactAppDependencyProvider (from `build/generated/ios/ReactAppDependencyProvider`)
   - ReactCodegen (from `build/generated/ios/ReactCodegen`)
   - ReactCommon/turbomodule/core (from `../node_modules/react-native/ReactCommon`)
+  - "ReactNativeART (from `../node_modules/@react-native-community/art`)"
   - RNBootSplash (from `../node_modules/react-native-bootsplash`)
   - "RNCAsyncStorage (from `../node_modules/@react-native-async-storage/async-storage`)"
   - "RNCCheckbox (from `../node_modules/@react-native-community/checkbox`)"
@@ -3800,6 +3803,8 @@ EXTERNAL SOURCES:
     :path: build/generated/ios/ReactCodegen
   ReactCommon:
     :path: "../node_modules/react-native/ReactCommon"
+  ReactNativeART:
+    :path: "../node_modules/@react-native-community/art"
   RNBootSplash:
     :path: "../node_modules/react-native-bootsplash"
   RNCAsyncStorage:
@@ -3953,6 +3958,7 @@ SPEC CHECKSUMS:
   ReactAppDependencyProvider: ebcf3a78dc1bcdf054c9e8d309244bade6b31568
   ReactCodegen: 11c08ff43a62009d48c71de000352e4515918801
   ReactCommon: 424cc34cf5055d69a3dcf02f3436481afb8b0f6f
+  ReactNativeART: 5c05b7916f7d9c07e70f812441dc0d98a84c2602
   RNBootSplash: 98a34471966945e8dacd1da8f0c2f87cbc2e2df7
   RNCAsyncStorage: 29f0230e1a25f36c20b05f65e2eb8958d6526e82
   RNCCheckbox: 33b44487ca8008394ce658cc32b26eab04f426ef

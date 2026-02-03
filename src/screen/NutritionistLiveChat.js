@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { WebView } from 'react-native-webview';
 import { StyleSheet, View, Text, ActivityIndicator,KeyboardAvoidingView,ScrollView } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 
 
 export default function DietTrackingScreen({ navigation, route }) {
@@ -33,6 +33,7 @@ export default function DietTrackingScreen({ navigation, route }) {
   };
 
   return (
+    <SafeAreaView>
     <KeyboardAvoidingView
         style={{ flex: 1 }}
         behavior={Platform.OS === "ios" ? "padding" : undefined}
@@ -85,6 +86,7 @@ export default function DietTrackingScreen({ navigation, route }) {
     </View>
     </ScrollView>
     </KeyboardAvoidingView>
+   </SafeAreaView>
   );
 }
 

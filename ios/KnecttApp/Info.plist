@@ -60,6 +60,8 @@
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>LSSupportsOpeningDocumentsInPlace</key>
+    <true/>
+	<key>LSSupportsOpeningDocumentsInPlace</key>
 	<true/>
 	<key>NSAppTransportSecurity</key>
 	<dict>
@@ -84,17 +86,7 @@
 	<true/>
 	<key>UIAppFonts</key>
 	<array>
-		<string>WhitneySemiboldItalic.otf</string>
-		<string>whitneybold.otf</string>
-		<string>whitneybook.otf</string>
-		<string>whitneybookitalic.otf</string>
-		<string>whitneylight.otf</string>
-		<string>whitneylightitalic.otf</string>
-		<string>whitneymedium.otf</string>
-		<string>whitneymediumitalic.otf</string>
-		<string>whitneysemibold.otf</string>
-		<string>feather1s.ttf</string>
-		<string>MaterialIcons.ttf</string>
+		<string>Feather.ttf</string>
 	</array>
 	<key>UIFileSharingEnabled</key>
 	<true/>
@@ -118,10 +110,5 @@
 	<array>
 		<string>applinks:knectt.onelink.me</string>
 	</array>
-	<key>UIAppFonts</key>
-<array>
-  <string>Feather.ttf</string>
-</array>
-
 </dict>
 </plist>

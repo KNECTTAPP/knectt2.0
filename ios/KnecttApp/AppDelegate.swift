@@ -17,6 +17,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     _ application: UIApplication,
     didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]? = nil
   ) -> Bool {
+
     let delegate = ReactNativeDelegate()
     let factory = RCTReactNativeFactory(delegate: delegate)
     delegate.dependencyProvider = RCTAppDependencyProvider()
@@ -31,17 +32,36 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
       in: window,
       launchOptions: launchOptions
     )
-    
-    if FirebaseApp.app() == nil {
-        FirebaseApp.configure()
-      }
 
+    // ✅ SAFE WAY (delay until rootView exists)
+    if let rootView = window?.rootViewController?.view {
+      RNBootSplash.initWithStoryboard("BootSplash", rootView: rootView)
+    }
+
+    if FirebaseApp.app() == nil {
+      FirebaseApp.configure()
+    }
 
     return true
   }
+  func application(
+     _ app: UIApplication,
+     open url: URL,
+     options: [UIApplication.OpenURLOptionsKey : Any] = [:]
+   ) -> Bool {
+
+     return RCTLinkingManager.application(
+       app,
+       open: url,
+       options: options
+     )
+   }
 }
 
+
+// ⬇️ SAME FILE me hi hai, koi naya file nahi
 class ReactNativeDelegate: RCTDefaultReactNativeFactoryDelegate {
+
   override func sourceURL(for bridge: RCTBridge) -> URL? {
     self.bundleURL()
   }
@@ -52,5 +72,11 @@ class ReactNativeDelegate: RCTDefaultReactNativeFactoryDelegate {
 #else
     Bundle.main.url(forResource: "main", withExtension: "jsbundle")
 #endif
+  }
+
+  // ✅ BEST PLACE – guaranteed rootView
+  override func customize(_ rootView: RCTRootView) {
+    super.customize(rootView)
+    RNBootSplash.initWithStoryboard("BootSplash", rootView: rootView)
   }
 }

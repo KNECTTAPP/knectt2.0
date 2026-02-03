@@ -673,7 +673,7 @@ const AddEditAddressScreen = ({ navigation, route }) => {
                   onPress={_onPresCancle}
                   style={{ width: "100%" }}
                 >
-                  <Text style={{ fontFamily: fonts.whitneySemiBold, fontSize: 20 }}>
+                  <Text style={{ fontFamily: fonts.whitneySemiBold, fontSize: 20, textAlign: "center", }}>
                     CANCEL
                   </Text>
                 </TouchableHighlight>

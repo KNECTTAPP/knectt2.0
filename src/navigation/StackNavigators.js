@@ -371,7 +371,7 @@ export default function StackNavigators({ linking }) {
       } finally {
         setTimeout(async () => {
           await BootSplash.hide({ fade: false });
-        }, 2000);
+        }, 3000);
 
         setIsReady(true);
       }
