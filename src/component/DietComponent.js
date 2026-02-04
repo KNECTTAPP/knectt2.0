@@ -3,6 +3,8 @@ import { StyleSheet, View, Text, Image, FlatList } from "react-native";
 import logo from "../../assets/img/morningdiet.jpg";
 
 const DietComponent = ({ time, calories, diet, quantity, images }) => {
+
+
   return (
     <View style={styles.MorningDietStyle}>
       <View
@@ -30,7 +32,7 @@ const DietComponent = ({ time, calories, diet, quantity, images }) => {
         >
           {time}
         </Text>
-        <Text style={{ color: "#132742", marginVertical: 10 }}>{calories}</Text>
+
       </View>
       {diet ? (
         <View
@@ -41,6 +43,7 @@ const DietComponent = ({ time, calories, diet, quantity, images }) => {
           }}
         >
           {diet.map((item, index) => {
+              const imageUri = images?.length > index ? images[index] : null;
             return (
               <View
                 style={{
@@ -67,15 +70,15 @@ const DietComponent = ({ time, calories, diet, quantity, images }) => {
                     shadowRadius: 2.22,
                   }}
                 >
-                  <Image
-                    source={{ uri: images[index] }}
+                  {imageUri && <Image
+                    source={{ uri: imageUri }}
                     style={{
                       height: 70,
                       width: 90,
                       borderTopLeftRadius: 10,
                       borderBottomLeftRadius: 10,
                     }}
-                  />
+                  />}
                   <View
                     style={{
                       flexDirection: "row",

@@ -5,6 +5,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation } from '@react-navigation/native';
 import RNFS from "react-native-fs";
 import Share from "react-native-share";
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 
 export default function KnecttReport() {
@@ -36,6 +37,8 @@ const url = userId
   : `https://knectt-ai-profile.lovable.app/?view360Report=yes`;
 
   return (
+    <SafeAreaView  style={{flex:1}}>
+
     <View style={styles.container}>
         {loading && (
         <View
@@ -120,6 +123,7 @@ const url = userId
     </View>
   )} */}
     </View>
+        </SafeAreaView>
   );
 }
 

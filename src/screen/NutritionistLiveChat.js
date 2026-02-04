@@ -33,7 +33,7 @@ export default function DietTrackingScreen({ navigation, route }) {
   };
 
   return (
-    <SafeAreaView>
+    <SafeAreaView style={{flex:1}}>
     <KeyboardAvoidingView
         style={{ flex: 1 }}
         behavior={Platform.OS === "ios" ? "padding" : undefined}

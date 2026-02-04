@@ -11,7 +11,6 @@ import {
 import FlashMessage from "react-native-flash-message";
 import "react-native-gesture-handler";
 import { setCustomText } from "react-native-global-props";
-import { StorageProvider } from "../KnecttApp/src/storage/StorageContext";
 import StackNavigators from "./src/navigation/StackNavigators";
 import UpdateApp from "./src/screen/UpdateApp";
 
@@ -326,9 +325,9 @@ const App = () => {
         <SafeAreaProvider>
        
             <StatusBar barStyle="dark-content" backgroundColor="#FFF" />
-            <StorageProvider>
+           
               <StackNavigators linking={linking} />
-            </StorageProvider>
+            
             <FlashMessage position={"top"} />
             <UpdateApp
               isUpdateAvailable={isUpdateAvailable}
