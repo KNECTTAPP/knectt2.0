@@ -4,9 +4,12 @@ import Header from "../component/Header";
 import FlashMessage from "react-native-flash-message";
 import WebView from "react-native-webview";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { useNavigation } from "@react-navigation/native";
 const PaymentWebView = ({ route }) => {
   const { paymentUrl } = route.params;
-  console.log(paymentUrl,'its payment url')
+  console.log(paymentUrl, 'its payment url')
+
+  const navigation = useNavigation()
 
   FlashMessage.setColorTheme({
     success: "#132742",
@@ -27,14 +30,17 @@ const PaymentWebView = ({ route }) => {
         javaScriptEnabled={true}
         domStorageEnabled={true}
         startInLoadingState={true}
-        // onNavigationStateChange={(event) => {
-        //   // Optional: detect success/failure URLs
-        //   if (event.url.includes("success")) {
-        //     // Handle success
-        //   } else if (event.url.includes("failure")) {
-        //     // Handle failure
-        //   }
-        // }}
+        onNavigationStateChange={(event) => {
+          console.log("asdasdasdasdasdasdasd", event)
+          // Optional: detect success/failure URLs
+          if (event.title.includes("Payment Cancelled")) {
+            // Handle Cancel
+            navigation.navigate('Cart')
+          } else if (event.title.includes("Payment Successful")) {
+            navigation.navigate('OrderThanks')
+            // Handle Success
+          }
+        }}
       />
       {/* </View> */}
     </SafeAreaView>

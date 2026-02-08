@@ -241,6 +241,7 @@ const App = () => {
   };
 
 
+  console.log("asdasdasdasdasdasdasd",DeviceInfo.getVersion())
 
   const checkForUpdate = async () => {
     try {

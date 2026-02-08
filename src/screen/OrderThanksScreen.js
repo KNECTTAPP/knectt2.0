@@ -13,6 +13,7 @@ import Header from "../component/Header";
 import { IconCheck } from "../component/IconComp";
 import fonts from "../utils/fonts";
 import { ro } from "date-fns/locale";
+import { SafeAreaView } from "react-native-safe-area-context";
 //arrow-right
 const SLIDER_1_FIRST_ITEM = 1;
 var id = 0;

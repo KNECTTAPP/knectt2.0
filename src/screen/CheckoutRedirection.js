@@ -32,6 +32,7 @@ const CheckoutRedirection = ({ navigation, route }) => {
       }
     } catch (error) {
       console.error("Error fetching payment status", error);
+      navigation.goBack()
     }
   }, [route.params.orderId, navigation]);
 

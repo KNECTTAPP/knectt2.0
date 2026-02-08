@@ -496,30 +496,7 @@ const CustomeHeader = () => {
               </Text>
             </View>
           ) : null}
-          <View
-            style={{
-              width: "90%",
-              alignSelf: "center",
-              justifyContent: "center",
-              height: 40,
-              alignItems: "center",
-              backgroundColor: "white",
-              borderRadius: 10,
-              marginTop: 5,
-              elevation: 10,
-              shadowColor: "#000",
-              shadowOffset: {
-                width: 0,
-                height: 2,
-              },
-              shadowOpacity: 0.25,
-              shadowRadius: 3.84,
-            }}
-          >
-            <Text style={{ fontSize: 14, color: "#99999" }}>
-              {daysLeft} days left
-            </Text>
-          </View>
+        
           <View
             style={{
               flexDirection: "row",
@@ -528,9 +505,7 @@ const CustomeHeader = () => {
               marginTop: 10,
             }}
           >
-            <Text style={{ fontSize: 17, color: "#99999" }}>
-              Assigned calories
-            </Text>
+            
             
           </View>
           <FlatList
@@ -555,7 +530,7 @@ const CustomeHeader = () => {
               );
             }}
           />
-          {disclimiler ? (
+          {false ? (
             <View style={styles.footertext}>
               <Image
                 source={{ uri: disclimiler }}

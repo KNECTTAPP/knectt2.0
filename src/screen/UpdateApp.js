@@ -30,7 +30,7 @@ const UpdateApp = ({ isUpdateAvailable, _onPressUpdate }) => {
   return (
     <Modal
       transparent
-      visible={!isUpdateAvailable}
+      visible={isUpdateAvailable}
       animationType="fade"
       statusBarTranslucent
       onRequestClose={() => {}} // Disable modal dismissal

@@ -26,7 +26,9 @@ const CustomSidebarMenu = (props) => {
   const [token, setToken] = useState();
   const [state, setState] = useState("");
   const [isMenu, setIsmenu] = useState(0);
-  const [affliateCreated, setAffliateCreated] = useState(0);
+  const [affliateCreated, setAffliateCreated] = useState(null);
+  const [affiliateLoading, setAffiliateLoading] = useState(true);
+
 
   const fetCheckaffliate = async () => {
     let usertoken = await AsyncStorage.getItem("usertoken");
@@ -58,13 +60,13 @@ const CustomSidebarMenu = (props) => {
       }
       const json = await response.json();
       // console.log("json=======>", json);
-
-      if (response.status == 200) {
-        setAffliateCreated(json.affiliate_yes_no);
+      if (response.status === 200) {
+        setAffliateCreated(json.affiliate_yes_no); // 0 or 1
       }
-    } catch (error) {
+    } catch (e) {
+      console.log("Affiliate API error", e);
     } finally {
-      //setLoading(false);
+      setAffiliateLoading(false);
     }
   };
   const getMenucategory = async () => {
@@ -135,7 +137,7 @@ const CustomSidebarMenu = (props) => {
     });
   };
   const goMenuClick = (arg) => {
-     navigationr.navigate(arg);
+    navigationr.navigate(arg);
   };
 
   const goToMyOrder = () => {
@@ -145,10 +147,10 @@ const CustomSidebarMenu = (props) => {
   };
 
   const goMenuClickStatick = (arg, subargu) => {
-     navigationr.navigate(arg, subargu);
+    navigationr.navigate(arg, subargu);
   };
 
-  useEffectEvent  (() => {
+  useEffectEvent(() => {
     if (isMenu == 0) {
       getMenucategory();
     }
@@ -156,11 +158,11 @@ const CustomSidebarMenu = (props) => {
       fetCheckaffliate();
     }
   });
-  
+
 
   useEffect(() => {
     getMenucategory();
-   
+
   }, []);
 
   useEffect(() => {
@@ -180,19 +182,21 @@ const CustomSidebarMenu = (props) => {
   // console.log("category==>", category);
 
   return (
-   <SafeAreaView>
+   <SafeAreaView style={{ flex: 1 }} edges={['bottom']}>
+
       {/*Top Large Image */}
       <Image source={logos} style={styles.sideMenuProfileIcon} />
-        
-      <ScrollView 
-      showsVerticalScrollIndicator={false}
-      style={{height:'81%',marginBottom:80}}>
-      
+
+    <ScrollView
+    showsVerticalScrollIndicator={false}
+    contentContainerStyle={{ paddingBottom: 60 }}
+  >
+
         <View style={styles.customItem}>
           {!token && (
             <Text
               onPress={() => {
-               closeDrawer()
+                closeDrawer()
                 navigationr.reset({
                   routes: [{ name: "Login" }],
                 });
@@ -205,7 +209,7 @@ const CustomSidebarMenu = (props) => {
           <Text
             onPress={() => {
               goToMyOrder();
-               closeDrawer()
+              closeDrawer()
             }}
             style={styles.menupadding}
           >
@@ -214,17 +218,17 @@ const CustomSidebarMenu = (props) => {
           <Text
             onPress={() => {
               Linking.openURL("https://knectt.in/");
-               closeDrawer()
+              closeDrawer()
             }}
             style={styles.menupadding}
           >
             Become a Partner
           </Text>
-          {affliateCreated == 1 ? (
+          {affiliateLoading ? null : affliateCreated === 1 ? (
             <Text
               onPress={() => {
                 goMenuClick("AffiliateCredentials");
-                 closeDrawer()
+                closeDrawer();
               }}
               style={styles.menupadding}
             >
@@ -234,34 +238,28 @@ const CustomSidebarMenu = (props) => {
             <Text
               onPress={() => {
                 goMenuClick("Affiliate");
-                 closeDrawer()
+                closeDrawer();
               }}
               style={styles.menupadding}
             >
               Become an Ambassador
             </Text>
           )}
+
           <Text
             onPress={() => {
               goMenuClick("RefeEarn");
-               closeDrawer()
+              closeDrawer()
             }}
             style={styles.menupadding}
           >
             Refer
           </Text>
-          {/* <Text
-            onPress={() => {
-              goMenuClick("Notification");
-            }}
-            style={styles.menupadding}
-          >
-            Notification
-          </Text> */}
+         
           <Text
             onPress={() => {
               goMenuClick("Reviews");
-               closeDrawer()
+              closeDrawer()
             }}
             style={styles.menupadding}
           >
@@ -270,7 +268,7 @@ const CustomSidebarMenu = (props) => {
           <Text
             onPress={() => {
               goMenuClick("ContactUs");
-               closeDrawer()
+              closeDrawer()
             }}
             style={styles.menupadding}
           >
@@ -280,7 +278,7 @@ const CustomSidebarMenu = (props) => {
             <Text
               onPress={() => {
                 goMenuClick("Fewbasicinfo");
-                 closeDrawer()
+                closeDrawer()
               }}
               style={styles.menupadding}
             >
@@ -290,7 +288,7 @@ const CustomSidebarMenu = (props) => {
           <View style={styles.lineStyle} />
           <Text style={styles.menuheading}>Products</Text>
           <Text
-            onPress={() =>  {closeDrawer(),goMenuClick("Address")}}
+            onPress={() => { closeDrawer(), goMenuClick("Address") }}
             style={styles.menupadding}
           >
             Edit Addresses
@@ -333,7 +331,7 @@ const CustomSidebarMenu = (props) => {
             onPress={() => {
               // goMenuClick("Diet");
               goMenuClick("My Diet");
-               closeDrawer()
+              closeDrawer()
               // navigationr.navigate("My Diet", { showHeader: true });
             }}
             style={styles.menupadding}
@@ -344,7 +342,7 @@ const CustomSidebarMenu = (props) => {
             onPress={() => {
               // goMenuClick("Diet");
               goMenuClick("DietTrackingScreen");
-               closeDrawer()
+              closeDrawer()
               // navigationr.navigate("My Diet", { showHeader: true });
             }}
             style={styles.menupadding}
@@ -354,7 +352,7 @@ const CustomSidebarMenu = (props) => {
           <Text
             onPress={() => {
               goMenuClick("KnecttReport");
-               closeDrawer()
+              closeDrawer()
               // navigationr.navigate("My Diet", { showHeader: true });
             }}
             style={styles.menupadding}
@@ -373,7 +371,7 @@ const CustomSidebarMenu = (props) => {
           <Text style={styles.menuheading}>Policy and Legal</Text>
           <Text
             onPress={() => {
-               closeDrawer()
+              closeDrawer()
               goMenuClickStatick("Policies", {
                 arg: "about_us",
                 name: "About Us",
@@ -386,7 +384,7 @@ const CustomSidebarMenu = (props) => {
           <Text
             onPress={() => {
               goMenuClick("Policy");
-               closeDrawer()
+              closeDrawer()
             }}
             style={styles.menupadding}
           >
@@ -394,7 +392,7 @@ const CustomSidebarMenu = (props) => {
           </Text>
           <Text
             onPress={() => {
-               closeDrawer()
+              closeDrawer()
               goMenuClickStatick("Policies", {
                 arg: "contact",
                 name: "Contact Policy",
@@ -406,7 +404,7 @@ const CustomSidebarMenu = (props) => {
           </Text>
           <Text
             onPress={() => {
-               closeDrawer()
+              closeDrawer()
               goMenuClickStatick("Policies", {
                 arg: "cancel_refund",
                 name: "Cancellation & Refund policy",
@@ -418,7 +416,7 @@ const CustomSidebarMenu = (props) => {
           </Text>
           <Text
             onPress={() => {
-               closeDrawer()
+              closeDrawer()
               goMenuClickStatick("Policies", {
                 arg: "medical_disclaimer",
                 name: "Medical disclaimer",
@@ -430,14 +428,14 @@ const CustomSidebarMenu = (props) => {
           </Text>
           {console.log("TOKEN", token)}
           {token && (
-            <Text onPress={() =>{ closeDrawer(), goTtoLogout()}} style={styles.menupadding}>
+            <Text onPress={() => { closeDrawer(), goTtoLogout() }} style={styles.menupadding}>
               Log Out
             </Text>
           )}
           {token && (
             <Text
               onPress={() => {
-                 closeDrawer()
+                closeDrawer()
                 goMenuClickStatick("DeleteAccount");
               }}
               style={styles.menupadding}
@@ -446,9 +444,9 @@ const CustomSidebarMenu = (props) => {
             </Text>
           )}
         </View>
-    </ScrollView>
-    
-    
+      </ScrollView>
+
+
     </SafeAreaView>
   );
 };
