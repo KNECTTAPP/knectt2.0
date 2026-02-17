@@ -5,7 +5,6 @@ import ReactAppDependencyProvider
 import RNBootSplash
 import Firebase
 
-
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
   var window: UIWindow?
@@ -33,33 +32,41 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
       launchOptions: launchOptions
     )
 
-    // ✅ SAFE WAY (delay until rootView exists)
-    if let rootView = window?.rootViewController?.view {
-      RNBootSplash.initWithStoryboard("BootSplash", rootView: rootView)
-    }
-
     if FirebaseApp.app() == nil {
       FirebaseApp.configure()
     }
 
     return true
   }
-  func application(
-     _ app: UIApplication,
-     open url: URL,
-     options: [UIApplication.OpenURLOptionsKey : Any] = [:]
-   ) -> Bool {
 
-     return RCTLinkingManager.application(
-       app,
-       open: url,
-       options: options
-     )
-   }
+  // --- 🔗 DEEP LINKING SUPPORT START ---
+
+  // 1. Custom URL Schemes handle karne ke liye (knectt://...)
+  func application(
+    _ application: UIApplication,
+    open url: URL,
+    options: [UIApplication.OpenURLOptionsKey : Any] = [:]
+  ) -> Bool {
+    return RCTLinkingManager.application(application, open: url, options: options)
+  }
+
+  // 2. Universal Links handle karne ke liye (https://yourdomain.com/...)
+  // Ye wala method zaroori hai iOS ke liye
+  func application(
+    _ application: UIApplication,
+    continue userActivity: NSUserActivity,
+    restorationHandler: @escaping ([UIUserActivityRestoring]?) -> Void
+  ) -> Bool {
+    return RCTLinkingManager.application(
+      application,
+      continue: userActivity,
+      restorationHandler: restorationHandler
+    )
+  }
+
+  // --- 🔗 DEEP LINKING SUPPORT END ---
 }
 
-
-// ⬇️ SAME FILE me hi hai, koi naya file nahi
 class ReactNativeDelegate: RCTDefaultReactNativeFactoryDelegate {
 
   override func sourceURL(for bridge: RCTBridge) -> URL? {
@@ -74,7 +81,7 @@ class ReactNativeDelegate: RCTDefaultReactNativeFactoryDelegate {
 #endif
   }
 
-  // ✅ BEST PLACE – guaranteed rootView
+  // ✅ BootSplash Setup
   override func customize(_ rootView: RCTRootView) {
     super.customize(rootView)
     RNBootSplash.initWithStoryboard("BootSplash", rootView: rootView)

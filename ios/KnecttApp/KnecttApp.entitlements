@@ -6,7 +6,9 @@
 	<string>development</string>
 	<key>com.apple.developer.associated-domains</key>
 	<array>
-		<string>applinks:knectt.com</string>
+		<string>applinks:knectt.onelink.me</string>
+		<string>applinks:knectt.test-app.link</string>
+		<string>applinks:knectt-alternate.test-app.link</string>
 	</array>
 </dict>
 </plist>
